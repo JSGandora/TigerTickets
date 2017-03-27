@@ -1,2 +1,2 @@
 # TigerTickets
-Ticket exchange platform for Princeton University.
+Ticket exchange platform for Princeton University students
