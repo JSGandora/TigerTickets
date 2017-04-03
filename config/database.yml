@@ -21,5 +21,10 @@ test:
   database: db/test.sqlite3
 
 production:
-  <<: *default
-  database: db/production.sqlite3
+  adapter: postgresql
+  encoding: unicode
+  database: tiger-tickets_production
+  pool: 5
+  username: tiger-tickets
+  password: <%= ENV['TIGER-TICKETS_DATABASE_PASSWORD'] %>
+  timeout: 5000
