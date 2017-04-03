@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   
+  get 'account/mytix'
+
   post 'sell', to: 'sell#sellrequest'
   post 'cancel-sell', to: 'sell#cancelsell'
   post 'buy', to: 'buy#buyrequest'
