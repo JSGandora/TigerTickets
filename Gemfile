@@ -17,6 +17,10 @@ group :production do
   gem 'pg'
 end
 
+# Get a CAS client
+gem 'rubycas-client', :git => 'git://github.com/rubycas/rubycas-client.git'
+
+
 # Use Puma as the app server
 gem 'puma', '~> 3.0'
 # Use SCSS for stylesheets
