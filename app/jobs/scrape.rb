@@ -43,9 +43,6 @@ for i in 1..num_pages
 end
 
 events.each do |x|
-     if x[".start-date"] == ""
-          print "TRUE\n"
-     end
-     # print x
-     # print "\n"
+     print x
+     print "\n"
 end
