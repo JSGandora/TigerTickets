@@ -30,5 +30,5 @@ description: Cancels a sell request.
 
 GET /my-tix
 authentication: required
-response: json object containing a list of all active buy and sell requests and their status. Sample in my-tix.sample.json
+response: json object containing a list of all active buy and sell requests and their status in addition to the relavant shows the requests are for. Sample in my-tix.sample.json
 description: Gets information about a users current requests.
