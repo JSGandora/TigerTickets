@@ -12,7 +12,7 @@ class EventScrapeJob < ApplicationJob
 	# date = Time.parse(event.find('.start-date').text).to_s
 	loc = event.find('.item-venue').text
 	info = event.find('.item-teaser').text
-	puts event.text
+	return name + loc + info
   end
   
   def perform(*args)
@@ -33,7 +33,10 @@ class EventScrapeJob < ApplicationJob
       event_nodes = session.all(".result-box-item")[0...-1]
 	  
       for event in event_nodes
-        events << event.text
+        events << event.find('.item-name').text
+        # events << Time.parse(event.find('.start-date').text).to_s
+        events << event.find('.item-venue').text
+        # events << event.find('.item-teaser').text
       end
   
       # Click on next page
@@ -42,7 +45,6 @@ class EventScrapeJob < ApplicationJob
       end
     end
 
-    print "hi"
     print events
   end
 end
