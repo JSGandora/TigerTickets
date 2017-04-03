@@ -9,11 +9,10 @@ class EventScrapeJob < ApplicationJob
   
   def parse_event(event)
 	name = event.find('.item-name').text
-	date = Time.parse(event.find('.start-date').text).to_s
+	# date = Time.parse(event.find('.start-date').text).to_s
 	loc = event.find('.item-venue').text
 	info = event.find('.item-teaser').text
-	print name, date, loc, info
-	print event.text
+	puts event.text
   end
   
   def perform(*args)
@@ -25,20 +24,25 @@ class EventScrapeJob < ApplicationJob
 	# Parse number of pages
 	num_events = session.all('.av-paging-links')[-1].text.to_i
 	
-	# All events
-	events = []
+    # All events
+    events = []
 	
 	# Navigate tickets
-	for i in 1..num_events
-	  # Parse event info
-	  events += session.all(".result-box-item")[0...-1]
+    for i in 1..num_events
+      # Parse event info
+      event_nodes = session.all(".result-box-item")[0...-1]
 	  
-	  # Click on next page
-	  if i != num_events
-		  session.all('#av-prev-link a')[-1].click
-	  end
-	end
-	
-	print events
+      for event in event_nodes
+        events << event.text
+      end
+  
+      # Click on next page
+      if i != num_events
+        session.all('#av-prev-link a')[-1].click
+      end
+    end
+
+    print "hi"
+    print events
   end
 end
