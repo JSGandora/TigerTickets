@@ -3,7 +3,6 @@
 require 'capybara'
 require 'capybara/poltergeist'
 require 'capybara/dsl'
-include Capybara::DSL
 require 'phantomjs'
 
 session = Capybara::Session.new(:poltergeist)
@@ -20,7 +19,7 @@ events = []
 # Navigate tickets
 for i in 1..num_events
      # Parse event info
-     event_nodes = session.all(".result-box-item")
+     event_nodes = session.all(".result-box-item")[0...-1]
      
      for event in event_nodes
           events.append(event.text)
