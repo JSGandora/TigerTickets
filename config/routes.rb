@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  
+  post 'sell', to: 'sell#sellrequest'
+  post 'cancel-sell', to: 'sell#cancelsell'
   post 'buy', to: 'buy#buyrequest'
   post 'cancel-buy', to: 'buy#cancelbuy'
   get 'shows', to: 'shows_view#getshows'
