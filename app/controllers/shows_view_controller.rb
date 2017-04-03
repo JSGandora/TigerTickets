@@ -3,7 +3,8 @@ class ShowsViewController < ApplicationController
   	@shows = Show.all
     respond_to do |format|
       #format.html
-      format.json {render json: @shows}
+      response = { :status => "ok", :shows => @shows}
+      format.json { render json: response}
     end
   end
 end

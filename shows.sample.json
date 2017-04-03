@@ -1,5 +1,7 @@
-[
-	{"id": 1, "name": "Agamemnon", "datetime": "1491193679", "location": "Hamilton Murray Theater, Princeton", "group": "Theatre Intime"}, 
-	{"id": 2, "name": "Men's Lacrosse vs Harvard", "datetime": "1491193678", "location": "Class of 1952 Stadium", "group": "Presented by PNC Bank"}, 
-	{"id": 3, "name": "Agamemnon", "datetime": "1491193677", "location": "Hamilton Murray Theater, Princeton", "group": "Theatre Intime"}
-]
+{
+	"status": "ok",
+	"shows": [
+	{"id": 1, "title": "Agamemnon", "time": "2017-03-30T05:01:00.000Z", "location": "Hamilton Murray Theater, Princeton", "group": "Theatre Intime"}, 
+	{"id": 2, "title": "Men's Lacrosse vs Harvard", "time": "2017-03-30T05:02:00.000Z", "location": "Class of 1952 Stadium", "group": "Presented by PNC Bank"}, 
+	{"id": 3, "title": "Agamemnon", "time": "2017-03-30T05:00:00.000Z", "location": "Hamilton Murray Theater, Princeton", "group": "Theatre Intime"}
+]}
