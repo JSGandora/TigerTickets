@@ -1,0 +1,3 @@
+class MatchMailer < ApplicationMailer
+	
+end
