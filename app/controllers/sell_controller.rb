@@ -1,7 +1,7 @@
 class SellController < ApplicationController
   # Disables a poerful security feature but is needed for debugging. With this line, this controller is voulnerable to XSRF attcks.
   skip_before_action :verify_authenticity_token
-  before_filter CASClient::Frameworks::Rails::Filter
+  before_action CASClient::Frameworks::Rails::Filter
   def sellrequest
     show_id = params[:show_id]
     netid = session[:cas_user]

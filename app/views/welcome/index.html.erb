@@ -1,270 +1,185 @@
-<!DOCTYPE html>
-<html lang="en">
+  <!-- Navigation -->
+  <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">TigerTickets</a>
+      </div>
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav navbar-right">
+          <li>
+            <a href="profile.html">Profile</a>
+          </li>
+        </ul>
+      </div>
+      <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+  </nav>
 
-<head>
+  <!-- Page Content -->
+  <div class="container">
 
-	<!-- jQuery -->
-	
-	<script src="js/jquery.js"></script>
-	<script>
-	var data = {"show": [
-	{
-		"Name": "50 Years Muslim Life @ Princeton",
-		"Group": "Muslim Alumni Event 2017",
-		"Time": "11:00 AM",
-		"WeekDay": "Saturday",
-		"Day": 1,
-		"Month": "April",
-		"Year": 2017,
-		"Location": "Carl A. Fields Center",
-		"Image": "https://tickets.princeton.edu/ArticleMedia/Images/Muslim%20Alumni%20Event.jpg",
-		"BuyReq": 0,
-		"SellReq": 5,
-		"Price": 8
-	},
-	{
-		"Name": "Student Playwrights Festival",
-		"Group": "Theatre Intime",
-		"Time": "2:00 PM",
-		"WeekDay": "Saturday",
-		"Day": 1,
-		"Month": "April",
-		"Year": 2017,
-		"Location": "Hamilton Murray Theater, Princeton",
-		"Image": "https://tickets.princeton.edu/ArticleMedia/Images/Intime%202016-2017.jpg",
-		"BuyReq": 6,
-		"SellReq": 0,
-		"Price": 8
-	},
-	{
-		"Name": "No Me Digas!",
-		"Group": "Mas Flow Dance Company",
-		"Time": "6:00 PM",
-		"Day": 1,
-		"Month": "April",
-		"Year": 2017,
-		"WeekDay": "Saturday",
-		"Location": "Frist Theatre",
-		"Image": "https://tickets.princeton.edu/ArticleMedia/Images/Mas%20Flow%201.jpg",
-		"BuyReq": 0,
-		"SellReq": 3,
-		"Price": 8
-	}
-	]
-	}
+    <!-- Jumbotron Header -->
+    <header class="jumbotron hero-spacer">
+      <h1>Tiger Tickets</h1>
+      <p>Need to buy or sell a ticket? Do it here!</p>
+      <p><a class="btn btn-primary btn-large">Login</a>
+      </p>
+    </header>
 
-	var sampleData = {
-	"status": "ok",
-	"shows": [
-	{"id": 1, "title": "Agamemnon", "time": "2017-03-30T05:01:00.000Z", "location": "Hamilton Murray Theater, Princeton", "group": "Theatre Intime"}, 
-	{"id": 2, "title": "Men's Lacrosse vs Harvard", "time": "2017-03-30T05:02:00.000Z", "location": "Class of 1952 Stadium", "group": "Presented by PNC Bank"}, 
-	{"id": 3, "title": "Agamemnon", "time": "2017-03-30T05:00:00.000Z", "location": "Hamilton Murray Theater, Princeton", "group": "Theatre Intime"}
-	]}
+    <hr>
 
-	var show_html = ""
+    <!-- Title -->
+    <div class="row">
+      <div class="col-lg-12">
+        <h3>Current Shows</h3>
+      </div>
+    </div>
 
-	for (i = 0; i < sampleData["shows"].length; i++){
+    <!-- /.row -->
 
-		var info = data["show"][i]["Time"]+" "+data["show"][i]["WeekDay"]+"<br>"+data["show"][i]["Month"]+" "+data["show"][i]["Day"]+", "+data["show"][i]["Year"]+"<br>"+sampleData["shows"][i]["location"]+"<br><b>"+sampleData["shows"][i]["group"]+"</b>"
+    <!-- Page Features -->
+    <div class="row text-center", id="ticket-listing">
 
-		var buy_text = "Buy"
-		if(data["show"][i]["SellReq"] > 0)
-			buy_text += " <b>("+data["show"][i]["SellReq"]+" Available!)</b>"
+      <!-- /.row -->
 
-		var sell_text = "Sell"
-		if(data["show"][i]["BuyReq"] > 0)
-			sell_text += " <b>("+data["show"][i]["BuyReq"]+" Requests!)</b>"
+      <hr>
 
-		show_html += "<div class='col-md-3 col-sm-6 hero-feature'>"+
-					"<div class='thumbnail'>"+
-						"<img src="+data["show"][i]["Image"]+" alt=''>"+
-						"<div class='caption'>"+
-							"<h3>"+sampleData["shows"][i]["title"]+"</h3>"+
-							"<p>"+info+"</p>"+
-							"<p>"+
-								"<button class='btn btn-primary' data-target='#confirmBuyModal' data-href='showBuy"+i+"' data-toggle='modal'>"+buy_text+"</button> <button class='btn btn-default' data-target='#confirmSellModal' data-href='showSell"+i+"' data-toggle='modal'>"+sell_text+"</button>"+
-							"</p>"+
-						"</div>"+
-					"</div>"+
-				"</div>"
-	}
-
-	$(document).ready(function(){
-		$("#ticket-listing").html(show_html)
-
-		// Get the modal
-		var buyPopUp = document.getElementById('confirmBuyModal');
-		var sellPopUp = document.getElementById('confirmSellModal')
-
-		// Get the button that opens the modal
-		var buyButton = document.getElementById("showBuyButton");
-		var sellButton = document.getElementById("showSellButton");
-
-		// Get the <span> element that closes the modals
-		var buyPopUpClose = buyPopUp.getElementsByClassName("close")[0];
-		var sellPopUpClose = sellPopUp.getElementsByClassName("close")[0];
-
-		// When the user clicks the button, open the modal 
-		buyButton.onclick = function() {
-    	buyPopUp.style.display = "block";
-		}
-		sellButton.onclick = function() {
-		sellPopUp.style.display = "block"
-		}
-
-		// When the user clicks on <span> (x), close the modal
-		buyPopUpClose.onclick = function() {
-	    buyPopUp.style.display = "none";
-		}
-		sellPopUpClose.onclick = function() {
-	    sellPopUp.style.display = "none";
-		}
-
-		// When the user clicks anywhere outside of the modal, close it
-		window.onclick = function(event) {
-    	if ((event.target == buyPopUp) || (event.target == sellPopUp)) {
-        	buyPopUp.style.display = "none";
-        	sellPopUp.style.display = "none";
-    	}
-	}
-	});
-	</script>
-
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="description" content="">
-	<meta name="author" content="">
-
-	<title>Heroic Features - Start Bootstrap Template</title>
-
-	<!-- Bootstrap Core CSS -->
-	<link href="css/bootstrap.min.css" rel="stylesheet">
-
-	<!-- Custom CSS -->
-	<link href="css/heroic-features.css" rel="stylesheet">
-
-	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-	<!--[if lt IE 9]>
-		<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-		<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-	<![endif]-->
-
-</head>
-
-<body>
-
-	<!-- Navigation -->
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#">TigerTickets</a>
-            </div>
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a href="profile.html">Profile</a>
-                    </li>
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
+      <!-- Footer -->
+      <footer>
+        <div class="row">
+          <div class="col-lg-12">
+            <p>Copyright &copy; TigerTickets 2017</p>
+          </div>
         </div>
-        <!-- /.container -->
-    </nav>
+      </footer>
 
-	<!-- Page Content -->
-	<div class="container">
+    </div>
+    <!-- /.container -->
 
-		<!-- Jumbotron Header -->
-		<header class="jumbotron hero-spacer">
-			<h1>Tiger Tickets</h1>
-			<p>Need to buy or sell a ticket? Do it here!</p>
-			<p><a class="btn btn-primary btn-large">Login</a>
-			</p>
-		</header>
+    <!-- Buy Modal -->
+    <div id="confirmBuyModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="buyConfirm" aria-hidden="true">
 
-		<hr>
+      <!-- Modal content -->
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <span class="close" data-dismiss="modal">&times;</span>
+            <h2></h2>
+          </div>
+          <div class="modal-body">
+            <p>Buy request confirmed</p>
+          </div>
+          <div class="modal-footer">
+            <h3>Hi  Jon</h3>
+          </div>
+        </div>
+      </div>
+    </div>
 
-		<!-- Title -->
-		<div class="row">
-			<div class="col-lg-12">
-				<h3>Current Shows</h3>
-			</div>
-		</div>
+    <!-- Sell Modal -->
+    <div id="confirmSellModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="sellConfirm" aria-hidden="true">
 
-		<!-- /.row -->
+      <!-- Modal content -->
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <span class="close" data-dismiss="modal">&times;</span>
+            <h2></h2>
+          </div>
+          <div class="modal-body">
+            <p>Sell request confirmed</p>
+          </div>
+          <div class="modal-footer">
+            <h3>Hi  Jon</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      var data = { "shows" : [] }
+      $.get('shows', function(response) { 
+        data = response
+        if ($.isReady) {
+          updateShows()
+        } else {
+          $(function() { updateShows() })
+        }
+      })
 
-		<!-- Page Features -->
-		<div class="row text-center", id="ticket-listing">
+      var weekday = new Array(7);
+weekday[0] =  "Sunday";
+weekday[1] = "Monday";
+weekday[2] = "Tuesday";
+weekday[3] = "Wednesday";
+weekday[4] = "Thursday";
+weekday[5] = "Friday";
+weekday[6] = "Saturday";
 
-		<!-- /.row -->
+var monthNames = ["January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"
+];
 
-		<hr>
+      var show_html = ""
+      function updateShows() {
+        show_html = ""
+        for (i = 0; i < data["shows"].length; i++) {
+          show = data["shows"][i]
+          date = new Date(show['time'])
+          weekDay = weekday[date.getDay()]
+          month = monthNames[date.getMonth()]
+          dayOfMonth = date.getDate()
+          year = date.getFullYear()
+          hour = date.getHours()
+          min = date.getMinutes()
+          var info = hour + ":" + min +" "+weekDay+"<br>"+month+" "+dayOfMonth+", "+year+"<br>"+show["location"]+"<br><b>"+show["group"]+"</b>"
 
-		<!-- Footer -->
-		<footer>
-			<div class="row">
-				<div class="col-lg-12">
-					<p>Copyright &copy; TigerTickets 2017</p>
-				</div>
-			</div>
-		</footer>
+          var buy_text = "Buy"
+          if(show["sellreq"] > 0)
+            buy_text += " <b>("+show["sellreq"]+" Available!)</b>"
 
-	</div>
-	<!-- /.container -->
+          var sell_text = "Sell"
+          if(data["shows"][i]["BuyReq"] > 0)
+            sell_text += " <b>("+show["buyreq"]+" Requests!)</b>"
 
-	<!-- Buy Modal -->
-	<div id="confirmBuyModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="buyConfirm" aria-hidden="true">
+          show_html += "<div class='col-md-3 col-sm-6 hero-feature'>"+
+          "<div class='thumbnail'>"+
+          "<img src="+show["image"]+" alt=''>"+
+          "<div class='caption'>"+
+          "<h3>"+show["name"]+"</h3>"+
+          "<p>"+info+"</p>"+
+          "<p>"+
+          "<button class='btn btn-primary' data-target='#confirmBuyModal' data-href='showBuy"+i+"' data-toggle='modal'>"+buy_text+"</button> <button class='btn btn-default' data-target='#confirmSellModal' data-href='showSell"+i+"' data-toggle='modal'>"+sell_text+"</button>"+
+          "</p>"+
+          "</div>"+
+          "</div>"+
+          "</div>"
+        }
 
-  		<!-- Modal content -->
-  		<div class="modal-dialog">
-  			<div class="modal-content">
-    			<div class="modal-header">
-      				<span class="close" data-dismiss="modal">&times;</span>
-      				<h2></h2>
-    			</div>
-    			<div class="modal-body">
-      				<p>Buy request confirmed</p>
-    			</div>
-    			<div class="modal-footer">
-      				<h3>Hi  Jon</h3>
-    			</div>
-  			</div>
-  		</div>
-	</div>
 
-	<!-- Sell Modal -->
-	<div id="confirmSellModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="sellConfirm" aria-hidden="true">
+        $("#ticket-listing").html(show_html)
+      }
 
-  		<!-- Modal content -->
-  		<div class="modal-dialog">
-	  		<div class="modal-content">
-    			<div class="modal-header">
-      				<span class="close" data-dismiss="modal">&times;</span>
-	  				<h2></h2>
-    			</div>
-    			<div class="modal-body">
-	  				<p>Sell request confirmed</p>
-    			</div>
-    			<div class="modal-footer">
-      				<h3>Hi  Jon</h3>
-    			</div>
-  			</div>
-  		</div>
-	</div>
+      $(document).ready(function(){
 
-	<!-- Bootstrap Core JavaScript -->
-	<script src="js/bootstrap.min.js"></script>
+    // Get the modal
+    var buyPopUp = document.getElementById('confirmBuyModal')
+    var sellPopUp = document.getElementById('confirmSellModal')
 
-</body>
-
-</html>
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+      if ((event.target == buyPopUp) || (event.target == sellPopUp)) {
+        buyPopUp.style.display = "none"
+        sellPopUp.style.display = "none"
+      }
+    }
+  });
+</script>
