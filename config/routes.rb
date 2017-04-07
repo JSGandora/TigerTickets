@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
-  get 'my-tix', to: 'account#mytix'
+  get 'my-tix-data', to: 'account#mytix'
+  get 'my-tix', to: 'welcome#mytix'
   post 'sell', to: 'sell#sellrequest'
   post 'cancel-sell', to: 'sell#cancelsell'
   post 'buy', to: 'buy#buyrequest'
