@@ -1,229 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-
-    <!-- jQuery -->
     
-    <script src="js/jquery.js"></script>
-    <script>
-
-    <!-- Generate Buy Data -->
-    var buyData = {
-    "buy-tickets": [
-        {
-          "Name": "Student Playwrights Festival",
-          "Group": "Theatre Intime",
-          "Time": "2:00 PM",
-          "Date": "Saturday, April 01, 2017",
-          "Location": "Hamilton Murray Theater, Princeton",
-          "Image": "https://tickets.princeton.edu/ArticleMedia/Images/Intime%202016-2017.jpg",
-          "BuyReq": 6,
-          "SellReq": 0,
-          "Price": 8
-        },
-        {
-          "Name": "No Me Digas!",
-          "Group": "Mas Flow Dance Company",
-          "Time": "6:00 PM",
-          "Date": "Saturday, April 01, 2017",
-          "Location": "Frist Theatre",
-          "Image": "https://tickets.princeton.edu/ArticleMedia/Images/Mas%20Flow%201.jpg",
-          "BuyReq": 0,
-          "SellReq": 3,
-          "Price": 8
-        }
-      ]
-    }
-
-    <!-- Generate Sell Data -->
-    var sellData = {
-    "sell-tickets": [
-        {
-          "Name": "50 Years Muslim Life @ Princeton",
-          "Group": "Muslim Alumni Event 2017",
-          "Time": "11:00 AM",
-          "Date": "Saturday, April 01, 2017",
-          "Location": "Carl A. Fields Center",
-          "Image": "https://tickets.princeton.edu/ArticleMedia/Images/Muslim%20Alumni%20Event.jpg",
-          "BuyReq": 0,
-          "SellReq": 5,
-          "Price": 8
-        }
-      ]
-    }
-
-    <!-- Generate Buying Script for Ticket Requests -->
-    var buying_html = ""
-
-    for (i = 0; i < buyData["buy-tickets"].length; i++){
-
-        var btime = buyData["buy-tickets"][i]["Date"]+" "+buyData["buy-tickets"][i]["Time"]
-        var bloc = buyData["buy-tickets"][i]["Location"]
-        var bgroup = buyData["buy-tickets"][i]["Group"]
-
-        buying_html += "<div class='row' id='buying"+i+"'>"+
-                    "<div class='col-md-2'>"+
-                        "<a href='#'>" +
-                            "<img class = 'center-block' src="+buyData["buy-tickets"][i]["Image"]+" alt=''>"+
-                        "</a>"+
-                    "</div>"+
-                    "<div class='col-md-3'>"+
-                        "<h3>"+buyData["buy-tickets"][i]["Name"]+"</h3>"+
-                    "</div>"+
-                    "<div class='col-md-5'>"+
-                        "<h4>"+btime+"</h4>"+
-                        "<h4>"+bloc+"</h4>"+
-                        "<h4>"+bgroup+"</h4>"+
-                    "</div>"+
-                    "<div class='col-md-2'>"+
-                        "<button class='btn btn-primary' data-target='#confirm-delete' data-href='buying"+i+"' data-toggle='modal' id = 'deleteBuying"+i+"'>Delete <span class='glyphicon'></span></button>"+
-                    "</div>"+
-                "</div>"+
-            "<hr>"
-    }
-
-
-    <!-- Generate Selling Script for Ticket Requests -->
-    var selling_html = ""
-
-    for (i = 0; i < sellData["sell-tickets"].length; i++){
-
-        var stime = sellData["sell-tickets"][i]["Date"]+" "+sellData["sell-tickets"][i]["Time"]
-        var sloc = sellData["sell-tickets"][i]["Location"]
-        var sgroup = sellData["sell-tickets"][i]["Group"]
-
-        selling_html += "<div class='row' id='selling"+i+"'>"+
-                    "<div class='col-md-2'>"+
-                        "<a href='#'>" +
-                            "<img class = 'center-block' src="+sellData["sell-tickets"][i]["Image"]+" alt=''>"+
-                        "</a>"+
-                    "</div>"+
-                    "<div class='col-md-3'>"+
-                        "<h3>"+sellData["sell-tickets"][i]["Name"]+"</h3>"+
-                    "</div>"+
-                    "<div class='col-md-5'>"+
-                        "<h4>"+stime+"</h4>"+
-                        "<h4>"+sloc+"</h4>"+
-                        "<h4>"+sgroup+"</h4>"+
-                    "</div>"+
-                    "<div class='col-md-2'>"+
-                        "<button class='btn btn-primary' data-target='#confirm-delete' id='deleteSelling"+i+"' data-toggle='modal'>Delete <span class='glyphicon'></span></button>"+
-                    "</div>"+
-                "</div>"+
-            "<hr>"
-    }
-
-    profile = "<div class='row text-left'>"+
-            "<div class='col-lg-12'>"+
-                "<h3>Ticket Buy Requests</h3>"+
-            "</div>"+
-        "</div>"+
-        "<hr>"+
-        buying_html +
-        "<div class='row text-left'>"+
-            "<div class='col-lg-12'>"+
-                "<h3>Ticket Sell Requests</h3>"+
-            "</div>"+
-        "</div>"+
-        "<hr>"+
-        selling_html
-
-        deletionId = 0
-        $(document).ready(function(){
-            $("#profile-page").html(profile)
-
-            for (i = 0; i < sellData["sell-tickets"].length; i++) {
-
-                (function(index) {$("#deleteSelling" + i).click(function(){
-                    deletionId = "selling" + index
-                });
-            })(i);
-
-            }
-            $("#deleteButton").on('click', function(e){
-                $("#" + deletionId).hide()
-            });
-
-            for (i = 0; i < buyData["buy-tickets"].length; i++) {
-
-                (function(index) {$("#deleteBuying" + i).click(function(){
-                    deletionId = "buying" + index
-                });
-            })(i);
-
-            }
-            $("#deleteButton").on('click', function(e){
-                $("#" + deletionId).hide()
-            });
-        });
-
-
-
-</script>
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <title>Heroic Features - Start Bootstrap Template</title>
-
-    <!-- Bootstrap Core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom CSS -->
-    <link href="css/heroic-features.css" rel="stylesheet">
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
-</head>
-
-<body>
-
-    <!-- Navigation -->
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="index.html">TigerTickets</a>
-            </div>
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a href="#">My Tickets</a>
-                    </li>
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
-        </div>
-        <!-- /.container -->
-    </nav>
-
-    <!-- Page Content -->
+<!-- Navigation -->
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">TigerTickets</a>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#">My Tickets</a>
+                </li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
 
-        <!-- Jumbotron Header -->
-        <header class="jumbotron hero-spacer">
-            <h1>My Tickets</h1>
-            <p>Keep track of your ticket requests in one easy location.</p>
-        </header>
+<!-- Page Content -->
+<div class="container">
 
-        <!-- Page Features -->
-        <div class="row text-center", id="profile-page">
+    <!-- Jumbotron Header -->
+    <header class="jumbotron hero-spacer">
+        <h1>My Tickets</h1>
+        <p>Keep track of your ticket requests in one easy location.</p>
+    </header>
+
+    <!-- Page Features -->
+    <div class="row text-center", id="profile-page">
 
         <!-- /.row -->
 
@@ -257,17 +69,166 @@
                     <p><strong>Do you want to proceed?</strong></p>
                 </div>
                 <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                        <a id = "deleteButton" class="btn btn-danger btn-ok" data-dismiss="modal" >Delete</a>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <a id = "deleteButton" class="btn btn-danger btn-ok" data-dismiss="modal" >Delete</a>
                 </div>
             </div>
         </div>
 
     </div>
 
-    <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
+    <script>
 
-</body>
+        <!-- Generate Buy Data -->
+        var buyData = {
+            "buy-tickets": [
+            {
+              "Name": "Student Playwrights Festival",
+              "Group": "Theatre Intime",
+              "Time": "2:00 PM",
+              "Date": "Saturday, April 01, 2017",
+              "Location": "Hamilton Murray Theater, Princeton",
+              "Image": "https://tickets.princeton.edu/ArticleMedia/Images/Intime%202016-2017.jpg",
+              "BuyReq": 6,
+              "SellReq": 0,
+              "Price": 8
+          },
+          {
+              "Name": "No Me Digas!",
+              "Group": "Mas Flow Dance Company",
+              "Time": "6:00 PM",
+              "Date": "Saturday, April 01, 2017",
+              "Location": "Frist Theatre",
+              "Image": "https://tickets.princeton.edu/ArticleMedia/Images/Mas%20Flow%201.jpg",
+              "BuyReq": 0,
+              "SellReq": 3,
+              "Price": 8
+          }
+          ]
+      }
 
-</html>
+      <!-- Generate Sell Data -->
+      var sellData = {
+        "sell-tickets": [
+        {
+          "Name": "50 Years Muslim Life @ Princeton",
+          "Group": "Muslim Alumni Event 2017",
+          "Time": "11:00 AM",
+          "Date": "Saturday, April 01, 2017",
+          "Location": "Carl A. Fields Center",
+          "Image": "https://tickets.princeton.edu/ArticleMedia/Images/Muslim%20Alumni%20Event.jpg",
+          "BuyReq": 0,
+          "SellReq": 5,
+          "Price": 8
+      }
+      ]
+  }
+
+  <!-- Generate Buying Script for Ticket Requests -->
+  var buying_html = ""
+
+  for (i = 0; i < buyData["buy-tickets"].length; i++){
+
+    var btime = buyData["buy-tickets"][i]["Date"]+" "+buyData["buy-tickets"][i]["Time"]
+    var bloc = buyData["buy-tickets"][i]["Location"]
+    var bgroup = buyData["buy-tickets"][i]["Group"]
+
+    buying_html += "<div class='row' id='buying"+i+"'>"+
+    "<div class='col-md-2'>"+
+    "<a href='#'>" +
+    "<img class = 'center-block' src="+buyData["buy-tickets"][i]["Image"]+" alt=''>"+
+    "</a>"+
+    "</div>"+
+    "<div class='col-md-3'>"+
+    "<h3>"+buyData["buy-tickets"][i]["Name"]+"</h3>"+
+    "</div>"+
+    "<div class='col-md-5'>"+
+    "<h4>"+btime+"</h4>"+
+    "<h4>"+bloc+"</h4>"+
+    "<h4>"+bgroup+"</h4>"+
+    "</div>"+
+    "<div class='col-md-2'>"+
+    "<button class='btn btn-primary' data-target='#confirm-delete' data-href='buying"+i+"' data-toggle='modal' id = 'deleteBuying"+i+"'>Delete <span class='glyphicon'></span></button>"+
+    "</div>"+
+    "</div>"+
+    "<hr>"
+}
+
+
+<!-- Generate Selling Script for Ticket Requests -->
+var selling_html = ""
+
+for (i = 0; i < sellData["sell-tickets"].length; i++){
+
+    var stime = sellData["sell-tickets"][i]["Date"]+" "+sellData["sell-tickets"][i]["Time"]
+    var sloc = sellData["sell-tickets"][i]["Location"]
+    var sgroup = sellData["sell-tickets"][i]["Group"]
+
+    selling_html += "<div class='row' id='selling"+i+"'>"+
+    "<div class='col-md-2'>"+
+    "<a href='#'>" +
+    "<img class = 'center-block' src="+sellData["sell-tickets"][i]["Image"]+" alt=''>"+
+    "</a>"+
+    "</div>"+
+    "<div class='col-md-3'>"+
+    "<h3>"+sellData["sell-tickets"][i]["Name"]+"</h3>"+
+    "</div>"+
+    "<div class='col-md-5'>"+
+    "<h4>"+stime+"</h4>"+
+    "<h4>"+sloc+"</h4>"+
+    "<h4>"+sgroup+"</h4>"+
+    "</div>"+
+    "<div class='col-md-2'>"+
+    "<button class='btn btn-primary' data-target='#confirm-delete' id='deleteSelling"+i+"' data-toggle='modal'>Delete <span class='glyphicon'></span></button>"+
+    "</div>"+
+    "</div>"+
+    "<hr>"
+}
+
+profile = "<div class='row text-left'>"+
+"<div class='col-lg-12'>"+
+"<h3>Ticket Buy Requests</h3>"+
+"</div>"+
+"</div>"+
+"<hr>"+
+buying_html +
+"<div class='row text-left'>"+
+"<div class='col-lg-12'>"+
+"<h3>Ticket Sell Requests</h3>"+
+"</div>"+
+"</div>"+
+"<hr>"+
+selling_html
+
+deletionId = 0
+$(document).ready(function(){
+    $("#profile-page").html(profile)
+
+    for (i = 0; i < sellData["sell-tickets"].length; i++) {
+
+        (function(index) {$("#deleteSelling" + i).click(function(){
+            deletionId = "selling" + index
+        });
+    })(i);
+
+}
+$("#deleteButton").on('click', function(e){
+    $("#" + deletionId).hide()
+});
+
+for (i = 0; i < buyData["buy-tickets"].length; i++) {
+
+    (function(index) {$("#deleteBuying" + i).click(function(){
+        deletionId = "buying" + index
+    });
+})(i);
+
+}
+$("#deleteButton").on('click', function(e){
+    $("#" + deletionId).hide()
+});
+});
+
+
+
+</script>
