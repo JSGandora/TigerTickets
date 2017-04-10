@@ -9,6 +9,18 @@
     <script>
 
     <!-- Generate Buy Data -->
+    var allData = {"requests" : [] }
+    $.get('my-tix-data', function(response) { 
+        allData = response
+        if ($.isReady) {
+          updateShows()
+        } else {
+          $(function() { updateRequests() })
+        }
+      })
+
+    function updateRequests() {}
+
     var buyData = {
     "buy-tickets": [
         {
@@ -203,6 +215,9 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="ticket-Calendar">Calendar View</a>
+                    </li>
                     <li>
                         <a href="#">My Tickets</a>
                     </li>
