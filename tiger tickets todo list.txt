@@ -1,0 +1,6 @@
+My-tix page needs to use real data.
+Scraper needs to run on cron.
+Don't display shows that have passed. - Done
+Send data about sell/buy requests.
+Parse image url.
+Limit each user to 2 buy/sell requests.
