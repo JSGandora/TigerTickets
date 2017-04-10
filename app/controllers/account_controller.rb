@@ -1,5 +1,5 @@
 class AccountController < ApplicationController
-  before_filter CASClient::Frameworks::Rails::Filter
+  before_action CASClient::Frameworks::Rails::Filter
   def mytix
     netid = session[:cas_user]
     buyRequests = BuyRequest.where(netid: netid).where(:status => ["waiting-for-match", "pending", "completed"])

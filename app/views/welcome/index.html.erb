@@ -133,15 +133,17 @@ var monthNames = ["January", "February", "March", "April", "May", "June",
       function updateShows() {
         show_html = ""
         for (i = 0; i < data["shows"].length; i++) {
-          show = data["shows"][i]
-          date = new Date(show['time'])
-          weekDay = weekday[date.getDay()]
-          month = monthNames[date.getMonth()]
-          dayOfMonth = date.getDate()
-          year = date.getFullYear()
-          hour = date.getHours()
-          min = date.getMinutes()
-          var info = hour + ":" + min +" "+weekDay+"<br>"+month+" "+dayOfMonth+", "+year+"<br>"+show["location"]+"<br><b>"+show["group"]+"</b>"
+          var show = data["shows"][i]
+          var date = new Date(0)
+          date.setUTCSeconds(show['time'])
+          var weekDay = weekday[date.getDay()]
+          var month = monthNames[date.getMonth()]
+          var dayOfMonth = date.getDate()
+          var year = date.getFullYear()
+          var hour = date.getHours() % 12 // Convert from the 24h format.
+          var ampm = Math.floor(date.getHours() / 12) == 0 ? 'AM' : 'PM'
+          var min = date.getMinutes()
+          var info = hour+":"+min+" "+ampm+" "+weekDay+"<br>"+month+" "+dayOfMonth+", "+year+"<br>"+show["location"]+"<br><b>"+show["group"]+"</b>"
 
           var buy_text = "Buy"
           if(show["sellreq"] > 0)
