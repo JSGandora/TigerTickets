@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class MatchMailerTest < ActionMailer::TestCase
+class MailMatchJobTest < ActiveJob::TestCase
   # test "the truth" do
   #   assert true
   # end

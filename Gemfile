@@ -49,6 +49,7 @@ gem 'jbuilder', '~> 2.5'
 gem 'poltergeist'
 gem 'capybara'
 gem 'phantomjs', :require => 'phantomjs/poltergeist'
+gem 'sendgrid-ruby'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
