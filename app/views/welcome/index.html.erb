@@ -115,7 +115,8 @@
         </div>
       </div>
     </div>
-    <script>
+
+<script>
       var data = { "shows" : [] }
       $.get('shows', function(response) { 
         data = response
@@ -127,17 +128,17 @@
       })
 
       var weekday = new Array(7);
-weekday[0] =  "Sunday";
-weekday[1] = "Monday";
-weekday[2] = "Tuesday";
-weekday[3] = "Wednesday";
-weekday[4] = "Thursday";
-weekday[5] = "Friday";
-weekday[6] = "Saturday";
+      weekday[0] =  "Sunday";
+      weekday[1] = "Monday";
+      weekday[2] = "Tuesday";
+      weekday[3] = "Wednesday";
+      weekday[4] = "Thursday";
+      weekday[5] = "Friday";
+      weekday[6] = "Saturday";
 
-var monthNames = ["January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December"
-];
+      var monthNames = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+      ];
       
       function addZero(i) {
         if (i < 10) {
@@ -160,7 +161,11 @@ var monthNames = ["January", "February", "March", "April", "May", "June",
           var ampm = Math.floor(date.getHours() / 12) == 0 ? 'AM' : 'PM'
           var min = addZero(date.getMinutes());
           var time = hour+":"+min+" "+ampm;
-          var info = hour+":"+min+" "+ampm+" "+weekDay+"<br>"+month+" "+dayOfMonth+", "+year+"<br>"+show["location"]+"<br><b>"+show["group"]+"</b>"
+          var group = show["group"];
+          if(group.search("SOLD OUT") >= 0){
+            group = "";
+          }
+          var info = hour+":"+min+" "+ampm+" "+weekDay+"<br>"+month+" "+dayOfMonth+", "+year+"<br>"+show["location"]+"<br><b>"+group+"</b>"
 
           var buy_text = "Buy"
           if(show["sellreq"] > 0)
@@ -170,9 +175,9 @@ var monthNames = ["January", "February", "March", "April", "May", "June",
           if(data["shows"][i]["BuyReq"] > 0)
             sell_text += " <b>("+show["buyreq"]+" Requests!)</b>"
 
-          show_html += "<div class='col-md-3 col-sm-6 hero-feature'>"+
-          "<div class='thumbnail'>"+
-          "<img src="+show["image"]+" alt=''>"+
+          show_html += "<div class='col-md-3 col-sm-6 hero-feature' id = 'ticketPanel'>"+
+          "<div class='thumbnail' style='height:400px'>"+
+          "<img src="+show["image"]+" alt='' style = 'height:100px'>"+
           "<div class='caption'>"+
           "<h3>"+show["name"]+"</h3>"+
           "<p>"+info+"</p>"+
@@ -184,9 +189,8 @@ var monthNames = ["January", "February", "March", "April", "May", "June",
           "</div>"
         }
 
-
-
         $("#ticket-listing").html(show_html)
+
         for (i = 0; i < data["shows"].length; i++) {
             (function(index) {$("#showBuy" + i).click(function(){
               var date = new Date(0)
@@ -266,7 +270,5 @@ var monthNames = ["January", "February", "March", "April", "May", "June",
 
       $(document).ready(function(){
 
-        
-        
       });
 </script>
