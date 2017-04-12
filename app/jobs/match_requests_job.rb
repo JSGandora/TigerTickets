@@ -16,6 +16,8 @@ class MatchRequestsJob < ApplicationJob
         sellRequest.update(status: "pending")
         buyRequest.update(status: "pending")
         puts "*****STATUS CHANGED*********"
+        puts "SENDING EMAIL"
+        
       end
     end
   end
