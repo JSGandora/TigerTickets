@@ -9,7 +9,7 @@ class Show < ApplicationRecord
      def self.scrape
           # Event Attributes (fill with the css strings of the child nodes)
           css_strings = ['.item-name', '.item-venue', '.item-teaser', '.start-date']
-          
+          img_css = '.item-logo img'
           # Visit website
           session = Capybara::Session.new(:poltergeist)
           session.visit("https://tickets.princeton.edu/Online/")
@@ -27,6 +27,7 @@ class Show < ApplicationRecord
                
                for event in event_nodes
                     event_data = Hash.new
+                    
                     # For each attribute, check if it exists
                     css_strings.each do |child_css|
                          if event.has_css?(child_css)
@@ -35,6 +36,14 @@ class Show < ApplicationRecord
                               event_data[child_css] = ""
                          end
                     end
+                    
+                    # Get image url
+                    if event.has_css?(img_css)
+                         event_data[img_css] = event.find(img_css)[:src]
+                    else
+                         event_data[img_css] = ""
+                    end
+                    
                     events.append(event_data)
                end
                
@@ -49,7 +58,8 @@ class Show < ApplicationRecord
                venue = e['.item-venue']
                description = e['.item-teaser']
                t = Time.parse(e['.start-date'])
-               Show.create(title: name, time: t, location: venue, group: description)
+               image_url = e[img_css]
+               Show.create(title: name, time: t, location: venue, group: description, img: image_url)
           end
      end
 end
