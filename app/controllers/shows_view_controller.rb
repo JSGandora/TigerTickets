@@ -1,7 +1,6 @@
 class ShowsViewController < ApplicationController
   def getshows
   	shows = Show.where(["time > ?", DateTime.current])
-    #shows = Show.all
     showsResponse = []
     for show in shows
       showsResponse << {:id => show['id'], :name => show['title'], :time => show['time'].to_i, 

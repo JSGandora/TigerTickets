@@ -1,6 +1,10 @@
-My-tix page needs to use real data.
-Scraper needs to run on cron.
+My-tix page needs to use real data. - Done
+Scraper needs to run on cron. - Done
 Don't display shows that have passed. - Done
-Send data about sell/buy requests.
-Parse image url.
-Limit each user to 2 buy/sell requests.
+Mailer: send emails to matches. - Richard
+Send data about sell/buy requests in api to main page. - Henry
+Parse image url. - Richard
+Limit each user to 2 buy/sell requests. - Henry
+Update status of sell/buy request. - Henry?
+
+Show prices.
