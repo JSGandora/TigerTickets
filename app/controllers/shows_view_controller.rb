@@ -1,13 +1,21 @@
 class ShowsViewController < ApplicationController
   def getshows
-  	shows = Show.where(["time > ?", DateTime.current])
+  	shows = Show.select('count(sell_requests.show_id) as sell_request_count, count(buy_requests.show_id) as buy_request_count, shows.*')
+      .where(["time > ?", DateTime.current])
+      .joins('LEFT JOIN sell_requests ON shows.id = sell_requests.show_id')
+      .joins('LEFT JOIN buy_requests ON shows.id = buy_requests.show_id')
+      .group('shows.id')
+      .where('buy_requests.status IS NULL OR buy_requests.status = ?', 'waiting-for-match')
+      .where('buy_requests.status IS NULL OR sell_requests.status = ?', 'waiting-for-match')
     showsResponse = []
     for show in shows
+      #buyCount = BuyRequest.where(show_id: show['id']).count
+      #sellCount = SellRequest.where(show_id: show['id']).count
       showsResponse << {:id => show['id'], :name => show['title'], :time => show['time'].to_i, 
         :location => show['location'], :group => show['group'], 
         :image => show['img'],
-        :buyreq => 0,
-        :sellreq => 1,
+        :buyreq => show['buy_request_count'],
+        :sellreq => show['sell_request_count'],
         :price => 0}
     end
     response = { :status => "ok", :shows => showsResponse}
