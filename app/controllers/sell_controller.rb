@@ -3,10 +3,23 @@ class SellController < ApplicationController
   skip_before_action :verify_authenticity_token
   before_action CASClient::Frameworks::Rails::Filter
   def sellrequest
+    # This is the action exposed with POST /buy
     show_id = params[:show_id]
     netid = session[:cas_user]
     if not show_id
       response = { :status => "bad request", :netid => netid, :reason => 'missing show_id'}
+      render json: response
+      return
+    end
+    buyRequestCount = BuyRequest.where(netid: netid).where(show_id: show_id).where(:status => ["waiting-for-match", "pending"]).count
+    if buyRequestCount > 0
+      response = { :status => "bad request", :netid => netid, :reason => 'this user already has ' + buyRequestCount.to_s + ' buy requests waiting for a match for this show'}
+      render json: response
+      return
+    end
+    sellRequestCount = SellRequest.where(netid: netid).where(show_id: show_id).count
+    if sellRequestCount > 1
+      response = { :status => "bad request", :netid => netid, :reason => 'this user already has 2 sell requests for this show'}
       render json: response
       return
     end

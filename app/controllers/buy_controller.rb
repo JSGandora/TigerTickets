@@ -11,6 +11,18 @@ class BuyController < ApplicationController
       render json: response
       return
     end
+    sellRequestCount = SellRequest.where(netid: netid).where(show_id: show_id).where(:status => ["waiting-for-match", "pending"]).count
+    if sellRequestCount > 0
+      response = { :status => "bad request", :netid => netid, :reason => 'this user already has ' + sellRequestCount.to_s + ' sell requests waiting for a match for this show'}
+      render json: response
+      return
+    end
+    buyRequestCount = BuyRequest.where(netid: netid).where(show_id: show_id).count
+    if buyRequestCount > 1
+      response = { :status => "bad request", :netid => netid, :reason => 'this user already has 2 buy requests for this show'}
+      render json: response
+      return
+    end
     buyRequest = BuyRequest.create(netid: netid, status: 'waiting-for-match', show_id: show_id)
     MatchRequestsJob.perform_later
     response = { :status => "ok", :netid => netid, :show_id => show_id, :buy_request_id => buyRequest.id}
