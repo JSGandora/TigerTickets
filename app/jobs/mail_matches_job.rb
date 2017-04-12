@@ -3,7 +3,10 @@ include SendGrid
 class MailMatchesJob < ApplicationJob
   queue_as :default
 
-  def perform(*recipients)
+  def perform(*args)
+    
+    recipients = args[0]
+    show = args[1]
     
     # Get recipients
     to = []
@@ -15,7 +18,8 @@ class MailMatchesJob < ApplicationJob
     puts to
     
     # Create content
-    content = ""
+    content = "<p>You've been matched for the following show:</p><p>Show Details:</p>"
+    content += "<p>#{show.title} at #{show.time.to_formatted_s(:long)}</p>"
     recipients.each do |recipient|
       content += "<p>#{recipient[1]}: #{recipient[0]}</p>"
     end

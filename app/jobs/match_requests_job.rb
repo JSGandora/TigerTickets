@@ -16,8 +16,12 @@ class MatchRequestsJob < ApplicationJob
         sellRequest.update(status: "pending")
         buyRequest.update(status: "pending")
         puts "*****STATUS CHANGED*********"
-        puts "SENDING EMAIL"
         
+        puts "***********SENDING EMAIL************"
+        show = Show.find(buyRequest.show_id)
+        buyer_email = buyRequest.netid + "@princeton.edu"
+        seller_email = sellRequest.netid + "@princeton.edu"
+        MailMatchesJob.perform_later([[buyer_email,"Buying"], [seller_email, "Selling"]], show)
       end
     end
   end
