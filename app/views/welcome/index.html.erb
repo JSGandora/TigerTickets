@@ -86,7 +86,7 @@
           </div>
           <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-              <a id = "deleteButton" class="btn btn-success btn-ok" data-dismiss="modal" >Confirm</a>
+              <a id = "deleteButtonBuyModal" class="btn btn-success btn-ok" data-dismiss="modal" onclick="putInBuyRequest(this)">Confirm</a>
           </div>
         </div>
       </div>
@@ -110,7 +110,7 @@
           </div>
           <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-              <a id = "deleteButton" class="btn btn-success btn-ok" data-dismiss="modal" >Confirm</a>
+              <a id = "deleteButtonSellModal" class="btn btn-success btn-ok" data-dismiss="modal" onclick="putInSellRequest(this)">Confirm</a>
           </div>
         </div>
       </div>
@@ -185,6 +185,7 @@ var monthNames = ["January", "February", "March", "April", "May", "June",
         }
 
 
+
         $("#ticket-listing").html(show_html)
         for (i = 0; i < data["shows"].length; i++) {
             (function(index) {$("#showBuy" + i).click(function(){
@@ -201,6 +202,7 @@ var monthNames = ["January", "February", "March", "April", "May", "June",
               showTime = hour+":"+min+" "+ampm;
               message = "<p><strong>" + data["shows"][index]["name"] + "<br />" + showDate + " " + time + "<br />" + data["shows"][index]["location"] + "</strong>.</p>";
               $("#confirmBuyBody").html(message)
+              $("#deleteButtonBuyModal").attr("show-id", data["shows"][index]['id'])
               });
             })(i);   
         }
@@ -219,9 +221,47 @@ var monthNames = ["January", "February", "March", "April", "May", "June",
               showTime = hour+":"+min+" "+ampm;
               message = "<p><strong>" + data["shows"][index]["name"] + "<br />" + showDate + " " + time + "<br />" + data["shows"][index]["location"] + "</strong>.</p>";
               $("#confirmSellBody").html(message)
+              $("#deleteButtonSellModal").attr("show-id", data["shows"][index]['id'])
               });
             })(i);   
         }
+      }
+
+
+      function putInBuyRequest(element) {
+        console.log("you are selling")
+        $.ajax({
+        url : "/buy",
+        type: "POST",
+        data: JSON.stringify({show_id: element.getAttribute('show-id')}),
+        contentType: "application/json; charset=utf-8",
+        dataType   : "json",
+        success    : function(data){
+          if (data['status'] == "ok") {
+            window.location = '/my-tix'
+          } else {
+            window.alert("There was an error submitting your buy request: " + data['reason'])
+          }
+        }})
+        
+      }
+
+      function putInSellRequest(element) {
+
+        console.log("you are buying")
+        $.ajax({
+        url : "/sell",
+        type: "POST",
+        data: JSON.stringify({show_id: element.getAttribute('show-id')}),
+        contentType: "application/json; charset=utf-8",
+        dataType   : "json",
+        success    : function(data){
+          if (data['status'] == "ok") {
+            window.location = '/my-tix'
+          } else {
+            window.alert("There was an error submitting your sell request: " + data['reason'])
+          }
+        }})
       }
 
       $(document).ready(function(){

@@ -9,8 +9,6 @@ class ShowsViewController < ApplicationController
       .where('buy_requests.status IS NULL OR sell_requests.status = ?', 'waiting-for-match')
     showsResponse = []
     for show in shows
-      #buyCount = BuyRequest.where(show_id: show['id']).count
-      #sellCount = SellRequest.where(show_id: show['id']).count
       showsResponse << {:id => show['id'], :name => show['title'], :time => show['time'].to_i, 
         :location => show['location'], :group => show['group'], 
         :image => show['img'],
