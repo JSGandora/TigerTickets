@@ -64,7 +64,9 @@
                 </div>
                 <div class="modal-body">
                     <h1>Delete Ticket Request?</h1>
-                    <p>You are about to delete your ticket request. This procedure is irreversible.</p>
+                    <p> You are about to delete your ticket request for: </p>
+                    <p id="deletionBody">ya done goof'd</p>
+                    <p> This procedure is irreversible.</p>
                     <p><strong>Do you want to proceed?</strong></p>
                 </div>
                 <div class="modal-footer">
@@ -87,9 +89,7 @@
           $(function() { updateRequests() })
         }
       })
-
     function updateRequests() {}
-
     var buyData = {
     "buy-tickets": [
         {
@@ -116,7 +116,6 @@
         }
       ]
     }
-
     <!-- Generate Sell Data -->
     var sellData = {
     "sell-tickets": [
@@ -133,16 +132,12 @@
         }
       ]
     }
-
     <!-- Generate Buying Script for Ticket Requests -->
     var buying_html = ""
-
     for (i = 0; i < buyData["buy-tickets"].length; i++){
-
         var btime = buyData["buy-tickets"][i]["Date"]+" "+buyData["buy-tickets"][i]["Time"]
         var bloc = buyData["buy-tickets"][i]["Location"]
         var bgroup = buyData["buy-tickets"][i]["Group"]
-
         buying_html += "<div class='row' id='buying"+i+"'>"+
                     "<div class='col-md-2'>"+
                         "<a href='#'>" +
@@ -158,22 +153,17 @@
                         "<h4>"+bgroup+"</h4>"+
                     "</div>"+
                     "<div class='col-md-2'>"+
-                        "<button class='btn btn-primary' data-target='#confirm-delete' data-href='buying"+i+"' data-toggle='modal' id = 'deleteBuying"+i+"'>Delete <span class='glyphicon'></span></button>"+
+                        "<button class='btn btn-primary' data-target='#confirm-delete' data-toggle='modal' id = 'deleteBuying"+i+"'>Delete <span class='glyphicon'></span></button>"+
                     "</div>"+
                 "</div>"+
             "<hr>"
     }
-
-
     <!-- Generate Selling Script for Ticket Requests -->
     var selling_html = ""
-
     for (i = 0; i < sellData["sell-tickets"].length; i++){
-
         var stime = sellData["sell-tickets"][i]["Date"]+" "+sellData["sell-tickets"][i]["Time"]
         var sloc = sellData["sell-tickets"][i]["Location"]
         var sgroup = sellData["sell-tickets"][i]["Group"]
-
         selling_html += "<div class='row' id='selling"+i+"'>"+
                     "<div class='col-md-2'>"+
                         "<a href='#'>" +
@@ -194,7 +184,6 @@
                 "</div>"+
             "<hr>"
     }
-
     profile = "<div class='row text-left'>"+
             "<div class='col-lg-12'>"+
                 "<h3>Ticket Buy Requests</h3>"+
@@ -209,36 +198,31 @@
         "</div>"+
         "<hr>"+
         selling_html
-
         deletionId = 0
+        
         $(document).ready(function(){
             $("#profile-page").html(profile)
-
             for (i = 0; i < sellData["sell-tickets"].length; i++) {
-
                 (function(index) {$("#deleteSelling" + i).click(function(){
                     deletionId = "selling" + index
-                });
-            })(i);
-
+                    message = "<p><strong>" + sellData["sell-tickets"][index]["Name"] + "<br />" + sellData["sell-tickets"][index]["Date"] + " " + sellData["sell-tickets"][index]["Time"] + "<br />" + sellData["sell-tickets"][index]["Location"] + "</strong>.</p>";
+                    $("#deletionBody").html(message)
+                    });
+                })(i);
             }
             $("#deleteButton").on('click', function(e){
-                $("#" + deletionId).hide()
+                $("#" + deletionId).replaceWith("<p>Request deleted.</p>")
             });
-
             for (i = 0; i < buyData["buy-tickets"].length; i++) {
-
                 (function(index) {$("#deleteBuying" + i).click(function(){
                     deletionId = "buying" + index
-                });
-            })(i);
-
+                    message = "<p><strong>" + buyData["buy-tickets"][index]["Name"] + "<br />" + buyData["buy-tickets"][index]["Date"] + " " + buyData["buy-tickets"][index]["Time"] + "<br />" + buyData["buy-tickets"][index]["Location"] + "</strong>.</p>";
+                    $("#deletionBody").html(message)
+                    });
+                })(i);
             }
             $("#deleteButton").on('click', function(e){
-                $("#" + deletionId).hide()
+                $("#" + deletionId).replaceWith("<p>Request deleted.</p>")
             });
         });
-
-
-
 </script>

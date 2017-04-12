@@ -79,9 +79,14 @@
             <h2></h2>
           </div>
           <div class="modal-body">
-            <h3>Buy request confirmed</h3>
+              <h1>Confirm Ticket Buy Request?</h1>
+              <p> You are about to confirm your buy request for:</p>
+              <p id="confirmBuyBody">ya done goof'd</p>
+              <p>Do you want to proceed?</p>
           </div>
           <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+              <a id = "deleteButton" class="btn btn-success btn-ok" data-dismiss="modal" >Confirm</a>
           </div>
         </div>
       </div>
@@ -98,9 +103,14 @@
             <h2></h2>
           </div>
           <div class="modal-body">
-            <h3>Sell request confirmed</h3>
+            <h1>Confirm Ticket Sell Request?</h1>
+            <p> You are about to confirm your sell request for:</p>
+            <p id="confirmSellBody">ya done goof'd</p>
+            <p>Do you want to proceed?</p>
           </div>
           <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+              <a id = "deleteButton" class="btn btn-success btn-ok" data-dismiss="modal" >Confirm</a>
           </div>
         </div>
       </div>
@@ -128,7 +138,13 @@ weekday[6] = "Saturday";
 var monthNames = ["January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December"
 ];
-
+      
+      function addZero(i) {
+        if (i < 10) {
+            i = "0" + i;
+        }
+        return i;
+      }
       var show_html = ""
       function updateShows() {
         show_html = ""
@@ -142,7 +158,8 @@ var monthNames = ["January", "February", "March", "April", "May", "June",
           var year = date.getFullYear()
           var hour = date.getHours() % 12 // Convert from the 24h format.
           var ampm = Math.floor(date.getHours() / 12) == 0 ? 'AM' : 'PM'
-          var min = date.getMinutes()
+          var min = addZero(date.getMinutes());
+          var time = hour+":"+min+" "+ampm;
           var info = hour+":"+min+" "+ampm+" "+weekDay+"<br>"+month+" "+dayOfMonth+", "+year+"<br>"+show["location"]+"<br><b>"+show["group"]+"</b>"
 
           var buy_text = "Buy"
@@ -160,7 +177,7 @@ var monthNames = ["January", "February", "March", "April", "May", "June",
           "<h3>"+show["name"]+"</h3>"+
           "<p>"+info+"</p>"+
           "<p>"+
-          "<button class='btn btn-primary' data-target='#confirmBuyModal' data-href='showBuy"+i+"' data-toggle='modal'>"+buy_text+"</button> <button class='btn btn-default' data-target='#confirmSellModal' data-href='showSell"+i+"' data-toggle='modal'>"+sell_text+"</button>"+
+          "<button class='btn btn-primary' data-target='#confirmBuyModal' id='showBuy"+i+"' data-toggle='modal'>"+buy_text+"</button> <button class='btn btn-default' data-target='#confirmSellModal' id='showSell"+i+"' data-toggle='modal'>"+sell_text+"</button>"+
           "</p>"+
           "</div>"+
           "</div>"+
@@ -169,20 +186,47 @@ var monthNames = ["January", "February", "March", "April", "May", "June",
 
 
         $("#ticket-listing").html(show_html)
+        for (i = 0; i < data["shows"].length; i++) {
+            (function(index) {$("#showBuy" + i).click(function(){
+              var date = new Date(0)
+              date.setUTCSeconds(data["shows"][index]['time'])
+              var weekDay = weekday[date.getDay()]
+              var month = monthNames[date.getMonth()]
+              var dayOfMonth = date.getDate()
+              var year = date.getFullYear()
+              showDate = weekDay+", "+month+" "+dayOfMonth+", "+year
+              var hour = date.getHours() % 12 // Convert from the 24h format.
+              var ampm = Math.floor(date.getHours() / 12) == 0 ? 'AM' : 'PM'
+              var min = addZero(date.getMinutes());
+              showTime = hour+":"+min+" "+ampm;
+              message = "<p><strong>" + data["shows"][index]["name"] + "<br />" + showDate + " " + time + "<br />" + data["shows"][index]["location"] + "</strong>.</p>";
+              $("#confirmBuyBody").html(message)
+              });
+            })(i);   
+        }
+        for (i = 0; i < data["shows"].length; i++) {
+            (function(index) {$("#showSell" + i).click(function(){
+              var date = new Date(0)
+              date.setUTCSeconds(data["shows"][index]['time'])
+              var weekDay = weekday[date.getDay()]
+              var month = monthNames[date.getMonth()]
+              var dayOfMonth = date.getDate()
+              var year = date.getFullYear()
+              showDate = weekDay+", "+month+" "+dayOfMonth+", "+year
+              var hour = date.getHours() % 12 // Convert from the 24h format.
+              var ampm = Math.floor(date.getHours() / 12) == 0 ? 'AM' : 'PM'
+              var min = addZero(date.getMinutes());
+              showTime = hour+":"+min+" "+ampm;
+              message = "<p><strong>" + data["shows"][index]["name"] + "<br />" + showDate + " " + time + "<br />" + data["shows"][index]["location"] + "</strong>.</p>";
+              $("#confirmSellBody").html(message)
+              });
+            })(i);   
+        }
       }
 
       $(document).ready(function(){
 
-    // Get the modal
-    var buyPopUp = document.getElementById('confirmBuyModal')
-    var sellPopUp = document.getElementById('confirmSellModal')
-
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
-      if ((event.target == buyPopUp) || (event.target == sellPopUp)) {
-        buyPopUp.style.display = "none"
-        sellPopUp.style.display = "none"
-      }
-    }
-  });
+        
+        
+      });
 </script>
