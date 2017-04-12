@@ -3,7 +3,7 @@ class SellController < ApplicationController
   skip_before_action :verify_authenticity_token
   before_action CASClient::Frameworks::Rails::Filter
   def sellrequest
-    # This is the action exposed with POST /buy
+    # This is the action exposed with POST /sell
     show_id = params[:show_id]
     netid = session[:cas_user]
     if not show_id

@@ -4,7 +4,7 @@ Don't display shows that have passed. - Done
 Mailer: send emails to matches. - Richard
 Send data about sell/buy requests in api to main page. - Henry
 Parse image url. - Richard
-Limit each user to 2 buy/sell requests. - Henry
+Limit each user to 2 buy/sell requests. - Done
 Don't let users have a sell and a buy request on the same show. - Henry
 Update status of sell/buy request. - Henry?
 
