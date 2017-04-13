@@ -12,7 +12,7 @@ class AccountController < ApplicationController
 
     buyRequestResponse = []
     for buyRequest in buyRequests
-      show = {:id => buyRequest['show_id'], :name => buyRequest['title'], :time => (DateTime.parse(buyRequest['time'])).to_i, 
+      show = {:id => buyRequest['show_id'], :name => buyRequest['title'], :time => buyRequest['time'].to_i, 
         :location => buyRequest['location'], :group => buyRequest['group'], 
         :image => buyRequest['img'],
         :price => 0}
@@ -27,7 +27,7 @@ class AccountController < ApplicationController
 
     sellRequestResponse = []
     for sellRequest in sellRequests
-      show = {:id => sellRequest['show_id'], :name => sellRequest['title'], :time => (DateTime.parse(sellRequest['time'])).to_i, 
+      show = {:id => sellRequest['show_id'], :name => sellRequest['title'], :time => sellRequest['time'].to_i, 
         :location => sellRequest['location'], :group => sellRequest['group'], 
         :image => sellRequest['img'],
         :price => 0}
