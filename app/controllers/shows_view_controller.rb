@@ -7,6 +7,7 @@ class ShowsViewController < ApplicationController
       .group('shows.id')
       .where('buy_requests.status IS NULL OR buy_requests.status = ?', 'waiting-for-match')
       .where('sell_requests.status IS NULL OR sell_requests.status = ?', 'waiting-for-match')
+      .order(:time)
     showsResponse = []
     for show in shows
       showsResponse << {:id => show['id'], :name => show['title'], :time => show['time'].to_i, 

@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   post 'cancel-buy', to: 'buy#cancelbuy'
   get 'shows', to: 'shows_view#getshows'
   post 'logout', to: 'welcome#logout'
+  get 'login', to: 'welcome#login'
   root 'welcome#index'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

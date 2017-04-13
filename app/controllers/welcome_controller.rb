@@ -9,4 +9,8 @@ class WelcomeController < ApplicationController
   end
   def mytix
   end
+
+  def login
+    redirect_to "/"
+  end
 end
