@@ -108,15 +108,20 @@
     </div>
 
 <script>
+
+  var netid = "<%= session[:cas_user] %>"
+  console.log(netid)
   var data = { "shows" : [] }
-  $.get('shows', function(response) { 
-  data = response
-  if ($.isReady) {
-    updateShows()
-  } else {
-    $(function() { updateShows() })
-    }
-  })
+  function callbackShows(response, textStatus, xhr) {
+    data = response
+    if ($.isReady) {
+      updateShows()
+    } else {
+      $(function() { updateShows() })
+      }
+  }
+
+  $.get('shows', callbackShows)
 
   var weekday = new Array(7);
   weekday[0] =  "Sunday";

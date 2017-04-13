@@ -1,5 +1,4 @@
 class ShowsViewController < ApplicationController
-  before_action CASClient::Frameworks::Rails::GatewayFilter
   def getshows
   	shows = Show.select('count(sell_requests.show_id) as sell_request_count, count(buy_requests.show_id) as buy_request_count, shows.*')
       .where(["time > ?", Time.current])
@@ -18,7 +17,7 @@ class ShowsViewController < ApplicationController
         :sellreq => show['sell_request_count'],
         :price => 0}
     end
-    response = { :status => "ok", :shows => showsResponse, :netid => netid = session[:cas_user]}
+    response = { :status => "ok", :shows => showsResponse, :netid => netid = session[:cas_user] }
     render json: response
   end
 end
