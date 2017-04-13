@@ -13,8 +13,8 @@ class MatchRequestsJob < ApplicationJob
         puts "*******NEXT*******"
         buyRequest.update(sell_request_id: sellRequest.id)
         puts "*****MATCHING JOIN TABLE ADDED*********"
-        sellRequest.update(status: "pending")
-        buyRequest.update(status: "pending")
+        sellRequest.update(status: "completed")
+        buyRequest.update(status: "completed")
         puts "*****STATUS CHANGED*********"
         
         puts "***********SENDING EMAIL************"
