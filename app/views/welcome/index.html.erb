@@ -15,11 +15,8 @@
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav navbar-right">
         <li>
-           <a href="ticket-Calendar">Calendar View</a>
+          <a href="my-tix">My Tickets</a>
         </li>
-          <li>
-            <a href="my-tix">My Tickets</a>
-          </li>
         </ul>
       </div>
       <!-- /.navbar-collapse -->
@@ -267,6 +264,10 @@
       }
     }})
   }
+
+  $("#logout").click(function(){
+    $.post('logout');
+  });
 
   $(document).ready(function(){
 
