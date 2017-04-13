@@ -7,12 +7,18 @@ class AccountController < ApplicationController
 
 
 
-
-
-
     buyRequestResponse = []
     for buyRequest in buyRequests
-      show = {:id => buyRequest['show_id'], :name => buyRequest['title'], :time => buyRequest['time'].to_i, 
+      #this code is needed because SQLite returns a string while PG returns a timestamp.
+      buyRequestTime = 0
+      if buyRequest['time'].is_a? String
+        buyRequestTime = (DateTime.parse(buyRequest['time'])).to_i
+      else
+        buyRequestTime = buyRequest['time'].to_i
+      end
+
+
+      show = {:id => buyRequest['show_id'], :name => buyRequest['title'], :time => buyRequestTime, 
         :location => buyRequest['location'], :group => buyRequest['group'], 
         :image => buyRequest['img'],
         :price => 0}
@@ -27,7 +33,15 @@ class AccountController < ApplicationController
 
     sellRequestResponse = []
     for sellRequest in sellRequests
-      show = {:id => sellRequest['show_id'], :name => sellRequest['title'], :time => sellRequest['time'].to_i, 
+      
+      sellRequestTime = 0
+      if sellRequest['time'].is_a? String
+        sellRequestTime = (DateTime.parse(sellRequest['time'])).to_i
+      else
+        sellRequestTime = sellRequest['time'].to_i
+      end
+
+      show = {:id => sellRequest['show_id'], :name => sellRequest['title'], :time => sellRequestTime, 
         :location => sellRequest['location'], :group => sellRequest['group'], 
         :image => sellRequest['img'],
         :price => 0}
