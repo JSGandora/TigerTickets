@@ -168,7 +168,7 @@
         buy_text += " <b>("+show["sellreq"]+" Available!)</b>"
 
       var sell_text = "Sell"
-      if(data["shows"][i]["BuyReq"] > 0)
+      if(show["buyreq"] > 0)
         sell_text += " <b>("+show["buyreq"]+" Requests!)</b>"
 
       show_html += "<div class='col-md-3 col-sm-6 hero-feature' id = 'ticketPanel'>"+
@@ -264,8 +264,8 @@
     }})
   }
 
-  var text = "<a href='logout'> Logout </a>"
-  if(data["netid"]  null){
+  var text = "<a href='logout' id = 'logout'> Logout </a>"
+  if(netid === ""){
     text = "<a href='login'> Login </a>"
   }
 
