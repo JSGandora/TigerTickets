@@ -352,4 +352,11 @@
                 $("#" + deletionId).replaceWith("<p>Request deleted.</p>")
             });
         });
+    
+    $("#logout").click(function(){
+        $.post('logout');
+    });
+    
+    
+
 </script>

@@ -17,8 +17,8 @@
         <li>
           <a href="my-tix">My Tickets</a>
         </li>
-        <li>
-          <a href="" id = "logout">Logout</a>
+        <li id="logoutLink">
+          <a href="" id="logout">Logout</a>
         </li>
         </ul>
       </div>
@@ -264,11 +264,17 @@
     }})
   }
 
+  var text = "<a href='logout'> Logout </a>"
+  if(data["netid"]  null){
+    text = "<a href='login'> Login </a>"
+  }
+
+  $("#logoutLink").html(text);
+  
   $("#logout").click(function(){
     $.post('logout');
   });
-  
-  $(document).ready(function(){
 
+  $(document).ready(function(){
   });
 </script>
