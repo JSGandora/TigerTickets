@@ -110,7 +110,6 @@
 <script>
 
   var netid = "<%= session[:cas_user] %>"
-  console.log(netid)
   var data = { "shows" : [] }
   function callbackShows(response, textStatus, xhr) {
     data = response
