@@ -171,14 +171,19 @@
       if(show["buyreq"] > 0)
         sell_text += " <b>("+show["buyreq"]+" Requests!)</b>"
 
+      var buysellbuttons = "<button class='btn btn-primary' data-target='#confirmBuyModal' id='showBuy"+i+"' data-toggle='modal'>"+buy_text+"</button> <button class='btn btn-default' data-target='#confirmSellModal' id='showSell"+i+"' data-toggle='modal'>"+sell_text+"</button>"
+      if(netid === "")
+      {
+        buysellbuttons = "<a href='login'><button class='btn btn-primary' data-target='#confirmBuyModal' id='showBuy"+i+"'>"+buy_text+"</button></a> <a href='login'><button class='btn btn-default' data-target='#confirmSellModal' id='showSell"+i+"'>"+sell_text+"</button></a>";
+      }
+
       show_html += "<div class='col-md-3 col-sm-6 hero-feature' id = 'ticketPanel'>"+
       "<div class='thumbnail' style='height:400px'>"+
       "<br><img src="+show["image"]+" alt='' style = 'height:100px'>"+
       "<div class='caption'>"+
       "<h3>"+show["name"]+"</h3>"+
       "<p>"+info+"</p>"+
-      "<p>"+
-      "<button class='btn btn-primary' data-target='#confirmBuyModal' id='showBuy"+i+"' data-toggle='modal'>"+buy_text+"</button> <button class='btn btn-default' data-target='#confirmSellModal' id='showSell"+i+"' data-toggle='modal'>"+sell_text+"</button>"+
+      "<p>"+buysellbuttons+
       "</p>"+
       "</div>"+
       "</div>"+
@@ -204,7 +209,7 @@
           $("#confirmBuyBody").html(message)
           $("#deleteButtonBuyModal").attr("show-id", data["shows"][index]['id'])
           });
-        })(i);   
+        })(i);
     }
     for (i = 0; i < data["shows"].length; i++) {
         (function(index) {$("#showSell" + i).click(function(){
