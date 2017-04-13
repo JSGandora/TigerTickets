@@ -203,8 +203,8 @@
           var hour = date.getHours() % 12 // Convert from the 24h format.
           var ampm = Math.floor(date.getHours() / 12) == 0 ? 'AM' : 'PM'
           var min = addZero(date.getMinutes());
-          showTime = hour+":"+min+" "+ampm;
-          message = "<p><strong>" + data["shows"][index]["name"] + "<br />" + showDate + " " + time + "<br />" + data["shows"][index]["location"] + "</strong>.</p>";
+          var btime = hour+":"+min+" "+ampm+" "+weekDay+"<br>"+month+" "+dayOfMonth+", "+year
+          message = "<p><strong>" + data["shows"][index]["name"] + "<br />" + btime + "<br />" + data["shows"][index]["location"] + "</strong>.</p>";
           $("#confirmBuyBody").html(message)
           $("#deleteButtonBuyModal").attr("show-id", data["shows"][index]['id'])
           });
@@ -222,8 +222,8 @@
           var hour = date.getHours() % 12 // Convert from the 24h format.
           var ampm = Math.floor(date.getHours() / 12) == 0 ? 'AM' : 'PM'
           var min = addZero(date.getMinutes());
-          showTime = hour+":"+min+" "+ampm;
-          message = "<p><strong>" + data["shows"][index]["name"] + "<br />" + showDate + " " + time + "<br />" + data["shows"][index]["location"] + "</strong>.</p>";
+          var btime = hour+":"+min+" "+ampm+" "+weekDay+"<br>"+month+" "+dayOfMonth+", "+year
+          message = "<p><strong>" + data["shows"][index]["name"] + "<br />" + btime + "<br />" + data["shows"][index]["location"] + "</strong>.</p>";
           $("#confirmSellBody").html(message)
           $("#deleteButtonSellModal").attr("show-id", data["shows"][index]['id'])
           });
