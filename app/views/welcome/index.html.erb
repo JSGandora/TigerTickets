@@ -34,7 +34,7 @@
     <header class="jumbotron hero-spacer">
       <h1>Tiger Tickets</h1>
       <p>Need to buy or sell a ticket? Do it here!</p>
-      <p><a class="btn btn-primary btn-large">Login</a>
+      <p><a class="btn btn-primary btn-large" id = 'logout'>Logout</a>
       </p>
     </header>
 
@@ -117,158 +117,158 @@
     </div>
 
 <script>
-      var data = { "shows" : [] }
-      $.get('shows', function(response) { 
-        data = response
-        if ($.isReady) {
-          updateShows()
-        } else {
-          $(function() { updateShows() })
-        }
-      })
+  var data = { "shows" : [] }
+  $.get('shows', function(response) { 
+  data = response
+  if ($.isReady) {
+    updateShows()
+  } else {
+    $(function() { updateShows() })
+    }
+  })
 
-      var weekday = new Array(7);
-      weekday[0] =  "Sunday";
-      weekday[1] = "Monday";
-      weekday[2] = "Tuesday";
-      weekday[3] = "Wednesday";
-      weekday[4] = "Thursday";
-      weekday[5] = "Friday";
-      weekday[6] = "Saturday";
+  var weekday = new Array(7);
+  weekday[0] =  "Sunday";
+  weekday[1] = "Monday";
+  weekday[2] = "Tuesday";
+  weekday[3] = "Wednesday";
+  weekday[4] = "Thursday";
+  weekday[5] = "Friday";
+  weekday[6] = "Saturday";
 
-      var monthNames = ["January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"
-      ];
-      
-      function addZero(i) {
-        if (i < 10) {
-            i = "0" + i;
-        }
-        return i;
+  var monthNames = ["January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+  
+  function addZero(i) {
+    if (i < 10) {
+        i = "0" + i;
+    }
+    return i;
+  }
+  var show_html = ""
+  function updateShows() {
+    show_html = ""
+    for (i = 0; i < data["shows"].length; i++) {
+      var show = data["shows"][i]
+      var date = new Date(0)
+      date.setUTCSeconds(show['time'])
+      var weekDay = weekday[date.getDay()]
+      var month = monthNames[date.getMonth()]
+      var dayOfMonth = date.getDate()
+      var year = date.getFullYear()
+      var hour = date.getHours() % 12 // Convert from the 24h format.
+      var ampm = Math.floor(date.getHours() / 12) == 0 ? 'AM' : 'PM'
+      var min = addZero(date.getMinutes());
+      var time = hour+":"+min+" "+ampm;
+      var group = show["group"];
+      if(group.search("SOLD OUT") >= 0){
+        group = "";
       }
-      var show_html = ""
-      function updateShows() {
-        show_html = ""
-        for (i = 0; i < data["shows"].length; i++) {
-          var show = data["shows"][i]
+      var info = hour+":"+min+" "+ampm+" "+weekDay+"<br>"+month+" "+dayOfMonth+", "+year+"<br>"+show["location"]+"<br><b>"+group+"</b>"
+
+      var buy_text = "Buy"
+      if(show["sellreq"] > 0)
+        buy_text += " <b>("+show["sellreq"]+" Available!)</b>"
+
+      var sell_text = "Sell"
+      if(data["shows"][i]["BuyReq"] > 0)
+        sell_text += " <b>("+show["buyreq"]+" Requests!)</b>"
+
+      show_html += "<div class='col-md-3 col-sm-6 hero-feature' id = 'ticketPanel'>"+
+      "<div class='thumbnail' style='height:400px'>"+
+      "<br><img src="+show["image"]+" alt='' style = 'height:100px'>"+
+      "<div class='caption'>"+
+      "<h3>"+show["name"]+"</h3>"+
+      "<p>"+info+"</p>"+
+      "<p>"+
+      "<button class='btn btn-primary' data-target='#confirmBuyModal' id='showBuy"+i+"' data-toggle='modal'>"+buy_text+"</button> <button class='btn btn-default' data-target='#confirmSellModal' id='showSell"+i+"' data-toggle='modal'>"+sell_text+"</button>"+
+      "</p>"+
+      "</div>"+
+      "</div>"+
+      "</div>"
+    }
+
+    $("#ticket-listing").html(show_html)
+
+    for (i = 0; i < data["shows"].length; i++) {
+        (function(index) {$("#showBuy" + i).click(function(){
           var date = new Date(0)
-          date.setUTCSeconds(show['time'])
+          date.setUTCSeconds(data["shows"][index]['time'])
           var weekDay = weekday[date.getDay()]
           var month = monthNames[date.getMonth()]
           var dayOfMonth = date.getDate()
           var year = date.getFullYear()
+          showDate = weekDay+", "+month+" "+dayOfMonth+", "+year
           var hour = date.getHours() % 12 // Convert from the 24h format.
           var ampm = Math.floor(date.getHours() / 12) == 0 ? 'AM' : 'PM'
           var min = addZero(date.getMinutes());
-          var time = hour+":"+min+" "+ampm;
-          var group = show["group"];
-          if(group.search("SOLD OUT") >= 0){
-            group = "";
-          }
-          var info = hour+":"+min+" "+ampm+" "+weekDay+"<br>"+month+" "+dayOfMonth+", "+year+"<br>"+show["location"]+"<br><b>"+group+"</b>"
+          showTime = hour+":"+min+" "+ampm;
+          message = "<p><strong>" + data["shows"][index]["name"] + "<br />" + showDate + " " + time + "<br />" + data["shows"][index]["location"] + "</strong>.</p>";
+          $("#confirmBuyBody").html(message)
+          $("#deleteButtonBuyModal").attr("show-id", data["shows"][index]['id'])
+          });
+        })(i);   
+    }
+    for (i = 0; i < data["shows"].length; i++) {
+        (function(index) {$("#showSell" + i).click(function(){
+          var date = new Date(0)
+          date.setUTCSeconds(data["shows"][index]['time'])
+          var weekDay = weekday[date.getDay()]
+          var month = monthNames[date.getMonth()]
+          var dayOfMonth = date.getDate()
+          var year = date.getFullYear()
+          showDate = weekDay+", "+month+" "+dayOfMonth+", "+year
+          var hour = date.getHours() % 12 // Convert from the 24h format.
+          var ampm = Math.floor(date.getHours() / 12) == 0 ? 'AM' : 'PM'
+          var min = addZero(date.getMinutes());
+          showTime = hour+":"+min+" "+ampm;
+          message = "<p><strong>" + data["shows"][index]["name"] + "<br />" + showDate + " " + time + "<br />" + data["shows"][index]["location"] + "</strong>.</p>";
+          $("#confirmSellBody").html(message)
+          $("#deleteButtonSellModal").attr("show-id", data["shows"][index]['id'])
+          });
+        })(i);   
+    }
+  }
 
-          var buy_text = "Buy"
-          if(show["sellreq"] > 0)
-            buy_text += " <b>("+show["sellreq"]+" Available!)</b>"
 
-          var sell_text = "Sell"
-          if(data["shows"][i]["BuyReq"] > 0)
-            sell_text += " <b>("+show["buyreq"]+" Requests!)</b>"
-
-          show_html += "<div class='col-md-3 col-sm-6 hero-feature' id = 'ticketPanel'>"+
-          "<div class='thumbnail' style='height:400px'>"+
-          "<br><img src="+show["image"]+" alt='' style = 'height:100px'>"+
-          "<div class='caption'>"+
-          "<h3>"+show["name"]+"</h3>"+
-          "<p>"+info+"</p>"+
-          "<p>"+
-          "<button class='btn btn-primary' data-target='#confirmBuyModal' id='showBuy"+i+"' data-toggle='modal'>"+buy_text+"</button> <button class='btn btn-default' data-target='#confirmSellModal' id='showSell"+i+"' data-toggle='modal'>"+sell_text+"</button>"+
-          "</p>"+
-          "</div>"+
-          "</div>"+
-          "</div>"
-        }
-
-        $("#ticket-listing").html(show_html)
-
-        for (i = 0; i < data["shows"].length; i++) {
-            (function(index) {$("#showBuy" + i).click(function(){
-              var date = new Date(0)
-              date.setUTCSeconds(data["shows"][index]['time'])
-              var weekDay = weekday[date.getDay()]
-              var month = monthNames[date.getMonth()]
-              var dayOfMonth = date.getDate()
-              var year = date.getFullYear()
-              showDate = weekDay+", "+month+" "+dayOfMonth+", "+year
-              var hour = date.getHours() % 12 // Convert from the 24h format.
-              var ampm = Math.floor(date.getHours() / 12) == 0 ? 'AM' : 'PM'
-              var min = addZero(date.getMinutes());
-              showTime = hour+":"+min+" "+ampm;
-              message = "<p><strong>" + data["shows"][index]["name"] + "<br />" + showDate + " " + time + "<br />" + data["shows"][index]["location"] + "</strong>.</p>";
-              $("#confirmBuyBody").html(message)
-              $("#deleteButtonBuyModal").attr("show-id", data["shows"][index]['id'])
-              });
-            })(i);   
-        }
-        for (i = 0; i < data["shows"].length; i++) {
-            (function(index) {$("#showSell" + i).click(function(){
-              var date = new Date(0)
-              date.setUTCSeconds(data["shows"][index]['time'])
-              var weekDay = weekday[date.getDay()]
-              var month = monthNames[date.getMonth()]
-              var dayOfMonth = date.getDate()
-              var year = date.getFullYear()
-              showDate = weekDay+", "+month+" "+dayOfMonth+", "+year
-              var hour = date.getHours() % 12 // Convert from the 24h format.
-              var ampm = Math.floor(date.getHours() / 12) == 0 ? 'AM' : 'PM'
-              var min = addZero(date.getMinutes());
-              showTime = hour+":"+min+" "+ampm;
-              message = "<p><strong>" + data["shows"][index]["name"] + "<br />" + showDate + " " + time + "<br />" + data["shows"][index]["location"] + "</strong>.</p>";
-              $("#confirmSellBody").html(message)
-              $("#deleteButtonSellModal").attr("show-id", data["shows"][index]['id'])
-              });
-            })(i);   
-        }
+  function putInBuyRequest(element) {
+    console.log("you are selling")
+    $.ajax({
+    url : "/buy",
+    type: "POST",
+    data: JSON.stringify({show_id: element.getAttribute('show-id')}),
+    contentType: "application/json; charset=utf-8",
+    dataType   : "json",
+    success    : function(data){
+      if (data['status'] == "ok") {
+        window.location = '/my-tix'
+      } else {
+        window.alert("There was an error submitting your buy request: " + data['reason'])
       }
+    }})
+    
+  }
 
+  function putInSellRequest(element) {
 
-      function putInBuyRequest(element) {
-        console.log("you are selling")
-        $.ajax({
-        url : "/buy",
-        type: "POST",
-        data: JSON.stringify({show_id: element.getAttribute('show-id')}),
-        contentType: "application/json; charset=utf-8",
-        dataType   : "json",
-        success    : function(data){
-          if (data['status'] == "ok") {
-            window.location = '/my-tix'
-          } else {
-            window.alert("There was an error submitting your buy request: " + data['reason'])
-          }
-        }})
-        
+    console.log("you are buying")
+    $.ajax({
+    url : "/sell",
+    type: "POST",
+    data: JSON.stringify({show_id: element.getAttribute('show-id')}),
+    contentType: "application/json; charset=utf-8",
+    dataType   : "json",
+    success    : function(data){
+      if (data['status'] == "ok") {
+        window.location = '/my-tix'
+      } else {
+        window.alert("There was an error submitting your sell request: " + data['reason'])
       }
+    }})
+  }
 
-      function putInSellRequest(element) {
+  $(document).ready(function(){
 
-        console.log("you are buying")
-        $.ajax({
-        url : "/sell",
-        type: "POST",
-        data: JSON.stringify({show_id: element.getAttribute('show-id')}),
-        contentType: "application/json; charset=utf-8",
-        dataType   : "json",
-        success    : function(data){
-          if (data['status'] == "ok") {
-            window.location = '/my-tix'
-          } else {
-            window.alert("There was an error submitting your sell request: " + data['reason'])
-          }
-        }})
-      }
-
-      $(document).ready(function(){
-
-      });
+  });
 </script>
