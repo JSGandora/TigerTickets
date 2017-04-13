@@ -86,14 +86,12 @@
           $(function() { updateRequests() })
         }
       })
-
     function addZero(i) {
         if (i < 10) {
             i = "0" + i;
         }
         return i;
     }
-
     var weekday = new Array(7);
       weekday[0] =  "Sunday";
       weekday[1] = "Monday";
@@ -102,11 +100,9 @@
       weekday[4] = "Thursday";
       weekday[5] = "Friday";
       weekday[6] = "Saturday";
-
       var monthNames = ["January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"
       ];
-
     var buyRequests_html = ""
     var sellRequests_html = ""
     function updateRequests() {
@@ -115,10 +111,8 @@
         for (i = 0; i < allData["buyrequests"].length; i++) {
             var buyRequestStatus = allData["buyrequests"][i]["status"]
             var show = allData["buyrequests"][i]["show"]
-
             var date = new Date(0)
             date.setUTCSeconds(show['time'])
-
             var weekDay = weekday[date.getDay()]
             var month = monthNames[date.getMonth()]
             var dayOfMonth = date.getDate()
@@ -128,13 +122,11 @@
             var min = addZero(date.getMinutes());
             var time = hour+":"+min+" "+ampm;
             var btime = hour+":"+min+" "+ampm+" "+weekDay+"<br>"+month+" "+dayOfMonth+", "+year
-
             var bloc = show["location"]
             var bgroup = show["group"]
             if(bgroup.search("SOLD OUT") >= 0){
                 bgroup = "";
             }
-
             buyRequests_html += "<div class='row' id='buying"+i+"'>"+
                     "<div class='col-md-2'>"+
                         "<a href='#'>" +
@@ -156,14 +148,11 @@
             "<hr>"
         }
         $("#buy-requests-html-span").html(buyRequests_html)
-
         for (i = 0; i < allData["sellrequests"].length; i++) {
             var sellRequestStatus = allData["sellrequests"][i]["status"]
             show = allData["sellrequests"][i]["show"]
-
             var date = new Date(0)
             date.setUTCSeconds(show['time'])
-
             var weekDay = weekday[date.getDay()]
             var month = monthNames[date.getMonth()]
             var dayOfMonth = date.getDate()
@@ -173,13 +162,11 @@
             var min = addZero(date.getMinutes());
             var time = hour+":"+min+" "+ampm;
             var btime = hour+":"+min+" "+ampm+" "+weekDay+"<br>"+month+" "+dayOfMonth+", "+year
-
             var sbloc = show["location"]
             var sgroup = show["group"]
             if(sgroup.search("SOLD OUT") >= 0){
                 sgroup = "";
             }
-
             sellRequests_html += "<div class='row' id='buying"+i+"'>"+
                     "<div class='col-md-2'>"+
                         "<a href='#'>" +
@@ -195,21 +182,19 @@
                         "<h4>"+sgroup+"</h4>"+
                     "</div>"+
                     "<div class='col-md-2'>"+
-                        "<button class='btn btn-primary' data-target='#confirm-delete' data-toggle='modal' id = 'deleteBuying"+i+"'>Delete <span class='glyphicon'></span></button>"+
+                        "<button class='btn btn-primary' data-target='#confirm-delete' data-toggle='modal' id = 'deleteSelling"+i+"'>Delete <span class='glyphicon'></span></button>"+
                     "</div>"+
                 "</div>"+
             "<hr>"
         }
         $("#sell-requests-html-span").html(sellRequests_html)
-    }
-
+    
     profile = "<div class='row text-left'>"+
             "<div class='col-lg-12'>"+
                 "<h3>Ticket Buy Requests</h3>"+
             "</div>"+
         "</div>"+
         "<hr>"+
-
         "<span id='buy-requests-html-span'>" +
         buyRequests_html +
         "</span>" +
@@ -226,22 +211,51 @@
         
         $(document).ready(function(){
             $("#profile-page").html(profile)
-            for (i = 0; i < sellData["sell-tickets"].length; i++) {
+
+            for (i = 0; i < allData["sellrequests"].length; i++) {
                 (function(index) {$("#deleteSelling" + i).click(function(){
                     deletionId = "selling" + index
-                    message = "<p><strong>" + sellData["sell-tickets"][index]["Name"] + "<br />" + sellData["sell-tickets"][index]["Date"] + " " + sellData["sell-tickets"][index]["Time"] + "<br />" + sellData["sell-tickets"][index]["Location"] + "</strong>.</p>";
+                    show = allData["sellrequests"][index]["show"]
+                    var date = new Date(0)
+                    date.setUTCSeconds(show['time'])
+                    var weekDay = weekday[date.getDay()]
+                    var month = monthNames[date.getMonth()]
+                    var dayOfMonth = date.getDate()
+                    var year = date.getFullYear()
+                    var hour = date.getHours() % 12 // Convert from the 24h format.
+                    var ampm = Math.floor(date.getHours() / 12) == 0 ? 'AM' : 'PM'
+                    var min = addZero(date.getMinutes());
+                    var time = hour+":"+min+" "+ampm;
+                    var btime = hour+":"+min+" "+ampm+" "+weekDay+"<br>"+month+" "+dayOfMonth+", "+year
+                    message = "<p><strong>" + show["name"] + "<br />" + btime + "<br />" + show["location"] + "</strong>.</p>";
                     $("#deletionBody").html(message)
+                    
                     });
                 })(i);
             }
+            
             $("#deleteButton").on('click', function(e){
                 $("#" + deletionId).replaceWith("<p>Request deleted.</p>")
             });
-            for (i = 0; i < buyData["buy-tickets"].length; i++) {
+
+            for (i = 0; i < allData["buyrequests"].length; i++) {
                 (function(index) {$("#deleteBuying" + i).click(function(){
                     deletionId = "buying" + index
-                    message = "<p><strong>" + buyData["buy-tickets"][index]["Name"] + "<br />" + buyData["buy-tickets"][index]["Date"] + " " + buyData["buy-tickets"][index]["Time"] + "<br />" + buyData["buy-tickets"][index]["Location"] + "</strong>.</p>";
+                    show = allData["buyrequests"][index]["show"]
+                    var date = new Date(0)
+                    date.setUTCSeconds(show['time'])
+                    var weekDay = weekday[date.getDay()]
+                    var month = monthNames[date.getMonth()]
+                    var dayOfMonth = date.getDate()
+                    var year = date.getFullYear()
+                    var hour = date.getHours() % 12 // Convert from the 24h format.
+                    var ampm = Math.floor(date.getHours() / 12) == 0 ? 'AM' : 'PM'
+                    var min = addZero(date.getMinutes());
+                    var time = hour+":"+min+" "+ampm;
+                    var btime = hour+":"+min+" "+ampm+" "+weekDay+"<br>"+month+" "+dayOfMonth+", "+year
+                    message = "<p><strong>" + show["name"] + "<br />" + btime + "<br />" + show["location"] + "</strong>.</p>";
                     $("#deletionBody").html(message)
+                    
                     });
                 })(i);
             }
@@ -254,6 +268,5 @@
         $.post('logout');
     });
     
-    
-
+    }
 </script>
