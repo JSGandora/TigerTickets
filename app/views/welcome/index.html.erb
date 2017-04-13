@@ -34,7 +34,8 @@
     <header class="jumbotron hero-spacer">
       <h1>Tiger Tickets</h1>
       <p>Need to buy or sell a ticket? Do it here!</p>
-      <p><a class="btn btn-primary btn-large" id = 'logout'>Logout</a>
+      <p id = 'login'>
+        <a class="btn btn-primary btn-large" href = 'login'>Login</a>
       </p>
     </header>
 
@@ -271,7 +272,7 @@
   $("#logout").click(function(){
     $.post('logout');
   });
-
+  
   $(document).ready(function(){
 
   });
