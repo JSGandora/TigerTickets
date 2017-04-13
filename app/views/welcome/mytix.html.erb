@@ -17,6 +17,9 @@
                 <li>
                     <a href="#">My Tickets</a>
                 </li>
+                <li> 
+                    <a href="" id = "logout">Logout</a>
+                </li>
             </ul>
         </div>
         <!-- /.navbar-collapse -->
@@ -223,6 +226,10 @@
             }
             $("#deleteButton").on('click', function(e){
                 $("#" + deletionId).replaceWith("<p>Request deleted.</p>")
+            });
+
+            $("#logout").click(function(){
+                $.post('logout');
             });
         });
 </script>
