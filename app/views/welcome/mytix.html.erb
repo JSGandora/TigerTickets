@@ -17,6 +17,9 @@
                 <li style="border-bottom: 5px solid orange;bottom: 0;width: 100px;">
                     <a href="#" style="color:white">My Tickets</a>
                 </li>
+                <li>
+                    <a href="" id = "logout">Logout</a>
+                </li>
             </ul>
         </div>
         <!-- /.navbar-collapse -->
@@ -128,11 +131,14 @@
 
             var bloc = show["location"]
             var bgroup = show["group"]
+            if(bgroup.search("SOLD OUT") >= 0){
+                bgroup = "";
+            }
 
             buyRequests_html += "<div class='row' id='buying"+i+"'>"+
                     "<div class='col-md-2'>"+
                         "<a href='#'>" +
-                            "<img class = 'center-block' src="+show["image"]+" alt=''>"+
+                            "<img class = 'center-block' src="+show["image"]+" alt='' style='height:150px'>"+
                         "</a>"+
                     "</div>"+
                     "<div class='col-md-3'>"+
@@ -168,13 +174,16 @@
             var time = hour+":"+min+" "+ampm;
             var btime = hour+":"+min+" "+ampm+" "+weekDay+"<br>"+month+" "+dayOfMonth+", "+year
 
-            var bloc = show["location"]
-            var bgroup = show["group"]
+            var sbloc = show["location"]
+            var sgroup = show["group"]
+            if(sgroup.search("SOLD OUT") >= 0){
+                sgroup = "";
+            }
 
             sellRequests_html += "<div class='row' id='buying"+i+"'>"+
                     "<div class='col-md-2'>"+
                         "<a href='#'>" +
-                            "<img class = 'center-block' src="+show["image"]+" alt=''>"+
+                            "<img class = 'center-block' src="+show["image"]+" alt='' style='height:150px'>"+
                         "</a>"+
                     "</div>"+
                     "<div class='col-md-3'>"+
@@ -182,8 +191,8 @@
                     "</div>"+
                     "<div class='col-md-5'>"+
                         "<h4>"+btime+"</h4>"+
-                        "<h4>"+bloc+"</h4>"+
-                        "<h4>"+bgroup+"</h4>"+
+                        "<h4>"+sbloc+"</h4>"+
+                        "<h4>"+sgroup+"</h4>"+
                     "</div>"+
                     "<div class='col-md-2'>"+
                         "<button class='btn btn-primary' data-target='#confirm-delete' data-toggle='modal' id = 'deleteBuying"+i+"'>Delete <span class='glyphicon'></span></button>"+
@@ -244,6 +253,10 @@
         var btime = buyData["buy-tickets"][i]["Date"]+" "+buyData["buy-tickets"][i]["Time"]
         var bloc = buyData["buy-tickets"][i]["Location"]
         var bgroup = buyData["buy-tickets"][i]["Group"]
+        if(bgroup.search("SOLD OUT") >= 0){
+            bgroup = ""
+        }
+        bgroup = ""
         buying_html += "<div class='row' id='buying"+i+"'>"+
                     "<div class='col-md-2'>"+
                         "<a href='#'>" +
@@ -270,6 +283,9 @@
         var stime = sellData["sell-tickets"][i]["Date"]+" "+sellData["sell-tickets"][i]["Time"]
         var sloc = sellData["sell-tickets"][i]["Location"]
         var sgroup = sellData["sell-tickets"][i]["Group"]
+        if(sgroup.search("SOLD OUT") >= 0){
+            sgroup = "";
+        }
         selling_html += "<div class='row' id='selling"+i+"'>"+
                     "<div class='col-md-2'>"+
                         "<a href='#'>" +
