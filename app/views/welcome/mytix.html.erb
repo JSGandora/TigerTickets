@@ -17,9 +17,6 @@
                 <li style="border-bottom: 2px solid red;bottom: 0;width: 100px;">
                     <a href="#" style="color:white">My Tickets</a>
                 </li>
-                <li> 
-                    <a href="" id = "logout">Logout</a>
-                </li>
             </ul>
         </div>
         <!-- /.navbar-collapse -->
@@ -81,12 +78,124 @@
     $.get('my-tix-data', function(response) { 
         allData = response
         if ($.isReady) {
-          updateShows()
+          updateRequests()
         } else {
           $(function() { updateRequests() })
         }
       })
-    function updateRequests() {}
+
+    function addZero(i) {
+        if (i < 10) {
+            i = "0" + i;
+        }
+        return i;
+    }
+
+    var weekday = new Array(7);
+      weekday[0] =  "Sunday";
+      weekday[1] = "Monday";
+      weekday[2] = "Tuesday";
+      weekday[3] = "Wednesday";
+      weekday[4] = "Thursday";
+      weekday[5] = "Friday";
+      weekday[6] = "Saturday";
+
+      var monthNames = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+      ];
+
+    var buyRequests_html = ""
+    var sellRequests_html = ""
+    function updateRequests() {
+        buyRequests_html = ""
+        sellRequests_html = ""
+        for (i = 0; i < allData["buyrequests"].length; i++) {
+            var buyRequestStatus = allData["buyrequests"][i]["status"]
+            var show = allData["buyrequests"][i]["show"]
+
+            var date = new Date(0)
+            date.setUTCSeconds(show['time'])
+
+            var weekDay = weekday[date.getDay()]
+            var month = monthNames[date.getMonth()]
+            var dayOfMonth = date.getDate()
+            var year = date.getFullYear()
+            var hour = date.getHours() % 12 // Convert from the 24h format.
+            var ampm = Math.floor(date.getHours() / 12) == 0 ? 'AM' : 'PM'
+            var min = addZero(date.getMinutes());
+            var time = hour+":"+min+" "+ampm;
+            var btime = hour+":"+min+" "+ampm+" "+weekDay+"<br>"+month+" "+dayOfMonth+", "+year
+
+            var bloc = show["location"]
+            var bgroup = show["group"]
+
+            buyRequests_html += "<div class='row' id='buying"+i+"'>"+
+                    "<div class='col-md-2'>"+
+                        "<a href='#'>" +
+                            "<img class = 'center-block' src="+show["image"]+" alt=''>"+
+                        "</a>"+
+                    "</div>"+
+                    "<div class='col-md-3'>"+
+                        "<h3>"+show["name"]+"</h3>"+
+                    "</div>"+
+                    "<div class='col-md-5'>"+
+                        "<h4>"+btime+"</h4>"+
+                        "<h4>"+bloc+"</h4>"+
+                        "<h4>"+bgroup+"</h4>"+
+                    "</div>"+
+                    "<div class='col-md-2'>"+
+                        "<button class='btn btn-primary' data-target='#confirm-delete' data-toggle='modal' id = 'deleteBuying"+i+"'>Delete <span class='glyphicon'></span></button>"+
+                    "</div>"+
+                "</div>"+
+            "<hr>"
+        }
+        $("#buy-requests-html-span").html(buyRequests_html)
+
+        for (i = 0; i < allData["sellrequests"].length; i++) {
+            var sellRequestStatus = allData["sellrequests"][i]["status"]
+            show = allData["sellrequests"][i]["show"]
+
+            var date = new Date(0)
+            date.setUTCSeconds(show['time'])
+
+            var weekDay = weekday[date.getDay()]
+            var month = monthNames[date.getMonth()]
+            var dayOfMonth = date.getDate()
+            var year = date.getFullYear()
+            var hour = date.getHours() % 12 // Convert from the 24h format.
+            var ampm = Math.floor(date.getHours() / 12) == 0 ? 'AM' : 'PM'
+            var min = addZero(date.getMinutes());
+            var time = hour+":"+min+" "+ampm;
+            var btime = hour+":"+min+" "+ampm+" "+weekDay+"<br>"+month+" "+dayOfMonth+", "+year
+
+            var bloc = show["location"]
+            var bgroup = show["group"]
+
+            sellRequests_html += "<div class='row' id='buying"+i+"'>"+
+                    "<div class='col-md-2'>"+
+                        "<a href='#'>" +
+                            "<img class = 'center-block' src="+show["image"]+" alt=''>"+
+                        "</a>"+
+                    "</div>"+
+                    "<div class='col-md-3'>"+
+                        "<h3>"+show["name"]+"</h3>"+
+                    "</div>"+
+                    "<div class='col-md-5'>"+
+                        "<h4>"+btime+"</h4>"+
+                        "<h4>"+bloc+"</h4>"+
+                        "<h4>"+bgroup+"</h4>"+
+                    "</div>"+
+                    "<div class='col-md-2'>"+
+                        "<button class='btn btn-primary' data-target='#confirm-delete' data-toggle='modal' id = 'deleteBuying"+i+"'>Delete <span class='glyphicon'></span></button>"+
+                    "</div>"+
+                "</div>"+
+            "<hr>"
+        }
+        $("#sell-requests-html-span").html(sellRequests_html)
+    }
+
+
+
     var buyData = {
     "buy-tickets": [
         {
@@ -187,14 +296,19 @@
             "</div>"+
         "</div>"+
         "<hr>"+
-        buying_html +
+
+        "<span id='buy-requests-html-span'>" +
+        buyRequests_html +
+        "</span>" +
         "<div class='row text-left'>"+
             "<div class='col-lg-12'>"+
                 "<h3>Ticket Sell Requests</h3>"+
             "</div>"+
         "</div>"+
         "<hr>"+
-        selling_html
+        "<span id='sell-requests-html-span'>" +
+        sellRequests_html +
+        "</span>"
         deletionId = 0
         
         $(document).ready(function(){
@@ -220,10 +334,6 @@
             }
             $("#deleteButton").on('click', function(e){
                 $("#" + deletionId).replaceWith("<p>Request deleted.</p>")
-            });
-
-            $("#logout").click(function(){
-                $.post('logout');
             });
         });
 </script>
