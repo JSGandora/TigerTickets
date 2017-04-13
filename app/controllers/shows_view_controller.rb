@@ -1,7 +1,7 @@
 class ShowsViewController < ApplicationController
   def getshows
   	shows = Show.select('count(sell_requests.show_id) as sell_request_count, count(buy_requests.show_id) as buy_request_count, shows.*')
-      .where(["time > ?", DateTime.current])
+      .where(["time > ?", Time.current])
       .joins('LEFT JOIN sell_requests ON shows.id = sell_requests.show_id')
       .joins('LEFT JOIN buy_requests ON shows.id = buy_requests.show_id')
       .group('shows.id')
