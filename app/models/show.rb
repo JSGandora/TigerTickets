@@ -57,7 +57,8 @@ class Show < ApplicationRecord
                name = e[".item-name"]
                venue = e['.item-venue']
                description = e['.item-teaser']
-               t = Time.parse(e['.start-date'])
+               zone = "Eastern Time (US & Canada)"
+               t = ActiveSupport::TimeZone[zone].parse(e['.start-date'])
                image_url = e[img_css]
                Show.create(title: name, time: t, location: venue, group: description, img: image_url)
           end
