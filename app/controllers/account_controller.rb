@@ -2,8 +2,8 @@ class AccountController < ApplicationController
   before_action CASClient::Frameworks::Rails::Filter
   def mytix
     netid = session[:cas_user]
-    buyRequests = BuyRequest.select("show_id, title, shows.time AS time, location, 'group', img, buy_requests.id AS buy_request_id, status").where(netid: netid).where(:status => ["waiting-for-match", "pending", "completed"]).joins("INNER JOIN shows ON shows.id = buy_requests.show_id")
-    sellRequests = SellRequest.select("show_id, title, shows.time AS time, location, 'group', img, sell_requests.id AS sell_request_id, status").where(netid: netid).where(:status => ["waiting-for-match", "pending", "completed"]).joins("INNER JOIN shows ON shows.id = sell_requests.show_id")
+    buyRequests = BuyRequest.select("show_id, title, shows.time AS time, location, \"group\", img, buy_requests.id AS buy_request_id, status").where(netid: netid).where(:status => ["waiting-for-match", "pending", "completed"]).joins("INNER JOIN shows ON shows.id = buy_requests.show_id")
+    sellRequests = SellRequest.select("show_id, title, shows.time AS time, location, \"group\", img, sell_requests.id AS sell_request_id, status").where(netid: netid).where(:status => ["waiting-for-match", "pending", "completed"]).joins("INNER JOIN shows ON shows.id = sell_requests.show_id")
 
 
 
