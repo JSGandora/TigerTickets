@@ -153,25 +153,27 @@
             if(bgroup.search("SOLD OUT") >= 0){
                 bgroup = "";
             }
-            buyRequests_html += "<div class='row' id='buying"+i+"'>"+
-                    "<div class='col-md-2'>"+
-                        "<a href='#'>" +
-                            "<img class = 'center-block' src="+show["image"]+" alt='' style='height:150px'>"+
-                        "</a>"+
+            if (buyRequestStatus != "completed") {
+                buyRequests_html += "<div class='row' id='buying"+i+"'>"+
+                        "<div class='col-md-2'>"+
+                            "<a href='#'>" +
+                                "<img class = 'center-block' src="+show["image"]+" alt='' style='height:150px'>"+
+                            "</a>"+
+                        "</div>"+
+                        "<div class='col-md-3'>"+
+                            "<h3>"+show["name"]+"</h3>"+
+                        "</div>"+
+                        "<div class='col-md-5'>"+
+                            "<h4>"+btime+"</h4>"+
+                            "<h4>"+bloc+"</h4>"+
+                            "<h4>"+bgroup+"</h4>"+
+                        "</div>"+
+                        "<div class='col-md-2'>"+
+                            "<button class='btn btn-primary' data-target='#confirm-buy-delete' data-toggle='modal' id = 'deleteBuying"+i+"'>Delete <span class='glyphicon'></span></button>"+
+                        "</div>"+
                     "</div>"+
-                    "<div class='col-md-3'>"+
-                        "<h3>"+show["name"]+"</h3>"+
-                    "</div>"+
-                    "<div class='col-md-5'>"+
-                        "<h4>"+btime+"</h4>"+
-                        "<h4>"+bloc+"</h4>"+
-                        "<h4>"+bgroup+"</h4>"+
-                    "</div>"+
-                    "<div class='col-md-2'>"+
-                        "<button class='btn btn-primary' data-target='#confirm-buy-delete' data-toggle='modal' id = 'deleteBuying"+i+"'>Delete <span class='glyphicon'></span></button>"+
-                    "</div>"+
-                "</div>"+
-            "<hr>"
+                "<hr>"
+            }
         }
         $("#buy-requests-html-span").html(buyRequests_html)
         for (i = 0; i < allData["sellrequests"].length; i++) {
@@ -193,25 +195,28 @@
             if(sgroup.search("SOLD OUT") >= 0){
                 sgroup = "";
             }
-            sellRequests_html += "<div class='row' id='selling"+i+"'>"+
-                    "<div class='col-md-2'>"+
-                        "<a href='#'>" +
-                            "<img class = 'center-block' src="+show["image"]+" alt='' style='height:150px'>"+
-                        "</a>"+
+            console.log(sellRequestStatus)
+            if (sellRequestStatus != "completed") {
+                sellRequests_html += "<div class='row' id='selling"+i+"'>"+
+                        "<div class='col-md-2'>"+
+                            "<a href='#'>" +
+                                "<img class = 'center-block' src="+show["image"]+" alt='' style='height:150px'>"+
+                            "</a>"+
+                        "</div>"+
+                        "<div class='col-md-3'>"+
+                            "<h3>"+show["name"]+"</h3>"+
+                        "</div>"+
+                        "<div class='col-md-5'>"+
+                            "<h4>"+btime+"</h4>"+
+                            "<h4>"+sbloc+"</h4>"+
+                            "<h4>"+sgroup+"</h4>"+
+                        "</div>"+
+                        "<div class='col-md-2'>"+
+                            "<button class='btn btn-primary' data-target='#confirm-sell-delete' data-toggle='modal' id = 'deleteSelling"+i+"'>Delete <span class='glyphicon'></span></button>"+
+                        "</div>"+
                     "</div>"+
-                    "<div class='col-md-3'>"+
-                        "<h3>"+show["name"]+"</h3>"+
-                    "</div>"+
-                    "<div class='col-md-5'>"+
-                        "<h4>"+btime+"</h4>"+
-                        "<h4>"+sbloc+"</h4>"+
-                        "<h4>"+sgroup+"</h4>"+
-                    "</div>"+
-                    "<div class='col-md-2'>"+
-                        "<button class='btn btn-primary' data-target='#confirm-sell-delete' data-toggle='modal' id = 'deleteSelling"+i+"'>Delete <span class='glyphicon'></span></button>"+
-                    "</div>"+
-                "</div>"+
-            "<hr>"
+                "<hr>"
+            }
         }
         $("#sell-requests-html-span").html(sellRequests_html)
     
