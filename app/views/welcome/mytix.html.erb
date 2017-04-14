@@ -49,8 +49,8 @@
     </div>
     <!-- /.container -->
 
-    <!-- Buy Modal -->
-    <div id="confirm-delete" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <!-- Delete Sell Request Modal -->
+    <div id="confirm-sell-delete" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 
         <!-- Modal content -->
         <div class="modal-dialog">
@@ -60,15 +60,41 @@
                     <h2></h2>
                 </div>
                 <div class="modal-body">
-                    <h1>Delete Ticket Request?</h1>
-                    <p> You are about to delete your ticket request for: </p>
-                    <p id="deletionBody">ya done goof'd</p>
+                    <h1>Delete Ticket Sell Request?</h1>
+                    <p> You are about to delete your ticket sell request for: </p>
+                    <p id="deletionSellBody">An error ocurred in displaying the show name.</p>
                     <p> This procedure is irreversible.</p>
                     <p><strong>Do you want to proceed?</strong></p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <a id = "deleteButton" class="btn btn-danger btn-ok" data-dismiss="modal" >Delete</a>
+                    <a id = "deleteSellButton" class="btn btn-danger btn-ok" data-dismiss="modal" onclick="deleteSellRequest(this)">Delete</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Delete Buy Request Modal -->
+    <div id="confirm-buy-delete" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+        <!-- Modal content -->
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="close" data-dismiss="modal">&times;</span>
+                    <h2></h2>
+                </div>
+                <div class="modal-body">
+                    <h1>Delete Ticket Buy Request?</h1>
+                    <p> You are about to delete your ticket buy request for: </p>
+                    <p id="deletionBuyBody">An error ocurred in displaying the show name.</p>
+                    <p> This procedure is irreversible.</p>
+                    <p><strong>Do you want to proceed?</strong></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <a id = "deleteBuyButton" class="btn btn-danger btn-ok" data-dismiss="modal" onclick="deleteBuyRequest(this)">Delete</a>
                 </div>
             </div>
         </div>
@@ -142,7 +168,7 @@
                         "<h4>"+bgroup+"</h4>"+
                     "</div>"+
                     "<div class='col-md-2'>"+
-                        "<button class='btn btn-primary' data-target='#confirm-delete' data-toggle='modal' id = 'deleteBuying"+i+"'>Delete <span class='glyphicon'></span></button>"+
+                        "<button class='btn btn-primary' data-target='#confirm-buy-delete' data-toggle='modal' id = 'deleteBuying"+i+"'>Delete <span class='glyphicon'></span></button>"+
                     "</div>"+
                 "</div>"+
             "<hr>"
@@ -167,7 +193,7 @@
             if(sgroup.search("SOLD OUT") >= 0){
                 sgroup = "";
             }
-            sellRequests_html += "<div class='row' id='buying"+i+"'>"+
+            sellRequests_html += "<div class='row' id='selling"+i+"'>"+
                     "<div class='col-md-2'>"+
                         "<a href='#'>" +
                             "<img class = 'center-block' src="+show["image"]+" alt='' style='height:150px'>"+
@@ -182,7 +208,7 @@
                         "<h4>"+sgroup+"</h4>"+
                     "</div>"+
                     "<div class='col-md-2'>"+
-                        "<button class='btn btn-primary' data-target='#confirm-delete' data-toggle='modal' id = 'deleteSelling"+i+"'>Delete <span class='glyphicon'></span></button>"+
+                        "<button class='btn btn-primary' data-target='#confirm-sell-delete' data-toggle='modal' id = 'deleteSelling"+i+"'>Delete <span class='glyphicon'></span></button>"+
                     "</div>"+
                 "</div>"+
             "<hr>"
@@ -214,7 +240,7 @@
 
             for (i = 0; i < allData["sellrequests"].length; i++) {
                 (function(index) {$("#deleteSelling" + i).click(function(){
-                    deletionId = "selling" + index
+                    deleteSellId = "selling" + index
                     show = allData["sellrequests"][index]["show"]
                     var date = new Date(0)
                     date.setUTCSeconds(show['time'])
@@ -228,19 +254,16 @@
                     var time = hour+":"+min+" "+ampm;
                     var btime = hour+":"+min+" "+ampm+" "+weekDay+"<br>"+month+" "+dayOfMonth+", "+year
                     message = "<p><strong>" + show["name"] + "<br />" + btime + "<br />" + show["location"] + "</strong>.</p>";
-                    $("#deletionBody").html(message)
-                    
+                    $("#deletionSellBody").html(message);
+                    console.log(show["id"])
+                    $("#deleteSellButton").attr("show-id", allData["sellrequests"][index]["id"]);
                     });
                 })(i);
             }
-            
-            $("#deleteButton").on('click', function(e){
-                $("#" + deletionId).replaceWith("<p>Request deleted.</p>")
-            });
 
             for (i = 0; i < allData["buyrequests"].length; i++) {
                 (function(index) {$("#deleteBuying" + i).click(function(){
-                    deletionId = "buying" + index
+                    deleteBuyId = "buying" + index
                     show = allData["buyrequests"][index]["show"]
                     var date = new Date(0)
                     date.setUTCSeconds(show['time'])
@@ -254,19 +277,68 @@
                     var time = hour+":"+min+" "+ampm;
                     var btime = hour+":"+min+" "+ampm+" "+weekDay+"<br>"+month+" "+dayOfMonth+", "+year
                     message = "<p><strong>" + show["name"] + "<br />" + btime + "<br />" + show["location"] + "</strong>.</p>";
-                    $("#deletionBody").html(message)
-                    
+                    $("#deletionBuyBody").html(message)    
+                    $("#deleteBuyButton").attr("show-id", allData["buyrequests"][index]["id"]);
                     });
                 })(i);
             }
-            $("#deleteButton").on('click', function(e){
-                $("#" + deletionId).replaceWith("<p>Request deleted.</p>")
-            });
         });
     
-    $("#logout").click(function(){
-        $.post('logout');
-    });
-    
     }
+
+    function deleteSellRequest(element) {
+        console.log("you are cancelling a sell request")
+        $.ajax({
+            url : "/cancel-sell",
+            type: "POST",
+            data: JSON.stringify({sell_request_id: element.getAttribute('show-id')}),
+            contentType: "application/json; charset=utf-8",
+            dataType   : "json",
+            success    : function(data){
+                if (data['status']=="ok") {
+                    window.location = '/my-tix'
+                }
+                else {
+                    window.alert("There was an error cancelling your sell request: " + data['reason'])
+                }
+            }
+        })
+        $("#" + deleteSellId).replaceWith("<p>Request deleted.</p>")
+    }
+
+    function deleteBuyRequest(element) {
+        console.log("you are cancelling a buy request")
+        $.ajax({
+            url : "/cancel-buy",
+            type: "POST",
+            data: JSON.stringify({buy_request_id: element.getAttribute('show-id')}),
+            contentType: "application/json; charset=utf-8",
+            dataType   : "json",
+            success    : function(data){
+                if (data['status']=="ok") {
+                    window.location = '/my-tix'
+                }
+                else {
+                    window.alert("There was an error cancelling your buy request: " + data['reason'])
+                }
+            }
+        })
+        $("#" + deleteBuyId).replaceWith("<p>Request deleted.</p>")
+    }
+
+    var text = "<a id='logout' href='javascript:void(0)'> Logout </a>"
+  if(netid === ""){
+    text = "<a href='login'> Login </a>"
+  }
+
+  $("#logoutLink").html(text);
+  
+  $("#logout").click(function(){
+    $.post('logout');
+  });
+
+  $(document).ready(function(){
+  });
+    
+    
 </script>
