@@ -150,7 +150,7 @@
     function updateRequests() {
         buyRequests_html = ""
         sellRequests_html = ""
-        for (i = 0; i < allData["buyrequests"].length; i++) {
+        for (i = allData["buyrequests"].length-1; i >= 0; i--) {
             var buyRequestStatus = allData["buyrequests"][i]["status"]
             var show = allData["buyrequests"][i]["show"]
             var date = new Date(0)
@@ -170,10 +170,15 @@
                 bgroup = "";
             }
             if (buyRequestStatus != "completed") {
+                var grayurl = "https://s-media-cache-ak0.pinimg.com/236x/51/e7/ec/51e7ec2440ed6cc10ee247825f946846.jpg"
+                var imghtml = "<img class = 'center-block' src="+grayurl+" alt='' style='height:150px'>"
+                if(!(show["image"] == null))
+                    imghtml = "<img class = 'center-block' src="+show["image"]+" alt='' style='height:150px'>"
+
                 buyRequests_html += "<div class='row' id='buying"+i+"'>"+
                         "<div class='col-md-2'>"+
                             "<a href='#'>" +
-                                "<img class = 'center-block' src="+show["image"]+" alt='' style='height:150px'>"+
+                                imghtml +
                             "</a>"+
                         "</div>"+
                         "<div class='col-md-3'>"+
@@ -192,7 +197,7 @@
             }
         }
         $("#buy-requests-html-span").html(buyRequests_html)
-        for (i = 0; i < allData["sellrequests"].length; i++) {
+        for (i = allData["sellrequests"].length-1; i >= 0; i--) {
             var sellRequestStatus = allData["sellrequests"][i]["status"]
             show = allData["sellrequests"][i]["show"]
             var date = new Date(0)
@@ -213,10 +218,15 @@
             }
             console.log(sellRequestStatus)
             if (sellRequestStatus != "completed") {
+                var grayurl = "https://s-media-cache-ak0.pinimg.com/236x/51/e7/ec/51e7ec2440ed6cc10ee247825f946846.jpg"
+                var imghtml = "<img class = 'center-block' src="+grayurl+" alt='' style='height:150px'>"
+                if(!(show["image"] == null))
+                    imghtml = "<img class = 'center-block' src="+show["image"]+" alt='' style='height:150px'>"
+
                 sellRequests_html += "<div class='row' id='selling"+i+"'>"+
                         "<div class='col-md-2'>"+
                             "<a href='#'>" +
-                                "<img class = 'center-block' src="+show["image"]+" alt='' style='height:150px'>"+
+                                imghtml+
                             "</a>"+
                         "</div>"+
                         "<div class='col-md-3'>"+
