@@ -17,7 +17,7 @@
                 <li style="border-bottom: 5px solid orange;bottom: 0;width: 100px;">
                     <a href="#" style="color:white">My Tickets</a>
                 </li>
-                <li>
+                <li id = "logoutLink">
                     <a href="" id = "logout">Logout</a>
                 </li>
             </ul>
@@ -104,14 +104,21 @@
     <script>
 <!-- Generate Buy Data -->
     var allData = {"requests" : [] }
+    var netid = ""
     $.get('my-tix-data', function(response) { 
         allData = response
+
+        netid = response["netid"]
+
+        formatLogoutButton()
+
         if ($.isReady) {
           updateRequests()
         } else {
           $(function() { updateRequests() })
         }
-      })
+    })
+
     function addZero(i) {
         if (i < 10) {
             i = "0" + i;
@@ -131,6 +138,15 @@
       ];
     var buyRequests_html = ""
     var sellRequests_html = ""
+
+    function formatLogoutButton() {
+        var text = "<a id='logout' href='javascript:void(0)'> Logout ("+netid+") </a>"
+        $("#logoutLink").html(text);
+        $("#logout").click(function(){
+            $.post('logout');
+        });
+    }
+
     function updateRequests() {
         buyRequests_html = ""
         sellRequests_html = ""
@@ -219,27 +235,28 @@
             }
         }
         $("#sell-requests-html-span").html(sellRequests_html)
-    
-    profile = "<div class='row text-left'>"+
-            "<div class='col-lg-12'>"+
-                "<h3>Ticket Buy Requests</h3>"+
+
+        profile = "<div class='row text-left'>"+
+                "<div class='col-lg-12'>"+
+                    "<h3>Ticket Buy Requests</h3>"+
+                "</div>"+
             "</div>"+
-        "</div>"+
-        "<hr>"+
-        "<span id='buy-requests-html-span'>" +
-        buyRequests_html +
-        "</span>" +
-        "<div class='row text-left'>"+
-            "<div class='col-lg-12'>"+
-                "<h3>Ticket Sell Requests</h3>"+
+            "<hr>"+
+            "<span id='buy-requests-html-span'>" +
+            buyRequests_html +
+            "</span>" +
+            "<div class='row text-left'>"+
+                "<div class='col-lg-12'>"+
+                    "<h3>Ticket Sell Requests</h3>"+
+                "</div>"+
             "</div>"+
-        "</div>"+
-        "<hr>"+
-        "<span id='sell-requests-html-span'>" +
-        sellRequests_html +
-        "</span>"
+            "<hr>"+
+            "<span id='sell-requests-html-span'>" +
+            sellRequests_html +
+            "</span>"
         deletionId = 0
-        
+
+            
         $(document).ready(function(){
             $("#profile-page").html(profile)
 
@@ -288,7 +305,6 @@
                 })(i);
             }
         });
-    
     }
 
     function deleteSellRequest(element) {
@@ -331,19 +347,9 @@
         $("#" + deleteBuyId).replaceWith("<p>Request deleted.</p>")
     }
 
-    var text = "<a id='logout' href='javascript:void(0)'> Logout </a>"
-  if(netid === ""){
-    text = "<a href='login'> Login </a>"
-  }
 
-  $("#logoutLink").html(text);
-  
-  $("#logout").click(function(){
-    $.post('logout');
-  });
-
-  $(document).ready(function(){
-  });
+    $(document).ready(function(){
+    });
     
     
 </script>

@@ -157,7 +157,7 @@
       var min = addZero(date.getMinutes());
       var time = hour+":"+min+" "+ampm;
       var group = show["group"];
-      if(group.search("SOLD OUT") >= 0){
+      if(group.search("SOLD OUT") >= 0 || group.search("ticket") >= 0){
         group = "";
       }
       var info = hour+":"+min+" "+ampm+" "+weekDay+"<br>"+month+" "+dayOfMonth+", "+year+"<br>"+show["location"]+"<br><b>"+group+"</b>"
@@ -268,7 +268,7 @@
     }})
   }
 
-  var text = "<a id='logout' href='javascript:void(0)'> Logout </a>"
+  var text = "<a id='logout' href='javascript:void(0)'> Logout ("+netid+") </a>"
   if(netid === ""){
     text = "<a href='login'> Login </a>"
   }
