@@ -38,6 +38,12 @@
         <p><strong>Need a ticket to a sold-out show that you'd like to buy? Place a buy request.</strong></p>
         <h3> </h3>
         <p3>Disclaimer: We are not affiliated with the Frist Ticketing Office -- to officially buy tickets for a show, visit the <a href="https://tickets.princeton.edu/online/default.asp" target="_blank"> Frist Ticketing Webpage </a> or the Ticketing Office in Frist.</p3>
+        <br />
+        <br />
+        <form onsubmit="return false">
+           <input id="show-search-bar" class="search-bar" type="text" name="search" 
+           style="background-image: url(<%= asset_path 'searchicon.png' %>);" placeholder="Search...">
+        </form>
     </header>
 
     <hr>
@@ -114,14 +120,42 @@
 
   var netid = "<%= session[:cas_user] %>"
   var data = { "shows" : [] }
+  var fullData = { "shows" : [] }
   function callbackShows(response, textStatus, xhr) {
-    data = response
+    fullData = response
+    data = response.slice(0)
     if ($.isReady) {
       updateShows()
     } else {
       $(function() { updateShows() })
       }
   }
+  function genFilteringPredicate(searchTerm) {
+    search = searchTerm.toLowerCase()
+      return function(show) {
+        if (show['group'].toLowerCase().includes(search) 
+          || show['location'].toLowerCase().includes(search)
+          || show['name'].toLowerCase().includes(search)) {
+          return true
+        } else {
+          return false
+        }
+    }
+  }
+
+  $('#show-search-bar').on('input', function(event) {
+    var searchTerm = $('#show-search-bar').val()
+    if (searchTerm === "") {
+      console.log("hi")
+      data['shows'] = fullData['shows']
+      updateShows()
+      return
+    }
+    data['shows'] = fullData['shows'].filter(genFilteringPredicate(searchTerm))
+    updateShows()
+
+  })
+  
 
   $.get('shows', callbackShows)
 
