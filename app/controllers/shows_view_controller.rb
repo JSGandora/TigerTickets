@@ -6,8 +6,6 @@ class ShowsViewController < ApplicationController
       .joins('LEFT JOIN buy_requests ON shows.id = buy_requests.show_id')
       .group('shows.id')
       .order(:time)
-      #.where('buy_requests.status IS NULL OR buy_requests.status = ?', 'waiting-for-match')
-      #.where('sell_requests.status IS NULL OR sell_requests.status = ?', 'waiting-for-match')
       
     showsResponse = []
     for show in shows
