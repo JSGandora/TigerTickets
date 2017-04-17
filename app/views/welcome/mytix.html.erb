@@ -148,8 +148,8 @@
     }
 
     function updateRequests() {
-        buyRequests_html = "<p>No current buy requests.</p>"
-        sellRequests_html = "<p>No current sell requests.</p>"
+        buyRequests_html = ""
+        sellRequests_html = ""
         for (i = allData["buyrequests"].length-1; i >= 0; i--) {
             var buyRequestStatus = allData["buyrequests"][i]["status"]
             var show = allData["buyrequests"][i]["show"]
@@ -202,7 +202,11 @@
             "<hr>"
             
         }
+        if (allData["buyrequests"].length == 0) {
+            buyRequests_html = "<p>No current buy requests.</p>"
+        }
         $("#buy-requests-html-span").html(buyRequests_html)
+
         for (i = allData["sellrequests"].length-1; i >= 0; i--) {
             var sellRequestStatus = allData["sellrequests"][i]["status"]
             show = allData["sellrequests"][i]["show"]
@@ -254,7 +258,9 @@
                 "</div>"+
             "<hr>"
         }
-        
+        if (allData["sellrequests"].length == 0) {
+            sellRequests_html = "<p>No current sell requests.</p>"
+        }
         $("#sell-requests-html-span").html(sellRequests_html)
 
         profile = "<div class='row text-left'>"+
