@@ -175,7 +175,7 @@
             if(!(show["image"] == null))
                 imghtml = "<img class = 'center-block' src="+show["image"]+" alt='' style='height:150px'>"
 
-            var deletehtml = "<div class='col-md-2'>Completed</div>"
+            var deletehtml = "<div class='col-md-2' style='color:green'>Completed</div>"
             
             if(!(buyRequestStatus === "completed")){
                 deletehtml = "<div class='col-md-2'>"+
@@ -223,13 +223,13 @@
                 sgroup = "";
             }
             console.log(sellRequestStatus)
-            if (!(sellRequestStatus === "completed")) {
                 var grayurl = "https://s-media-cache-ak0.pinimg.com/236x/51/e7/ec/51e7ec2440ed6cc10ee247825f946846.jpg"
                 var imghtml = "<img class = 'center-block' src="+grayurl+" alt='' style='height:150px'>"
                 if(!(show["image"] == null))
                     imghtml = "<img class = 'center-block' src="+show["image"]+" alt='' style='height:150px'>"
 
-                var deletehtml = "<div class='col-md-2'>Completed</div>"
+                var deletehtml = "<div class='col-md-2' style = 'color:green;'>Completed</div>"
+
                 if(!(sellRequestStatus === "completed")){
                     deletehtml = "<div class='col-md-2'>"+
                     "<button class='btn btn-primary' data-target='#confirm-sell-delete' data-toggle='modal' id = 'deleteSelling"+i+"'>Delete <span class='glyphicon'></span></button>"+
@@ -254,7 +254,7 @@
                     "</div>"+
                 "<hr>"
             }
-        }
+        
         $("#sell-requests-html-span").html(sellRequests_html)
 
         profile = "<div class='row text-left'>"+
