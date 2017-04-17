@@ -5,8 +5,10 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-
-5.times do |i|
-     BuyRequest.create(netid: "rdu", status: "waiting-for-match", show_id: i+1)
-     SellRequest.create(netid: "birgelee", status: "waiting-for-match", show_id: i+1)
+case Rails.env
+     when "development"
+          5.times do |i|
+               BuyRequest.create(netid: "rdu", status: "waiting-for-match", show_id: i+1)
+               SellRequest.create(netid: "birgelee", status: "waiting-for-match", show_id: i+1)
+          end
 end
