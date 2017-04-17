@@ -121,32 +121,30 @@
   var netid = "<%= session[:cas_user] %>"
   var data = { "shows" : [] }
   var fullData = { "shows" : [] }
-  function callbackShows(response, textStatus, xhr) {
-    fullData = response
-    data = response.slice(0)
-    if ($.isReady) {
-      updateShows()
-    } else {
-      $(function() { updateShows() })
-      }
-  }
+  
   function genFilteringPredicate(searchTerm) {
     search = searchTerm.toLowerCase()
+    keywords = search.split(' ')
       return function(show) {
-        if (show['group'].toLowerCase().includes(search) 
-          || show['location'].toLowerCase().includes(search)
-          || show['name'].toLowerCase().includes(search)) {
-          return true
-        } else {
-          return false
-        }
+        return keywords.every(function(keyword) {
+          return show['group'].toLowerCase().includes(keyword)
+           || show['location'].toLowerCase().includes(keyword)
+           || show['name'].toLowerCase().includes(keyword)
+           || show['weekDay'].toLowerCase().includes(keyword)
+           || show['month'].toLowerCase().includes(keyword)
+           || show['dayOfMonth'].toString().toLowerCase().includes(keyword)
+           || show['hour'].toString().toLowerCase().includes(keyword)
+           || show['ampm'].toLowerCase().includes(keyword)
+           || show['min'].toString().toLowerCase().includes(keyword)
+           || show['time'].toLowerCase().includes(keyword)
+
+        })
     }
   }
 
   $('#show-search-bar').on('input', function(event) {
     var searchTerm = $('#show-search-bar').val()
     if (searchTerm === "") {
-      console.log("hi")
       data['shows'] = fullData['shows']
       updateShows()
       return
@@ -155,9 +153,6 @@
     updateShows()
 
   })
-  
-
-  $.get('shows', callbackShows)
 
   var weekday = new Array(7);
   weekday[0] =  "Sunday";
@@ -171,18 +166,19 @@
   var monthNames = ["January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
   ];
-  
+
   function addZero(i) {
     if (i < 10) {
         i = "0" + i;
     }
     return i;
   }
-  var show_html = ""
-  function updateShows() {
-    show_html = ""
-    for (i = 0; i < data["shows"].length; i++) {
-      var show = data["shows"][i]
+  
+  function addDateDataToShows(originalShows) {
+    // This code makes the function slower but keeps it pure so it doesn't tamper with originalData.
+    // Because of how it will be called, purity doesn't matter.
+    //var result = originalData.slice(0)
+    return originalShows.map(function(show) {
       var date = new Date(0)
       date.setUTCSeconds(show['time'])
       var weekDay = weekday[date.getDay()]
@@ -193,11 +189,47 @@
       var ampm = Math.floor(date.getHours() / 12) == 0 ? 'AM' : 'PM'
       var min = addZero(date.getMinutes());
       var time = hour+":"+min+" "+ampm;
+      show['weekDay'] = weekDay
+      show['month'] = month
+      show['dayOfMonth'] = dayOfMonth
+      show['hour'] = hour
+      show['ampm'] = ampm
+      show['min'] = min
+      show['time'] = time
+      return show
+    })
+  }
+  
+
+  function callbackShows(response, textStatus, xhr) {
+    fullData['shows'] = addDateDataToShows(response['shows'])
+    data['shows'] = fullData['shows'].slice(0)
+    if ($.isReady) {
+      updateShows()
+    } else {
+      $(function() { updateShows() })
+      }
+  }
+
+
+  $.get('shows', callbackShows)
+
+  
+
+
+  
+
+  var show_html = ""
+  function updateShows() {
+    show_html = ""
+    for (i = 0; i < data["shows"].length; i++) {
+      var show = data["shows"][i]
+      
       var group = show["group"];
       if(group.search("SOLD OUT") >= 0 || group.search("ticket") >= 0){
         group = "";
       }
-      var info = hour+":"+min+" "+ampm+" "+weekDay+"<br>"+month+" "+dayOfMonth+", "+year+"<br>"+show["location"]+"<br><b>"+group+"</b>"
+      var info = show.hour+":"+show.min+" "+show.ampm+" "+show.weekDay+"<br>"+show.month+" "+show.dayOfMonth+", "+show.year+"<br>"+show["location"]+"<br><b>"+group+"</b>"
 
       var buy_text = "Buy"
       if(show["sellreq"] > 0)
