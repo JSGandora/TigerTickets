@@ -38,16 +38,16 @@
         <p><strong>Need a ticket to a sold-out show that you'd like to buy? Place a buy request.</strong></p>
         <h3> </h3>
         <p3>Disclaimer: We are not affiliated with the Frist Ticketing Office -- to officially buy tickets for a show, visit the <a href="https://tickets.princeton.edu/online/default.asp" target="_blank"> Frist Ticketing Webpage </a> or the Ticketing Office in Frist.</p3>
-        <br />
-        <br />
-        <form onsubmit="return false">
-           <input id="show-search-bar" class="search-bar" type="text" name="search" 
-           style="background-image: url(<%= asset_path 'searchicon.png' %>);" placeholder="Search...">
-        </form>
+        
     </header>
 
     <hr>
+    <form onsubmit="return false" autocomplete="Off">
+           <input id="show-search-bar" class="search-bar" type="text" name="search" 
+           style="background-image: url(<%= asset_path 'searchicon.png' %>);" placeholder="Search...">
+    </form>
 
+    <hr>
     <!-- /.row -->
 
     <!-- Page Features -->
@@ -191,6 +191,7 @@
       var time = hour+":"+min+" "+ampm;
       show['weekDay'] = weekDay
       show['month'] = month
+      show['year'] = year
       show['dayOfMonth'] = dayOfMonth
       show['hour'] = hour
       show['ampm'] = ampm
