@@ -16,10 +16,10 @@ class MailMatchesJob < ApplicationJob
     
     puts "**************EMAIL RECIPIENTS**************"
     puts to
-    
+    timeString = show.time.in_time_zone("America/New_York").strftime('%B %d, %Y %l:%M %p')
     # Create content
     content = "<p>You've been matched for the following show:</p><p>Show Details:</p>"
-    content += "<p>#{show.title} at #{show.time.to_formatted_s(:long)}</p>"
+    content += "<p>#{show.title} at #{timeString}</p>"
     recipients.each do |recipient|
       content += "<p>#{recipient[1]}: #{recipient[0]}</p>"
     end
