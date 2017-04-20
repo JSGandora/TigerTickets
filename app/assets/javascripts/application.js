@@ -15,3 +15,6 @@
 //= require turbolinks
 //= require_tree .
 //= require bootstrap.min
+//= require moment
+//= require underscore
+//= require clndr
