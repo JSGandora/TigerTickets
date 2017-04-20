@@ -233,12 +233,16 @@
       var info = show.hour+":"+show.min+" "+show.ampm+" "+show.weekDay+"<br>"+show.month+" "+show.dayOfMonth+", "+show.year+"<br>"+show["location"]+"<br><b>"+group+"</b>"
 
       var buy_text = "Buy"
-      if(show["sellreq"] > 0)
-        buy_text += " <b>("+show["sellreq"]+" Available!)</b>"
+      if (show["sellreq"] == 1)
+        buy_text += " <b>("+show["sellreq"]+" Seller!)</b>"
+      else if(show["sellreq"] > 1)
+        buy_text += " <b>("+show["sellreq"]+" Sellers!)</b>"
 
       var sell_text = "Sell"
-      if(show["buyreq"] > 0)
-        sell_text += " <b>("+show["buyreq"]+" Requests!)</b>"
+      if(show["buyreq"] == 1)
+        sell_text += " <b>("+show["buyreq"]+" Buyer!)</b>"
+      if(show["buyreq"] > 1)
+        sell_text += " <b>("+show["buyreq"]+" Buyers!)</b>"
 
       var buysellbuttons = "<button class='btn btn-primary' data-target='#confirmBuyModal' id='showBuy"+i+"' data-toggle='modal'>"+buy_text+"</button> <button class='btn btn-default' data-target='#confirmSellModal' id='showSell"+i+"' data-toggle='modal'>"+sell_text+"</button>"
       if(netid === "")
