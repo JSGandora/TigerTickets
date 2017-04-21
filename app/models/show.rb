@@ -4,6 +4,8 @@ require 'capybara/dsl'
 require 'phantomjs'
 require 'time'
 class Show < ApplicationRecord
+     has_many :sell_requests, :dependent => :delete_all
+     has_many :buy_requests, :dependent => :delete_all
      validates :title, uniqueness: {scope: [:time, :location, :group]}
      
      def self.scrape
