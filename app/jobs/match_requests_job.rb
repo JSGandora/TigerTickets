@@ -2,42 +2,14 @@ class MatchRequestsJob < ApplicationJob
   queue_as :default
 
   def perform(*args)
-    selling = args[0]
-    request = args[1]
-
-    if selling
-      sellRequest = request
-      showId = request.show_id
-      buyRequests = BuyRequest.where(show_id: showId).where(status: 'waiting-for-match')
-      buyRequests.each do |buyRequest|
-        EmailHistor.create()
-      end
-
-    end
-
-
-
-    # This method will go through and match buy requests with sell requests, update the DB with the matches, and send out an email to the people who are matched.
-    # This code will eventually only select upcomming shows.
-    buyRequests = BuyRequest.where(status: "waiting-for-match").order(:created_at)
-    buyRequests.each do |buyRequest|
-      sellRequests = SellRequest.where(status: "waiting-for-match").where(show_id: buyRequest.show_id).order(:created_at)
-      if not (sellRequests.length == 0)
-        puts "*****MATCHING HAPPNEING*********"
-        sellRequest = sellRequests.first
-        puts "*******NEXT*******"
-        buyRequest.update(sell_request_id: sellRequest.id)
-        puts "*****MATCHING JOIN TABLE ADDED*********"
-        sellRequest.update(status: "completed")
-        buyRequest.update(status: "completed")
-        puts "*****STATUS CHANGED*********"
-        
-        puts "***********SENDING EMAIL************"
-        show = Show.find(buyRequest.show_id)
-        buyer_email = buyRequest.netid + "@princeton.edu"
-        seller_email = sellRequest.netid + "@princeton.edu"
-        MailMatchesJob.perform_later([[buyer_email,"Buying"], [seller_email, "Selling"]], show)
-      end
+    pendingEmails = EmailHistory.select("buy_requests.netid AS buy_request_netid, sell_requests.netid AS sell_request_netid, shows.*").where(status: "pending").joins(:buy_request).joins(:sell_request).joins("JOIN shows ON sell_requests.show_id = shows.id")
+    n = 0
+    pendingEmails.each do |email|
+      buyer_email = email.buy_request_netid + "@princeton.edu"
+      seller_email = email.sell_request_netid + "@princeton.edu"
+      show = {:time => email.time, :title => email.title}
+      MailMatchesJob.set(wait: n.min).perform_later([[buyer_email,"Buying"], [seller_email, "Selling"]], show)
+      n += 1
     end
   end
 end

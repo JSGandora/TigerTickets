@@ -30,7 +30,7 @@ class SellController < ApplicationController
       EmailHistory.create(status: "pending", buy_request: buyRequest, sell_request: sellRequest)
     end
 
-    MailMatchesJob.perform_later()
+    MatchRequestsJob.perform_later()
 
     response = { :status => "ok", :netid => netid, :show_id => show_id, :sell_request_id => sellRequest.id}
     render json: response
