@@ -1,4 +1,5 @@
   <!-- Navigation -->
+  <body>
   <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
       <!-- Brand and toggle get grouped for better mobile display -->
@@ -30,24 +31,18 @@
   <!-- Page Content -->
   <div class="container">
 
-    <!-- Title -->
-    <header class="jumbotron hero-spacer">
-      <h1>Tiger Tickets</h1>
-        <p>Welcome to <strong>Tiger Tickets</strong> - a ticket exchange app for Princeton students to help ensure that the greatest number of students attend the greatest number of shows. You'll be instantly notified via email when you match with someone who can help complete your request.</p>
-        <p><strong>Have a ticket that you want to sell? Put in a sell request.</strong></p>
-        <p><strong>Need a ticket to a sold-out show that you'd like to buy? Place a buy request.</strong></p>
-        <h3> </h3>
-        <p3>Disclaimer: We are not affiliated with the Frist Ticketing Office -- to officially buy tickets for a show, visit the <a href="https://tickets.princeton.edu/online/default.asp" target="_blank"> Frist Ticketing Webpage </a> or the Ticketing Office in Frist.</p3>
-        
-    </header>
+    <div align = "center">
+        <img src="https://i.imgur.com/RrB21R4.jpg" height="350">
+      </div>
 
-    <hr>
+    <br />
+
     <form onsubmit="return false" autocomplete="Off">
-           <input id="show-search-bar" class="search-bar" type="text" name="search" 
-           style="background-image: url(<%= asset_path 'searchicon.png' %>);" placeholder="Search...">
+            <input type="text" class="form-control search-input" placeholder="Search..." name="srch-term" id="show-search-bar" />
+            <br />
+             
     </form>
 
-    <hr>
     <!-- /.row -->
 
     <!-- Page Features -->
@@ -115,6 +110,7 @@
         </div>
       </div>
     </div>
+</body>
 
 <script>
 
@@ -256,7 +252,7 @@
       	imghtml = "<br><img src="+show["image"]+" alt='' style = 'height:100px'>"
 
       show_html += "<div class='col-md-3 col-sm-6 hero-feature' id = 'ticketPanel'>"+
-      "<div class='thumbnail' style='height:400px'>"+
+      "<div class='panel' style='height:400px'>"+
       imghtml+
       "<div class='caption'>"+
       "<h3>"+show["name"]+"</h3>"+
@@ -343,3 +339,34 @@
 </script>
 
 <style>
+
+body {
+  background-color: rgb(16,25,32);  
+}
+.search-input{
+       background-color: rgb(16, 25, 32); 
+       border: 2px solid #fff; 
+       box-shadow: none; 
+       border-radius: 50px;
+       color: rgb(255,246,207);
+}
+
+.search-input ::-webkit-input-placeholder, .search-input :-moz-placeholder, .search-input ::-moz-placeholder, .search-input :-ms-input-placeholder { {
+       color: #fff;
+       font-weight: bold;
+          }
+}
+
+.panel {
+  display: block;
+  padding: 4px;
+  margin-bottom: 20px;
+  line-height: 1.42857143;
+  background-color: green;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  -webkit-transition: border .2s ease-in-out;
+       -o-transition: border .2s ease-in-out;
+          transition: border .2s ease-in-out;
+}
+</style>
