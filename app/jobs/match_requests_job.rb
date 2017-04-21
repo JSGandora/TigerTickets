@@ -2,6 +2,21 @@ class MatchRequestsJob < ApplicationJob
   queue_as :default
 
   def perform(*args)
+    selling = args[0]
+    request = args[1]
+
+    if selling
+      sellRequest = request
+      showId = request.show_id
+      buyRequests = BuyRequest.where(show_id: showId).where(status: 'waiting-for-match')
+      buyRequests.each do |buyRequest|
+        EmailHistor.create()
+      end
+
+    end
+
+
+
     # This method will go through and match buy requests with sell requests, update the DB with the matches, and send out an email to the people who are matched.
     # This code will eventually only select upcomming shows.
     buyRequests = BuyRequest.where(status: "waiting-for-match").order(:created_at)

@@ -24,7 +24,14 @@ class SellController < ApplicationController
       return
     end
     sellRequest = SellRequest.create(netid: netid, status: 'waiting-for-match', show_id: show_id)
-    MatchRequestsJob.perform_later
+
+    buyRequests = BuyRequest.where(show_id: show_id).where(status: 'waiting-for-match')
+    buyRequests.each do |buyRequest|
+      EmailHistory.create(status: "pending", buy_request: buyRequest, sell_request: sellRequest)
+    end
+
+    MailMatchesJob.perform_later()
+
     response = { :status => "ok", :netid => netid, :show_id => show_id, :sell_request_id => sellRequest.id}
     render json: response
   end
@@ -38,12 +45,15 @@ class SellController < ApplicationController
       return
     end
     # This should stop someone from deleting someone else's sell request.
-    deletedNumber = SellRequest.where(netid: netid).where(id: sell_request_id).where(:status => ["waiting-for-match", "pending"]).destroy_all.length
-    MatchRequestsJob.perform_later
-    if deletedNumber == 0
+    sellRequests = SellRequest.where(netid: netid).where(id: sell_request_id).where(:status => ["waiting-for-match"])
+    
+    # Need to add update of mail history.
+    MailMatchesJob.perform_later()
+    if sellRequests.length == 0
       response = {:status => "bad request", :netid => netid, :reason => 'no sell requests found'}
       render json: response
     else
+      sellRequests.update(status: "canceled")
       response = {:status => "ok", :netid => netid, :sell_request_id => sell_request_id}
       render json: response
     end
