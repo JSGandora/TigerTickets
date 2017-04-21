@@ -24,7 +24,14 @@ class BuyController < ApplicationController
       return
     end
     buyRequest = BuyRequest.create(netid: netid, status: 'waiting-for-match', show_id: show_id)
-    MatchRequestsJob.perform_later
+
+    sellRequests = SellRequest.where(show_id: show_id).where(status: 'waiting-for-match')
+    sellRequests.each do |sellRequest|
+      EmailHistory.create(status: "pending", buy_request: buyRequest, sell_request: sellRequest)
+    end
+
+    MatchRequestsJob.perform_later()
+    
     response = { :status => "ok", :netid => netid, :show_id => show_id, :buy_request_id => buyRequest.id}
     render json: response
   end
