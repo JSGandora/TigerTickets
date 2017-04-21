@@ -10,15 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170412024213) do
+ActiveRecord::Schema.define(version: 20170421024421) do
 
   create_table "buy_requests", force: :cascade do |t|
     t.string   "netid"
     t.string   "status"
     t.integer  "show_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "email_histories", force: :cascade do |t|
+    t.integer  "sell_request_id"
+    t.integer  "buy_request_id"
+    t.string   "status"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
-    t.integer  "sell_request_id"
+    t.index ["buy_request_id"], name: "index_email_histories_on_buy_request_id"
+    t.index ["sell_request_id"], name: "index_email_histories_on_sell_request_id"
   end
 
   create_table "sell_requests", force: :cascade do |t|

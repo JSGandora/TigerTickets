@@ -1,3 +1,4 @@
 class SellRequest < ApplicationRecord
-  #belongs_to :buy_request
+    has_many :email_histories, :dependent => :delete_all
+    has_many :buy_requests, through: :email_histories
 end
