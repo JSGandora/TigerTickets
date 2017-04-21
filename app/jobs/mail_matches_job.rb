@@ -4,7 +4,7 @@ class MailMatchesJob < ApplicationJob
   queue_as :default
 
   def perform(*args)
-    
+    puts "!!!!!!!!!!!!!!!!!!!!!!!Q!!!!!!!!!! EMAILS!!!!!"
     recipients = args[0]
     show = args[1]
     

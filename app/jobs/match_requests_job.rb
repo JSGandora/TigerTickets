@@ -8,7 +8,8 @@ class MatchRequestsJob < ApplicationJob
       buyer_email = email.buy_request_netid + "@princeton.edu"
       seller_email = email.sell_request_netid + "@princeton.edu"
       show = {:time => email.time, :title => email.title}
-      MailMatchesJob.set(wait: n.min).perform_later([[buyer_email,"Buying"], [seller_email, "Selling"]], show)
+      puts "hi from above job call"
+      MailMatchesJob.perform_later([[buyer_email,"Buying"], [seller_email, "Selling"]], show)
       n += 1
     end
   end
