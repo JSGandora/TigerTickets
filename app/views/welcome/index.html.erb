@@ -43,11 +43,13 @@
              
     </form>
 
+    <div class="row text-center", id="hot-tickets">
+    </div>
+
     <!-- /.row -->
 
     <!-- Page Features -->
     <div class="row text-center", id="ticket-listing">
-
       <!-- /.row -->
       <hr>
 
@@ -217,8 +219,10 @@
   
 
   var show_html = ""
+  var hot_html = ""
   function updateShows() {
     show_html = ""
+    hot_html = ""
     for (i = 0; i < data["shows"].length; i++) {
       var show = data["shows"][i]
       
@@ -251,7 +255,7 @@
       if(!(show["image"] === ""))
       	imghtml = "<br><img src="+show["image"]+" alt='' style = 'height:100px'>"
 
-      show_html += "<div class='col-md-3 col-sm-6 hero-feature' id = 'ticketPanel'>"+
+      html = "<div class='col-md-3 col-sm-6 hero-feature' id = 'ticketPanel'>"+
       "<div class='panel' style='height:400px'>"+
       imghtml+
       "<div class='caption'>"+
@@ -262,9 +266,20 @@
       "</div>"+
       "</div>"+
       "</div>"
+      show_html += html
+      if(show["buyreq"] > 0 || show["sellreq"] > 0){
+        hot_html += html
+      }
     }
 
+    hot_html = "<h1><strong>HOT SHOWS</strong></h1><hr>" + hot_html
+
+    show_html = "<h1><strong>CURRENT SHOWS</strong></h1><hr>" + show_html
+
     $("#ticket-listing").html(show_html)
+    $("#hot-tickets").html(hot_html)
+
+
 
     for (i = 0; i < data["shows"].length; i++) {
         (function(index) {$("#showBuy" + i).click(function(){
