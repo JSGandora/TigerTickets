@@ -10,14 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170421062712) do
+ActiveRecord::Schema.define(version: 20170423211904) do
 
   create_table "buy_requests", force: :cascade do |t|
     t.string   "netid"
     t.string   "status"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
     t.integer  "show_id"
+    t.string   "email_token"
+    t.index ["email_token"], name: "index_buy_requests_on_email_token", unique: true
     t.index ["show_id"], name: "index_buy_requests_on_show_id"
   end
 
@@ -34,9 +36,11 @@ ActiveRecord::Schema.define(version: 20170421062712) do
   create_table "sell_requests", force: :cascade do |t|
     t.string   "netid"
     t.string   "status"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
     t.integer  "show_id"
+    t.string   "email_token"
+    t.index ["email_token"], name: "index_sell_requests_on_email_token", unique: true
     t.index ["show_id"], name: "index_sell_requests_on_show_id"
   end
 
