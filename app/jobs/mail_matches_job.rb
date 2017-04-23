@@ -38,7 +38,7 @@ class MailMatchesJob < ApplicationJob
       "personalizations": [
         {
           "to": to,
-          "subject": "#{buyerNetId} is a new buyer for #{showTitle}"
+          "subject": "New Match:#{buyerNetId} for #{showTitle}"
         }
       ],
       "from": {
