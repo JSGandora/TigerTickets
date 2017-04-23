@@ -10,7 +10,7 @@ class MailMatchesJob < ApplicationJob
     
     # Get recipients
     to = []
-    recipients.each do |label, recipient|
+    recipientsInfo.each do |label, recipient|
       to << {"email": recipient.email}
     end
     
@@ -58,6 +58,8 @@ class MailMatchesJob < ApplicationJob
     puts response.status_code
     if response.status_code.to_i == 202
       email.update(status: "sent")
+    else
+      email.update(status: "failed")
     end
     puts response.body
     puts response.headers
