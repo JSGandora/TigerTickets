@@ -11,7 +11,7 @@ class MailMatchesJob < ApplicationJob
     # Get recipients
     to = []
     recipientsInfo.each do |label, recipient|
-      to << {"email": recipient.email}
+      to << {"email": recipient[:email]}
     end
     
     puts "**************EMAIL RECIPIENTS**************"
@@ -24,15 +24,15 @@ class MailMatchesJob < ApplicationJob
     content = "<p>You've been matched for the following show:</p><p>Show Details:</p>"
     content += "<p>#{showTitle} at #{timeString}</p>"
     recipientsInfo.each do |label, recipient|
-      role = recipient.role
-      email = recipient.email
+      role = recipient[:role]
+      email = recipient[:email]
       content += "<p>#{role}: #{email}</p>"
     end
     
     puts "**************EMAIL BODY********************"
     puts content
     
-    buyerNetId = recipientsInfo.buying.netid
+    buyerNetId = recipientsInfo[:buying][:netid]
 
     data = {
       "personalizations": [
