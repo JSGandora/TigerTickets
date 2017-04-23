@@ -4,14 +4,14 @@ class MailMatchesJob < ApplicationJob
   queue_as :default
 
   def perform(*args)
-    recipients = args[0]
+    recipientsInfo = args[0]
     show = args[1]
     email = args[2]
     
     # Get recipients
     to = []
-    recipients.each do |recipient|
-      to << {"email": recipient[0]}
+    recipients.each do |label, recipient|
+      to << {"email": recipient.email}
     end
     
     puts "**************EMAIL RECIPIENTS**************"
@@ -23,22 +23,26 @@ class MailMatchesJob < ApplicationJob
     # Create content
     content = "<p>You've been matched for the following show:</p><p>Show Details:</p>"
     content += "<p>#{showTitle} at #{timeString}</p>"
-    recipients.each do |recipient|
-      content += "<p>#{recipient[1]}: #{recipient[0]}</p>"
+    recipientsInfo.each do |label, recipient|
+      role = recipient.role
+      email = recipient.email
+      content += "<p>#{role}: #{email}</p>"
     end
     
     puts "**************EMAIL BODY********************"
     puts content
     
+    buyerNetId = recipientsInfo.buying.netid
+
     data = {
       "personalizations": [
         {
           "to": to,
-          "subject": "You've been matched!"
+          "subject": "#{buyerNetId} is a new buyer for #{showTitle}"
         }
       ],
       "from": {
-        "email": "Tiger-Tickets@princeton.edu",
+        "email": "No-Reply-Tiger-Tickets@princeton.edu",
         "name": "Tiger Tickets!"
       },
       "content": [
