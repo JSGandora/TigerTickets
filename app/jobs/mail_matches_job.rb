@@ -6,6 +6,21 @@ class MailMatchesJob < ApplicationJob
   def perform(*args)
 
     email = args[0]
+    emailToken = ""
+    if email.email_type == "welcome-seller" or email.email_type == "new-buyer"
+      emailToken = email.sell_request.email_token
+    else
+      emailToken = email.buy_request.email_token
+    end
+
+    # Footers must be changed when deploying to production!!!!!!!
+    sellingFooter = ""
+    sellingFooter += "Once you have made an arrangment with someone, simply click the button below to stop receiving notifications for this ticket. You can also change the status of your request on the <a href='tiger-tickets.herokuapp.com/my-tix'>my-tix page</a>."
+    sellingFooter += "<form action='tiger-tickets-dev.herokuapp.com/complete-sell-token' method='POST'><input type='hidden' name='email_token' value='#{emailToken}'><input type='submit' value='Mark Your Request as Completed'></form>"
+
+    buyingFooter = ""
+    buyingFooter += "Once you have made an arrangment with someone, simply click the button below to stop receiving notifications for this ticket. You can also change the status of your request on the <a href='tiger-tickets.herokuapp.com/my-tix'>my-tix page</a>."
+    buyingFooter += "<form action='tiger-tickets-dev.herokuapp.com/complete-buy-token' method='POST'><input type='hidden' name='email_token' value='#{emailToken}'><input type='submit' value='Mark Your Request as Completed'></form>"
 
     case email.email_type
     when "welcome-seller", "welcome-buyer"
@@ -36,8 +51,7 @@ class MailMatchesJob < ApplicationJob
           body += "<p>We have sent them emails, and they should contact you with when they can pick up your ticket. Feel free to contact them as well.</p>"
 
         end
-        body += "Once you have made an arrangment with someone, simply click the button below to stop receiving notifications for this ticket. You can also change the status of your request on the <a href='tiger-tickets.herokuapp.com/my-tix'>my-tix page</a>."
-        body += "<form><input type='submit' value='Mark Your Request as Completed'></form>"
+        body += sellingFooter
       else
         # This block represents the welcome-buyer case
         recipient = email.buy_request.netid + "@princeton.edu"
@@ -58,8 +72,7 @@ class MailMatchesJob < ApplicationJob
           end
           body += "<p>We have sent them emails, but as a buyer we recommend that you contact them to make sure this exchange happens!</p>"
         end
-        body += "Once you have made an arrangment with someone, simply click the button below to stop receiving notifications for this ticket. You can also change the status of your request on the <a href='tiger-tickets.herokuapp.com/my-tix'>my-tix page</a>."
-        body += "<form><input type='submit' value='Mark Your Request as Completed'></form>"
+        body += buyingFooter
       end
       # Shared part for both buying and selling.
       sendEmail([recipient], subject, body, email)
@@ -80,8 +93,7 @@ class MailMatchesJob < ApplicationJob
         body += "<p>Here are the show details:</p>"
         body += "<p>#{showTitle} at #{timeString}</p>"
         body += "<p>If you would like to buy this ticket, please send them an email as soon as you can. Other buyers have been notified as well.</p>"
-        body += "<p>Once you have made an arrangment with someone, simply click the button below to stop receiving notifications for this ticket. You can also change the status of your request on the <a href='tiger-tickets.herokuapp.com/my-tix'>my-tix page</a>.</p>"
-        body += "<form><input type='submit' value='Mark Your Request as Completed'></form>"
+        body += sellingFooter
       else
         recipient = email.sell_request.netid + "@princeton.edu"
         subject += "There is a new buyer for #{showTitle}!"
@@ -91,8 +103,7 @@ class MailMatchesJob < ApplicationJob
         body += "<p>Here are the show details:</p>"
         body += "<p>#{showTitle} at #{timeString}</p>"
         body += "<p>We have notified this buyer that you are selling, and we encouraged them to contact you. That said, feel free to reach out to them as well.</p>"
-        body += "<p>Once you have made an arrangment with someone, simply click the button below to stop receiving notifications for this ticket. You can also change the status of your request on the <a href='tiger-tickets.herokuapp.com/my-tix'>my-tix page</a>.</p>"
-        body += "<form><input type='submit' value='Mark Your Request as Completed'></form>"
+        body += buyingFooter
       end
       # Shared part for both buying and selling.
       sendEmail([recipient], subject, body, email)
