@@ -13,7 +13,7 @@ class BuyController < ApplicationController
       render json: response
       return
     end
-    sellRequestCount = SellRequest.where(netid: netid).where(show_id: show_id).where(:status => ["waiting-for-match"]).count
+    sellRequestCount = SellRequest.where(netid: netid).where(show_id: show_id).where(status: "waiting-for-match").count
     if sellRequestCount > 0
       response = { :status => "bad request", :netid => netid, :reason => 'this user already has ' + sellRequestCount.to_s + ' sell requests waiting for a match for this show'}
       render json: response
