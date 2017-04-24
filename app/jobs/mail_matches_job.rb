@@ -28,6 +28,7 @@ class MailMatchesJob < ApplicationJob
           body += "<p>There are currnetly no buyers for this ticket, but we will let you know as soon as somebody puts up a buy request.</p>"
         else
           body += "<p>Here are the people interested in buying this ticket:</p>"
+
           buyRequests.each do |buyRequest|
             netid = buyRequest.netid
             body += "netid: #{netid}, email: #{netid}@princeton.edu <br />"
@@ -36,7 +37,7 @@ class MailMatchesJob < ApplicationJob
         end
         body += "<p>We have sent them emails, but as a buyer we recommend that you contact them to make sure this exchange happens!</p>"
         body += "Once you have made an arrangment with someone, simply click the button below to stop recieving notifications. You can also change the status of your request on the <a href='tiger-tickets.herokuapp.com/my-tix'>my-tix page</a>."
-        body += "<form><input type='submit' vlaue='Complete Request'></form>"
+        body += "<form><input type='submit' value='Complete Request'></form>"
       else
         # This block represents the welcome-buyer case
         recipient = email.buy_request.netid + "@princeton.edu"
@@ -57,13 +58,44 @@ class MailMatchesJob < ApplicationJob
           end
           body += "<p>We have sent them emails, but as a buyer we recommend that you contact them to make sure this exchange happens!</p>"
           body += "Once you have made an arrangment with someone, simply click the button below to stop recieving notifications. You can also change the status of your request on the <a href='tiger-tickets.herokuapp.com/my-tix'>my-tix page</a>."
-          body += "<form><input type='submit' vlaue='Complete Request'></form>"
+          body += "<form><input type='submit' value='Complete Request'></form>"
         end
       end
       # Shared part for both buying and selling.
       sendEmail([recipient], subject, body, email)
     when "new-seller", "new-buyer"
-      puts "implementation pending"
+      show = email.show
+      showTitle = show.title
+      recipient = ""
+      subject = ""
+      body = ""
+
+      timeString = show.time.in_time_zone("America/New_York").strftime('%B %d, %Y %l:%M %p')
+      if email.email_type == "new-seller"
+        recipient = email.buy_request.netid + "@princeton.edu"
+        subject += "There is a new seller for #{showTitle}!"
+        body += "<p>There is a new seller for #{showTitle}!:</p>"
+        netid = email.sell_request.netid
+        body += "netid: #{netid}, email: #{netid}@princeton.edu <br />"
+        body += "<p>Here are the show details:</p>"
+        body += "<p>#{showTitle} at #{timeString}</p>"
+        body += "<p>If you would like to buy this ticket, please send them an email as soon as you can. Other buyers have been notofied as well.</p>"
+        body += "<p>Once you have made an arrangment with someone, simply click the button below to stop recieving notifications. You can also change the status of your request on the <a href='tiger-tickets.herokuapp.com/my-tix'>my-tix page</a>.</p>"
+        body += "<form><input type='submit' value='Complete Request'></form>"
+      else
+        recipient = email.sell_request.netid + "@princeton.edu"
+        subject += "There is a new buyer for #{showTitle}!"
+        body += "<p>There is a new buyer for #{showTitle}!:</p>"
+        netid = email.buy_request.netid
+        body += "netid: #{netid}, email: #{netid}@princeton.edu <br />"
+        body += "<p>Here are the show details:</p>"
+        body += "<p>#{showTitle} at #{timeString}</p>"
+        body += "<p>We have notified this buyer that you are selling, and we encouraged them to contact you. That said, feel free to reach out to them as well.</p>"
+        body += "<p>Once you have made an arrangment with someone, simply click the button below to stop recieving notifications. You can also change the status of your request on the <a href='tiger-tickets.herokuapp.com/my-tix'>my-tix page</a>.</p>"
+        body += "<form><input type='submit' value='Complete Request'></form>"
+      end
+      # Shared part for both buying and selling.
+      sendEmail([recipient], subject, body, email)
     end
   end
 
