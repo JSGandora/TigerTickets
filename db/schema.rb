@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170423211904) do
+ActiveRecord::Schema.define(version: 20170424000512) do
 
   create_table "buy_requests", force: :cascade do |t|
     t.string   "netid"
@@ -29,8 +29,11 @@ ActiveRecord::Schema.define(version: 20170423211904) do
     t.string   "status"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
+    t.string   "email_type"
+    t.integer  "show_id"
     t.index ["buy_request_id"], name: "index_email_histories_on_buy_request_id"
     t.index ["sell_request_id"], name: "index_email_histories_on_sell_request_id"
+    t.index ["show_id"], name: "index_email_histories_on_show_id"
   end
 
   create_table "sell_requests", force: :cascade do |t|

@@ -11,7 +11,7 @@ class SellController < ApplicationController
       render json: response
       return
     end
-    buyRequestCount = BuyRequest.where(netid: netid).where(show_id: show_id).where(:status => ["waiting-for-match", "pending"]).count
+    buyRequestCount = BuyRequest.where(netid: netid).where(show_id: show_id).where(status: "waiting-for-match").count
     if buyRequestCount > 0
       response = { :status => "bad request", :netid => netid, :reason => 'this user already has ' + buyRequestCount.to_s + ' buy requests waiting for a match for this show'}
       render json: response
@@ -27,8 +27,9 @@ class SellController < ApplicationController
 
     buyRequests = BuyRequest.where(show_id: show_id).where(status: 'waiting-for-match')
     buyRequests.each do |buyRequest|
-      EmailHistory.create(status: "pending", buy_request: buyRequest, sell_request: sellRequest)
+      EmailHistory.create(status: "pending", buy_request: buyRequest, sell_request: sellRequest, show: sellRequest.show, email_type: "new-seller")
     end
+    EmailHistory.create(status: "pending", sell_request: sellRequest, show: sellRequest.show, email_type: "welcome-seller")
 
     MatchRequestsJob.perform_later()
 

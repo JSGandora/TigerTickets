@@ -27,8 +27,9 @@ class BuyController < ApplicationController
 
     sellRequests = SellRequest.where(show_id: show_id).where(status: 'waiting-for-match')
     sellRequests.each do |sellRequest|
-      EmailHistory.create(status: "pending", buy_request: buyRequest, sell_request: sellRequest)
+      EmailHistory.create(status: "pending", buy_request: buyRequest, sell_request: sellRequest, show: buyRequest.show, email_type: "new-buyer")
     end
+    EmailHistory.create(status: "pending", buy_request: buyRequest, show: buyRequest.show, email_type: "welcome-buyer")
 
     MatchRequestsJob.perform_later()
     
