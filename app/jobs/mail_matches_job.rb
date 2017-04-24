@@ -19,7 +19,7 @@ class MailMatchesJob < ApplicationJob
         recipient = email.sell_request.netid + "@princeton.edu"
         subject += "You now have a sell request in for #{showTitle}"
 
-        body += "<p>You now have a buy request in for:</p>"
+        body += "<p>You now have a sell request in for:</p>"
         timeString = show.time.in_time_zone("America/New_York").strftime('%B %d, %Y %l:%M %p')
         body += "<p>#{showTitle} at #{timeString}</p>"
 
@@ -34,10 +34,10 @@ class MailMatchesJob < ApplicationJob
             body += "netid: #{netid}, email: #{netid}@princeton.edu <br />"
           end
           body += "<p>We have sent them emails, and they should contact you with when they can pick up your ticket.</p>"
+
         end
-        body += "<p>We have sent them emails, but as a buyer we recommend that you contact them to make sure this exchange happens!</p>"
         body += "Once you have made an arrangment with someone, simply click the button below to stop recieving notifications. You can also change the status of your request on the <a href='tiger-tickets.herokuapp.com/my-tix'>my-tix page</a>."
-        body += "<form><input type='submit' value='Complete Request'></form>"
+        body += "<form><input type='submit' value='Mark Your Request as Completed'></form>"
       else
         # This block represents the welcome-buyer case
         recipient = email.buy_request.netid + "@princeton.edu"
@@ -57,9 +57,9 @@ class MailMatchesJob < ApplicationJob
             body += "netid: #{netid}, email: #{netid}@princeton.edu <br />"
           end
           body += "<p>We have sent them emails, but as a buyer we recommend that you contact them to make sure this exchange happens!</p>"
-          body += "Once you have made an arrangment with someone, simply click the button below to stop recieving notifications. You can also change the status of your request on the <a href='tiger-tickets.herokuapp.com/my-tix'>my-tix page</a>."
-          body += "<form><input type='submit' value='Complete Request'></form>"
         end
+        body += "Once you have made an arrangment with someone, simply click the button below to stop recieving notifications. You can also change the status of your request on the <a href='tiger-tickets.herokuapp.com/my-tix'>my-tix page</a>."
+        body += "<form><input type='submit' value='Mark Your Request as Completed'></form>"
       end
       # Shared part for both buying and selling.
       sendEmail([recipient], subject, body, email)
@@ -81,7 +81,7 @@ class MailMatchesJob < ApplicationJob
         body += "<p>#{showTitle} at #{timeString}</p>"
         body += "<p>If you would like to buy this ticket, please send them an email as soon as you can. Other buyers have been notofied as well.</p>"
         body += "<p>Once you have made an arrangment with someone, simply click the button below to stop recieving notifications. You can also change the status of your request on the <a href='tiger-tickets.herokuapp.com/my-tix'>my-tix page</a>.</p>"
-        body += "<form><input type='submit' value='Complete Request'></form>"
+        body += "<form><input type='submit' value='Mark Your Request as Completed'></form>"
       else
         recipient = email.sell_request.netid + "@princeton.edu"
         subject += "There is a new buyer for #{showTitle}!"
@@ -92,7 +92,7 @@ class MailMatchesJob < ApplicationJob
         body += "<p>#{showTitle} at #{timeString}</p>"
         body += "<p>We have notified this buyer that you are selling, and we encouraged them to contact you. That said, feel free to reach out to them as well.</p>"
         body += "<p>Once you have made an arrangment with someone, simply click the button below to stop recieving notifications. You can also change the status of your request on the <a href='tiger-tickets.herokuapp.com/my-tix'>my-tix page</a>.</p>"
-        body += "<form><input type='submit' value='Complete Request'></form>"
+        body += "<form><input type='submit' value='Mark Your Request as Completed'></form>"
       end
       # Shared part for both buying and selling.
       sendEmail([recipient], subject, body, email)
