@@ -31,6 +31,7 @@ class BuyController < ApplicationController
     sellRequests.each do |sellRequest|
       EmailHistory.create(status: "pending", buy_request: buyRequest, sell_request: sellRequest, show: buyRequest.show, email_type: "new-buyer")
     end
+    puts "line 34 excuted"
     EmailHistory.create(status: "pending", buy_request: buyRequest, show: buyRequest.show, email_type: "welcome-buyer")
 
     MatchRequestsJob.perform_later()
