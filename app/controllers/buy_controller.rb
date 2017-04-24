@@ -53,7 +53,7 @@ class BuyController < ApplicationController
     if token
       buyRequests = BuyRequest.where(email_token: token).where(:status => ["waiting-for-match"])
       if buyRequests.length > 0
-        BuyRequest.update_all(status: "completed")
+        buyRequests.update_all(status: "completed")
         status = "ok"
         type = "token"
       else
@@ -70,7 +70,7 @@ class BuyController < ApplicationController
         buyRequests = BuyRequest.where(netid: netid).where(id: buy_request_id).where(:status => ["waiting-for-match"])
         # Checks if the buy request is valid
         if buyRequests.length > 0
-          BuyRequest.update_all(status: "completed")
+          buyRequests.update_all(status: "completed")
           status = "ok"
           type = "netid"
         else
