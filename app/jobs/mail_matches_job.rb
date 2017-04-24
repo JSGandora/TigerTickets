@@ -23,7 +23,7 @@ class MailMatchesJob < ApplicationJob
         timeString = show.time.in_time_zone("America/New_York").strftime('%B %d, %Y %l:%M %p')
         body += "<p>#{showTitle} at #{timeString}</p>"
 
-        buyRequests = show.buy_requests
+        buyRequests = show.buy_requests.where(status: "waiting-for-match")
         if buyRequests.length == 0
           body += "<p>There are currnetly no buyers for this ticket, but we will let you know as soon as somebody puts up a buy request.</p>"
         else
@@ -47,7 +47,7 @@ class MailMatchesJob < ApplicationJob
         timeString = show.time.in_time_zone("America/New_York").strftime('%B %d, %Y %l:%M %p')
         body += "<p>#{showTitle} at #{timeString}</p>"
 
-        sellRequests = show.sell_requests
+        sellRequests = show.sell_requests.where(status: "waiting-for-match")
         if sellRequests.length == 0
           body += "<p>There are currnetly no sellers for this ticket, but we will let you know as soon as somebody puts up a sell request.</p>"
         else
