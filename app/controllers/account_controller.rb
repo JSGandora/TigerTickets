@@ -23,10 +23,17 @@ class AccountController < ApplicationController
         :image => buyRequest['img'],
         :price => 0}
 
+      showSellRequests = SellRequest.where(show_id: buyRequest['show_id'])
+      sellerList = []
+      for sellRequest in showSellRequests
+        sellerList << sellRequest.netid
+      end
+
       buyRequestResponse << {
         :id => buyRequest['buy_request_id'],
         :netid => netid,
         :status => buyRequest['status'],
+        :seller_list => sellerList,
         :show => show
       }
     end
@@ -46,10 +53,17 @@ class AccountController < ApplicationController
         :image => sellRequest['img'],
         :price => 0}
 
+      showBuyRequests = BuyRequest.where(show_id: sellRequest['show_id'])
+      buyerList = []
+      for buyRequest in showBuyRequests
+        buyerList << buyRequest.netid
+      end
+
       sellRequestResponse << {
         :id => sellRequest['sell_request_id'],
         :netid => netid,
         :status => sellRequest['status'],
+        :buyer_list => buyerList,
         :show => show
       }
     end
