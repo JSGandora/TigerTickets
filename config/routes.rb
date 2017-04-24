@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   # Buy request API
   post 'buy', to: 'buy#buyrequest'
   post 'cancel-buy', to: 'buy#deletebuy'
+  post 'complete-buy', to: 'buy#complete_buy'
   
   # Shows API
   get 'shows', to: 'shows_view#getshows'

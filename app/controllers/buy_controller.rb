@@ -1,7 +1,9 @@
 class BuyController < ApplicationController
   # Disables a poerful security feature but is needed for debugging. With this line, this controller is voulnerable to XSRF attcks.
   skip_before_action :verify_authenticity_token
-  before_action CASClient::Frameworks::Rails::Filter
+  before_action CASClient::Frameworks::Rails::Filter, :except => :complete_buy
+  before_action CASClient::Frameworks::Rails::GatewayFilter, :only => :complete_buy
+  
   def buyrequest
     # This is the action exposed with POST /buy
     show_id = params[:show_id]
@@ -36,6 +38,59 @@ class BuyController < ApplicationController
     response = { :status => "ok", :netid => netid, :show_id => show_id, :buy_request_id => buyRequest.id}
     render json: response
   end
+  
+  
+  # Marks buy request as completed
+  def complete_buy
+    token = params[:email_token]
+    status = ""
+    netid = ""
+    buy_request_id = ""
+    reason = ""
+    type = ""
+    
+    # If token exists, checks if it's a valid token
+    if token
+      buyRequests = BuyRequest.where(email_token: token).where(:status => ["waiting-for-match"])
+      if buyRequests.length > 0
+        BuyRequest.update_all(status: "completed")
+        status = "ok"
+        type = "token"
+      else
+        status = "Bad request"
+        reason = "Invalid token"
+      end
+      
+    # Checks if user is logged in
+    elsif user_is_logged_in?
+      netid = session[:cas_user]
+      buy_request_id = params[:buy_request_id]
+      # Checks if there was a buy_request_id
+      if buy_request_id
+        buyRequests = BuyRequest.where(netid: netid).where(id: buy_request_id).where(:status => ["waiting-for-match"])
+        # Checks if the buy request is valid
+        if buyRequests.length > 0
+          BuyRequest.update_all(status: "completed")
+          status = "ok"
+          type = "netid"
+        else
+          status = "Bad request"
+          reason = "No buy requests found"
+        end
+      else
+        status = "Bad request"
+        reason = "Missing buy_request_id"
+      end
+    else
+      status = "Bad request"
+      reason = "No authentication/token"
+    end
+    
+    # Return response in JSON
+    response = { :status => status, :netid => netid, :buy_request_id => buy_request_id, :reason => reason, :type => type}
+    render json: response
+    return
+  end
 
   def deletebuy
     # This is the action exposed with POST /cancelbuy
@@ -48,7 +103,7 @@ class BuyController < ApplicationController
       return
     end
     # This should stop someone from deleting someone else's buy request.
-    buyRequests = BuyRequest.where(netid: netid).where(id: buy_request_id).where(:status => ["waiting-for-match", "pending"])
+    buyRequests = BuyRequest.where(netid: netid).where(id: buy_request_id).where(:status => ["waiting-for-match"])
     MatchRequestsJob.perform_later
     if buyRequests.length == 0
       response = {:status => "bad request", :netid => netid, :reason => 'no buy requests found'}
