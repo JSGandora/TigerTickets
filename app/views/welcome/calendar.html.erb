@@ -3,18 +3,21 @@
   <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
       <!-- Brand and toggle get grouped for better mobile display -->
-      <div class="navbar-header" style="border-bottom: 5px solid orange;bottom: 0;width: 100px;">
+      <div class="navbar-header">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
           <span class="sr-only">Toggle navigation</span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#" style="color:white;">TigerTickets</a>
+        <a class="navbar-brand" href="/">TigerTickets</a>
       </div>
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav navbar-right">
+        <li>
+          <a href="#" style="border-bottom: 5px solid rgb(249, 113, 4);bottom: 0;color:white">FAQ</a>
+        </li>
         <li>
           <a href="my-tix">My Tickets</a>
         </li>
@@ -32,7 +35,7 @@
   <div class="container">
 
     <div align = "center">
-        <img src="https://i.imgur.com/RrB21R4.jpg" height="350">
+        <img src="http://i.imgur.com/xwoZIlm.png" height="100">
       </div>
 
     <!-- /.row -->
@@ -76,6 +79,7 @@
 			We are not affiliated with the Frist Ticketing Office -- to officially buy tickets for a show, visit the <a href="https://tickets.princeton.edu/online/default.asp" target="_blank"> Frist Ticketing Webpage </a> or the Ticketing Office in Frist. We are working on posting a direct link to the online order form for each ticket. Stay tuned.
 		</p>
 
+		<hr>
 	</div>
 
     <!-- Page Features -->
@@ -92,39 +96,38 @@
 
 </body>
 
+<script>
+	$.get("/shows", function(response){
+		netid = response["netid"];
+			console.log(netid)
+		var text = "<a id='logout' href='javascript:void(0)'> Logout ("+netid+") </a>"
+		if(netid === ""){
+			text = "<a href='login'> Login </a>"
+		}
+		$("#logoutLink").html(text);
+
+		$("#logout").click(function(){
+		$.post('logout');
+		});
+	})
+</script>
+
 <style>
 
 body {
-  background-color: rgb(16,25,32);  
-}
-.search-input{
-       background-color: rgb(16, 25, 32); 
-       border: 2px solid #fff; 
-       box-shadow: none; 
-       border-radius: 50px;
-       color: rgb(255,246,207);
-}
-
-.search-input ::-webkit-input-placeholder, .search-input :-moz-placeholder, .search-input ::-moz-placeholder, .search-input :-ms-input-placeholder { {
-       color: #fff;
-       font-weight: bold;
-          }
-}
-
-.panel {
-  display: block;
-  padding: 4px;
-  margin-bottom: 20px;
-  line-height: 1.42857143;
-  background-color: green;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  -webkit-transition: border .2s ease-in-out;
-       -o-transition: border .2s ease-in-out;
-          transition: border .2s ease-in-out;
+  background-color: white;  
 }
 
 #faq {
-	color:white;
+	color:black;
+}
+
+hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid rgb(249, 113, 4);
+    margin: 1em 0;
+    padding: 0; 
 }
 </style>
