@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   post 'buy', to: 'buy#buyrequest'
   post 'cancel-buy', to: 'buy#cancelbuy'
   get 'shows', to: 'shows_view#getshows'
-  get 'calendar', to: 'welcome#calendar'
+  get 'faq', to: 'welcome#faq'
   post 'logout', to: 'welcome#logout'
   get 'login', to: 'welcome#login'
   root 'welcome#index'

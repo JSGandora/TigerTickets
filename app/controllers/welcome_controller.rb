@@ -10,10 +10,8 @@ class WelcomeController < ApplicationController
   end
   def mytix
   end
-
-  def calendar
+  def faq
   end
-
   def login
     redirect_to "/"
   end
