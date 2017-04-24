@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   post 'buy', to: 'buy#buyrequest'
   post 'cancel-buy', to: 'buy#deletebuy'
   post 'complete-buy', to: 'buy#complete_buy'
+  post 'complete-buy-token', to: 'buy#complete_buy_token'
   
   # Shows API
   get 'shows', to: 'shows_view#getshows'

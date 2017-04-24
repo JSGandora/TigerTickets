@@ -1,7 +1,7 @@
 class BuyController < ApplicationController
   # Disables a poerful security feature but is needed for debugging. With this line, this controller is voulnerable to XSRF attcks.
   skip_before_action :verify_authenticity_token
-  before_action CASClient::Frameworks::Rails::Filter, :except => :complete_buy
+  before_action CASClient::Frameworks::Rails::Filter, :except => :complete_buy_token
   
   def buyrequest
     # This is the action exposed with POST /buy
@@ -39,30 +39,38 @@ class BuyController < ApplicationController
     render json: response
   end
   
-  
   # Marks buy request as completed
-  def complete_buy
-    token = params[:email_token]
+  def complete_buy_token
     status = ""
-    netid = ""
-    buy_request_id = ""
     reason = ""
-    type = ""
-    
-    # If token exists, checks if it's a valid token
+    token = params[:email_token]
     if token
       buyRequests = BuyRequest.where(email_token: token).where(:status => ["waiting-for-match"])
       if buyRequests.length > 0
         buyRequests.update_all(status: "completed")
         status = "ok"
-        type = "token"
       else
         status = "Bad request"
-        reason = "Invalid token"
+        reason = "Tampered token. We have alerted the authorities."
       end
-      
+    else
+      status = "Bad request"
+      reason = "No authentication/token"
+    end
+    response = { :status => status, :reason => reason}
+    render json: response
+    return
+  end
+  
+  # Marks buy request as completed
+  def complete_buy
+    status = ""
+    netid = ""
+    buy_request_id = ""
+    reason = ""
+    
     # Checks if user is logged in
-    elsif user_is_logged_in?
+    if user_is_logged_in?
       netid = session[:cas_user]
       buy_request_id = params[:buy_request_id]
       # Checks if there was a buy_request_id
@@ -72,7 +80,6 @@ class BuyController < ApplicationController
         if buyRequests.length > 0
           buyRequests.update_all(status: "completed")
           status = "ok"
-          type = "netid"
         else
           status = "Bad request"
           reason = "No buy requests found"
@@ -82,12 +89,12 @@ class BuyController < ApplicationController
         reason = "Missing buy_request_id"
       end
     else
-      status = "Bad request"
-      reason = "No authentication/token"
+      status = "Bad request."
+      reason = "Not logged in."
     end
     
     # Return response in JSON
-    response = { :status => status, :netid => netid, :buy_request_id => buy_request_id, :reason => reason, :type => type}
+    response = { :status => status, :netid => netid, :buy_request_id => buy_request_id, :reason => reason}
     render json: response
     return
   end
