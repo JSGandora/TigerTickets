@@ -19,8 +19,9 @@ class SellController < ApplicationController
       return
     end
     sellRequestCount = SellRequest.where(netid: netid).where(show_id: show_id).where(:status => ["waiting-for-match", "completed"]).count
+    # This is the ticket request cap. It should be 0 in production but it is at 1 (which means we allow 2 connurrent requests) for dev.
     if sellRequestCount > 1
-      response = { :status => "bad request", :netid => netid, :reason => 'this user already has 2 sell requests for this show'}
+      response = { :status => "bad request", :netid => netid, :reason => 'this user already has a sell requests for this show'}
       render json: response
       return
     end
