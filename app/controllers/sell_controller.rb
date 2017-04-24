@@ -36,7 +36,7 @@ class SellController < ApplicationController
     render json: response
   end
 
-  def cancelsell
+  def deletesell
     sell_request_id = params[:sell_request_id]
     netid = session[:cas_user]
     if not sell_request_id
@@ -53,7 +53,7 @@ class SellController < ApplicationController
       response = {:status => "bad request", :netid => netid, :reason => 'no sell requests found'}
       render json: response
     else
-      sellRequests.update(status: "canceled")
+      sellRequests.update_all(status: "deleted")
       response = {:status => "ok", :netid => netid, :sell_request_id => sell_request_id}
       render json: response
     end

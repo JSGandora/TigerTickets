@@ -36,22 +36,24 @@ class BuyController < ApplicationController
     render json: response
   end
 
-  def cancelbuy
+  def deletebuy
     # This is the action exposed with POST /cancelbuy
     buy_request_id = params[:buy_request_id]
     netid = session[:cas_user]
+    # Assert buy request id is in params
     if not buy_request_id
       response = { :status => "bad request", :netid => netid, :reason => 'missing buy_request_id'}
       render json: response
       return
     end
     # This should stop someone from deleting someone else's buy request.
-    deletedNumber = BuyRequest.where(netid: netid).where(id: buy_request_id).where(:status => ["waiting-for-match", "pending"]).destroy_all.length
+    buyRequests = BuyRequest.where(netid: netid).where(id: buy_request_id).where(:status => ["waiting-for-match", "pending"])
     MatchRequestsJob.perform_later
-    if deletedNumber == 0
+    if buyRequests.length == 0
       response = {:status => "bad request", :netid => netid, :reason => 'no buy requests found'}
       render json: response
     else
+      buyRequests.update_all(status: "deleted")
       response = {:status => "ok", :netid => netid, :buy_request_id => buy_request_id}
       render json: response
     end

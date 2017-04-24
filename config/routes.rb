@@ -4,11 +4,11 @@ Rails.application.routes.draw do
   
   # Sell request API
   post 'sell', to: 'sell#sellrequest'
-  post 'cancel-sell', to: 'sell#cancelsell'
+  post 'cancel-sell', to: 'sell#deletesell'
   
   # Buy request API
   post 'buy', to: 'buy#buyrequest'
-  post 'cancel-buy', to: 'buy#cancelbuy'
+  post 'cancel-buy', to: 'buy#deletebuy'
   
   # Shows API
   get 'shows', to: 'shows_view#getshows'
