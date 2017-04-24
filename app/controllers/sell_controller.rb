@@ -18,7 +18,7 @@ class SellController < ApplicationController
       render json: response
       return
     end
-    sellRequestCount = SellRequest.where(netid: netid).where(show_id: show_id).count
+    sellRequestCount = SellRequest.where(netid: netid).where(show_id: show_id).where(:status => ["waiting-for-match", "completed"]).count
     if sellRequestCount > 1
       response = { :status => "bad request", :netid => netid, :reason => 'this user already has 2 sell requests for this show'}
       render json: response
