@@ -53,13 +53,18 @@ class BuyController < ApplicationController
       else
         status = "Bad request"
         reason = "Tampered token. We have alerted the authorities."
+        response = { :status => status, :reason => reason}
+        render json: response
+        return
       end
     else
       status = "Bad request"
       reason = "No authentication/token"
+      response = { :status => status, :reason => reason}
+      render json: response
+      return
     end
-    response = { :status => status, :reason => reason}
-    render json: response
+    redirect_to "/my-tix"
     return
   end
   
