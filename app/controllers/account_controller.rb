@@ -23,7 +23,7 @@ class AccountController < ApplicationController
         :image => buyRequest['img'],
         :price => 0}
 
-      showSellRequests = SellRequest.where(show_id: buyRequest['show_id'])
+      showSellRequests = SellRequest.where(show_id: buyRequest['show_id']).where(status: "waiting-for-match")
       sellerList = []
       for sellRequest in showSellRequests
         sellerList << sellRequest.netid
@@ -53,7 +53,7 @@ class AccountController < ApplicationController
         :image => sellRequest['img'],
         :price => 0}
 
-      showBuyRequests = BuyRequest.where(show_id: sellRequest['show_id'])
+      showBuyRequests = BuyRequest.where(show_id: sellRequest['show_id']).where(status: "waiting-for-match")
       buyerList = []
       for buyRequest in showBuyRequests
         buyerList << buyRequest.netid
