@@ -1,7 +1,7 @@
 class SellController < ApplicationController
   # Disables a poerful security feature but is needed for debugging. With this line, this controller is voulnerable to XSRF attcks.
   skip_before_action :verify_authenticity_token
-  before_action CASClient::Frameworks::Rails::Filter
+  before_action CASClient::Frameworks::Rails::Filter, :except => :complete_sell_token
   
   def sellrequest
     # This is the action exposed with POST /sell
@@ -37,6 +37,71 @@ class SellController < ApplicationController
 
     response = { :status => "ok", :netid => netid, :show_id => show_id, :sell_request_id => sellRequest.id}
     render json: response
+  end
+  
+  # Marks sell request as completed
+  def complete_sell_token
+    status = ""
+    reason = ""
+    token = params[:email_token]
+    if token
+      sellRequests = SellRequest.where(email_token: token).where(:status => ["waiting-for-match"])
+      if sellRequests.length > 0
+        sellRequests.update_all(status: "completed")
+        status = "ok"
+      else
+        status = "Bad request"
+        reason = "Tampered token. We have alerted the authorities."
+        response = { :status => status, :reason => reason}
+        render json: response
+        return
+      end
+    else
+      status = "Bad request"
+      reason = "No authentication/token"
+      response = { :status => status, :reason => reason}
+      render json: response
+      return
+    end
+    redirect_to "/my-tix"
+    return
+  end
+  
+  # Marks sell request as completed
+  def complete_sell
+    status = ""
+    netid = ""
+    sell_request_id = ""
+    reason = ""
+    
+    # Checks if user is logged in
+    if user_is_logged_in?
+      netid = session[:cas_user]
+      sell_request_id = params[:sell_request_id]
+      # Checks if there was a sell_request_id
+      if sell_request_id
+        sellRequests = SellRequest.where(netid: netid).where(id: sell_request_id).where(:status => ["waiting-for-match"])
+        # Checks if the sell request is valid
+        if sellRequests.length > 0
+          sellRequests.update_all(status: "completed")
+          status = "ok"
+        else
+          status = "Bad request"
+          reason = "No sell requests found"
+        end
+      else
+        status = "Bad request"
+        reason = "Missing sell_request_id"
+      end
+    else
+      status = "Bad request."
+      reason = "Not logged in."
+    end
+    
+    # Return response in JSON
+    response = { :status => status, :netid => netid, :sell_request_id => sell_request_id, :reason => reason}
+    render json: response
+    return
   end
 
   def deletesell

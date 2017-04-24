@@ -5,6 +5,8 @@ Rails.application.routes.draw do
   # Sell request API
   post 'sell', to: 'sell#sellrequest'
   post 'cancel-sell', to: 'sell#deletesell'
+  post 'complete-sell', to: 'sell#complete_sell'
+  post 'complete-sell-token', to: 'sell#complete_sell_token'
   
   # Buy request API
   post 'buy', to: 'buy#buyrequest'
