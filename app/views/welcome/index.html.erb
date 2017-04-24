@@ -1,9 +1,12 @@
   <!-- Navigation -->
   <body>
+
+<center><img src="http://i.imgur.com/NqIcAe2.png" style="height:200px;"></center>
+
   <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
       <!-- Brand and toggle get grouped for better mobile display -->
-      <div class="navbar-header" style="border-bottom: 5px solid orange;bottom: 0;width: 100px;">
+      <div class="navbar-header" style="border-bottom: 5px solid rgb(246,119,0);bottom: 0;width: 100px;">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
           <span class="sr-only">Toggle navigation</span>
           <span class="icon-bar"></span>
@@ -41,7 +44,7 @@
     <br />
 
     <form onsubmit="return false" autocomplete="Off">
-            <input type="text" class="form-control search-input" placeholder="Search..." name="srch-term" id="show-search-bar" />
+            <input type="text" class="form-control search-input" placeholder="Search for a show..." name="srch-term" id="show-search-bar" />
             <br />
              
     </form>
@@ -79,7 +82,7 @@
             <h2></h2>
           </div>
           <div class="modal-body">
-              <h1>Confirm Ticket Buy Request?</h1>
+              <h2>Confirm Ticket Buy Request?</h2>
               <p> You are about to confirm your buy request for:</p>
               <p id="confirmBuyBody">ya done goof'd</p>
               <p>Do you want to proceed?</p>
@@ -103,7 +106,7 @@
             <h2></h2>
           </div>
           <div class="modal-body">
-            <h1>Confirm Ticket Sell Request?</h1>
+            <h2>Confirm Ticket Sell Request?</h2>
             <p> You are about to confirm your sell request for:</p>
             <p id="confirmSellBody">ya done goof'd</p>
             <p>Do you want to proceed?</p>
@@ -156,16 +159,16 @@
   })
 
   var weekday = new Array(7);
-  weekday[0] =  "Sunday";
-  weekday[1] = "Monday";
-  weekday[2] = "Tuesday";
-  weekday[3] = "Wednesday";
-  weekday[4] = "Thursday";
-  weekday[5] = "Friday";
-  weekday[6] = "Saturday";
+  weekday[0] =  "SUN";
+  weekday[1] = "MON";
+  weekday[2] = "TUE";
+  weekday[3] = "WED";
+  weekday[4] = "THU";
+  weekday[5] = "FRI";
+  weekday[6] = "SAT";
 
-  var monthNames = ["January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
+  var monthNames = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN",
+    "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"
   ];
 
   function addZero(i) {
@@ -233,7 +236,7 @@
       if(group.search("SOLD OUT") >= 0 || group.search("ticket") >= 0){
         group = "";
       }
-      var info = show.hour+":"+show.min+" "+show.ampm+" "+show.weekDay+"<br>"+show.month+" "+show.dayOfMonth+", "+show.year+"<br>"+show["location"]+"<br><b>"+group+"</b>"
+      var timing = show.weekDay+" · "+show.month+" "+show.dayOfMonth+" "+show.year+" · "+show.hour+":"+show.min+" "+show.ampm
 
       var buy_text = "Buy"
       if (show["sellreq"] == 1)
@@ -254,30 +257,49 @@
       }
 
       var grayurl = "https://cdn.evbuc.com/eventlogos/298207/1478813947tickets.png"
-      var imghtml = "<br><img src="+grayurl+" alt='' style = 'height:100px'>"
+      var imghtml = "<img src="+grayurl+" alt='' style = 'height:100px'>"
       if(!(show["image"] === ""))
-      	imghtml = "<br><img src="+show["image"]+" alt='' style = 'height:100px'>"
+      	imghtml = "<img src="+show["image"]+" alt='' style = 'height:100px'>"
 
-      html = "<div class='col-md-3 col-sm-6 hero-feature' id = 'ticketPanel'>"+
+      if (group == "") {
+        html = "<div class='col-md-3 col-sm-6 hero-feature' id = 'ticketPanel'>"+
+        "<div class='panel' style='height:400px'>"+
+        "<br><br>"+
+        "<h3><strong>"+show["name"]+"</strong></h3>"+
+        imghtml+
+        "<div class='caption'>"+
+        "<h5>"+timing+"</h5>"+
+        "<h5><strong>"+show["location"]+"</strong></h5>"+
+        "<p>"+buysellbuttons+"</p>"+
+        "</div>"+
+        "</div>"+
+        "</div>"
+      }
+      else {
+        html = "<div class='col-md-3 col-sm-6 hero-feature' id = 'ticketPanel'>"+
       "<div class='panel' style='height:400px'>"+
+       "<h4><i>"+group+"</i></h4>"+
+       "<p><i>presents</i></p>"+
+       "<h3><strong>"+show["name"]+"</strong></h3>"+
       imghtml+
       "<div class='caption'>"+
-      "<h3>"+show["name"]+"</h3>"+
-      "<p>"+info+"</p>"+
+      "<h5>"+timing+"</h5>"+
+      "<h5><strong>"+show["location"]+"</strong></h5>"+
       "<p>"+buysellbuttons+
       "</p>"+
       "</div>"+
       "</div>"+
       "</div>"
+      }
       show_html += html
       if(show["buyreq"] > 0 || show["sellreq"] > 0){
         hot_html += html
       }
     }
 
-    hot_html = "<h1><strong>HOT SHOWS</strong></h1><hr>" + hot_html
+    hot_html = "<h1><strong>Popular Shows</strong></h1><hr>" + hot_html
 
-    show_html = "<h1><strong>CURRENT SHOWS</strong></h1><hr>" + show_html
+    show_html = "<h1><strong>Current Shows</strong></h1><hr>" + show_html
 
     $("#ticket-listing").html(show_html)
     $("#hot-tickets").html(hot_html)
@@ -286,7 +308,7 @@
 
     for (i = 0; i < data["shows"].length; i++) {
         (function(index) {$("#showBuy" + i).click(function(){
-          var btime = data["shows"][index]['time']+" "+data["shows"][index]['weekDay']+"<br>"+data["shows"][index]['month']+" "+data["shows"][index]['dayOfMonth']+", "+data["shows"][index]['year']
+          var btime = data["shows"][index]['weekDay']+" · "+data["shows"][index]['month']+" "+data["shows"][index]['dayOfMonth']+" "+data["shows"][index]['year']+" · "+data["shows"][index]['time']
           message = "<p><strong>" + data["shows"][index]["name"] + "<br />" + btime + "<br />" + data["shows"][index]["location"] + "</strong>.</p>";
           $("#confirmBuyBody").html(message)
           $("#deleteButtonBuyModal").attr("show-id", data["shows"][index]['id'])
@@ -295,7 +317,7 @@
     }
     for (i = 0; i < data["shows"].length; i++) {
         (function(index) {$("#showSell" + i).click(function(){
-          var btime = data["shows"][index]['time']+" "+data["shows"][index]['weekDay']+"<br>"+data["shows"][index]['month']+" "+data["shows"][index]['dayOfMonth']+", "+data["shows"][index]['year']
+          var btime = data["shows"][index]['weekDay']+" · "+data["shows"][index]['month']+" "+data["shows"][index]['dayOfMonth']+" "+data["shows"][index]['year']+" · "+data["shows"][index]['time']
           message = "<p><strong>" + data["shows"][index]["name"] + "<br />" + btime + "<br />" + data["shows"][index]["location"] + "</strong>.</p>";
           $("#confirmSellBody").html(message)
           $("#deleteButtonSellModal").attr("show-id", data["shows"][index]['id'])
@@ -362,26 +384,30 @@ body {
   background-color: white;  
 }
 .search-input{
-       background-color: #fbb637; 
-       border: 2px solid #fff; 
+       background-color: white; 
+       border: 2px solid black; 
        box-shadow: none; 
        border-radius: 50px;
-       color: rgb(255,246,207);
+       color: black;
 }
 
 .search-input ::-webkit-input-placeholder, .search-input :-moz-placeholder, .search-input ::-moz-placeholder, .search-input :-ms-input-placeholder { {
-       color: #fff;
+       color: green;
        font-weight: bold;
           }
 }
 
 .panel {
+  font-family: "Times New Roman", Times, serif;
   display: block;
   padding: 4px;
   margin-bottom: 20px;
   line-height: 1.42857143;
   background-color: white;
-  border: 1px solid black;
+  border-top: 6px solid rgb(246,119,0);
+  border-bottom: 6px solid rgb(246,119,0);
+  border-right: 1px solid rgb(240,240,240);
+  border-left: 1px solid rgb(240,240,240);
   border-radius: 4px;
   -webkit-transition: border .2s ease-in-out;
        -o-transition: border .2s ease-in-out;
@@ -390,5 +416,11 @@ body {
 
 h3 {
   color: black;
+}
+h1 {
+  font-family: "Courier New", Times, serif;
+}
+p {
+   margin-bottom: -15px; 
 }
 </style>
