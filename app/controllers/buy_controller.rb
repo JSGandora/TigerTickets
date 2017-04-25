@@ -18,9 +18,9 @@ class BuyController < ApplicationController
       render json: response
       return
     end
-    buyRequestCount = BuyRequest.where(netid: netid).where(show_id: show_id).where(:status => ["waiting-for-match", "completed"]).count
+    buyRequestCount = BuyRequest.where(netid: netid).where(show_id: show_id).where(status: "waiting-for-match").count
     # This is the ticket request cap. It should be 0 in production but it is at 1 (which means we allow 2 connurrent requests) for dev.
-    if buyRequestCount > 1
+    if buyRequestCount > 0
       response = { :status => "bad request", :netid => netid, :reason => 'this user already has a buy requests for this show'}
       render json: response
       return
