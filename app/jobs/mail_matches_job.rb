@@ -16,11 +16,11 @@ class MailMatchesJob < ApplicationJob
     # Footers must be changed when deploying to production!!!!!!!
     sellingFooter = ""
     sellingFooter += "Once you have made an arrangment with someone, simply click the button below to stop receiving notifications for this ticket. You can also change the status of your request on the <a href='tiger-tickets.herokuapp.com/my-tix'>my-tix page</a>."
-    sellingFooter += "<form action='https://tiger-tickets-dev.herokuapp.com/complete-sell-token' method='POST'><input type='hidden' name='email_token' value='#{emailToken}'><input type='submit' value='Mark Your Request as Completed'></form>"
+    sellingFooter += "<form action='https://tiger-tickets.herokuapp.com/complete-sell-token' method='POST'><input type='hidden' name='email_token' value='#{emailToken}'><input type='submit' value='Mark Your Request as Completed'></form>"
 
     buyingFooter = ""
     buyingFooter += "Once you have made an arrangment with someone, simply click the button below to stop receiving notifications for this ticket. You can also change the status of your request on the <a href='tiger-tickets.herokuapp.com/my-tix'>my-tix page</a>."
-    buyingFooter += "<form action='https://tiger-tickets-dev.herokuapp.com/complete-buy-token' method='POST'><input type='hidden' name='email_token' value='#{emailToken}'><input type='submit' value='Mark Your Request as Completed'></form>"
+    buyingFooter += "<form action='https://tiger-tickets.herokuapp.com/complete-buy-token' method='POST'><input type='hidden' name='email_token' value='#{emailToken}'><input type='submit' value='Mark Your Request as Completed'></form>"
 
     case email.email_type
     when "welcome-seller", "welcome-buyer"
