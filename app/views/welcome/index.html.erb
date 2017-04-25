@@ -297,7 +297,9 @@
       }
     }
 
-    hot_html = "<h1><strong>Popular Shows</strong></h1><hr>" + hot_html
+    if (hot_html != "") {
+      hot_html = "<h1><strong>Popular Shows</strong></h1><hr>" + hot_html
+    }
 
     show_html = "<h1><strong>Current Shows</strong></h1><hr>" + show_html
 
