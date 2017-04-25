@@ -295,7 +295,8 @@
       }
       show_html += html
       // If a show has sell or buy requests and there is no search currently, add them to popular shows.
-      if((show["buyreq"] > 0 || show["sellreq"] > 0) && $('#show-search-bar').val() == "" && popularShowCount < 4) {
+      // To add a cap to popular shows append this to the if statement: && popularShowCount < 4
+      if((show["buyreq"] > 0 || show["sellreq"] > 0) && $('#show-search-bar').val() == "") {
         popularShowCount += 1
         hot_html += html
       }
