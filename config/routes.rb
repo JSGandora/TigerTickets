@@ -16,9 +16,10 @@ Rails.application.routes.draw do
   
   # Shows API
   get 'shows', to: 'shows_view#getshows'
-  
-  # Front page
-  get 'calendar', to: 'welcome#calendar'
+
+  # FAQ Page
+  get 'faq', to: 'welcome#faq'
+
   post 'logout', to: 'welcome#logout'
   get 'login', to: 'welcome#login'
   get 'my-tix', to: 'welcome#mytix'

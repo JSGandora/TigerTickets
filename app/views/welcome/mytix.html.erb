@@ -1,4 +1,5 @@
 <!-- Navigation -->
+<body>
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -14,8 +15,12 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
-                <li style="border-bottom: 5px solid orange;bottom: 0;width: 100px;">
+                
+                <li style="border-bottom: 5px solid rgb(246,119,0);bottom: 0;width: 100px;">
                     <a href="#" style="color:white">My Tickets</a>
+                </li>
+                <li>
+                  <a href="faq">FAQ</a>
                 </li>
                 <li id = "logoutLink">
                     <a href="" id = "logout">Logout</a>
@@ -101,6 +106,59 @@
 
     </div>
 
+    <!-- Delete Sell Request Modal -->
+    <div id="confirm-sell-confirm" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+        <!-- Modal content -->
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="close" data-dismiss="modal">&times;</span>
+                    <h2></h2>
+                </div>
+                <div class="modal-body">
+                    <h1>Confirm Completed Transaction?</h1>
+                    <p> You are about to confirm your ticket transaction for: </p>
+                    <p id="confirmSellBody">An error ocurred in displaying the show name.</p>
+                    <p> This procedure is irreversible.</p>
+                    <p><strong>Do you want to proceed?</strong></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <a id = "confirmSellButton" class="btn btn-success btn-ok" data-dismiss="modal" onclick="confirmSellRequest(this)">Confirm</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Delete Buy Request Modal -->
+    <div id="confirm-buy-confirm" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+        <!-- Modal content -->
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="close" data-dismiss="modal">&times;</span>
+                    <h2></h2>
+                </div>
+                <div class="modal-body">
+                    <h1>Confirm Completed Transaction?</h1>
+                    <p> You are about to confirm your ticket transaction for: </p>
+                    <p id="confirmBuyBody">An error ocurred in displaying the show name.</p>
+                    <p> This procedure is irreversible.</p>
+                    <p><strong>Do you want to proceed?</strong></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <a id = "confirmBuyButton" class="btn btn-success btn-ok" data-dismiss="modal" onclick="confirmBuyRequest(this)">Confirm</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+
     <script>
 <!-- Generate Buy Data -->
     var allData = {"requests" : [] }
@@ -170,7 +228,7 @@
                 bgroup = "";
             }
             
-            var grayurl = "https://s-media-cache-ak0.pinimg.com/236x/51/e7/ec/51e7ec2440ed6cc10ee247825f946846.jpg"
+            var grayurl = "https://cdn.evbuc.com/eventlogos/298207/1478813947tickets.png"
             var imghtml = "<img class = 'center-block' src="+grayurl+" alt='' style='height:150px'>"
             if(!(show["image"] === ""))
                 imghtml = "<img class = 'center-block' src="+show["image"]+" alt='' style='height:150px'>"
@@ -179,8 +237,10 @@
             
             if(!(buyRequestStatus === "completed")){
                 deletehtml = "<div class='col-md-2'>"+
-                        "<button class='btn btn-primary' data-target='#confirm-buy-delete' data-toggle='modal' id = 'deleteBuying"+i+"'>Delete <span class='glyphicon'></span></button>"+
+                        "<button class='btn btn-danger' data-target='#confirm-buy-delete' data-toggle='modal' id = 'deleteBuying"+i+"'>Delete<span class='glyphicon'></span></button><br><br><br><br>"+
+                        "<button class='btn btn-primary' data-target='#confirm-buy-confirm' data-toggle='modal' id = 'confirmBuying"+i+"'>Complete<span class='glyphicon'></span></button>"+
                     "</div>"
+
             }
 
             buyRequests_html += "<div class='row' id='buying"+i+"'>"+
@@ -227,7 +287,7 @@
                 sgroup = "";
             }
 
-            var grayurl = "https://s-media-cache-ak0.pinimg.com/236x/51/e7/ec/51e7ec2440ed6cc10ee247825f946846.jpg"
+            var grayurl = "https://cdn.evbuc.com/eventlogos/298207/1478813947tickets.png"
             var imghtml = "<img class = 'center-block' src="+grayurl+" alt='' style='height:150px'>"
             if(!(show["image"] === ""))
                 imghtml = "<img class = 'center-block' src="+show["image"]+" alt='' style='height:150px'>"
@@ -236,7 +296,8 @@
 
             if(!(sellRequestStatus === "completed")){
                 deletehtml = "<div class='col-md-2'>"+
-                "<button class='btn btn-primary' data-target='#confirm-sell-delete' data-toggle='modal' id = 'deleteSelling"+i+"'>Delete <span class='glyphicon'></span></button>"+
+                "<button class='btn btn-primary btn-danger' data-target='#confirm-sell-delete' data-toggle='modal' id = 'deleteSelling"+i+"'>Delete <span class='glyphicon'></span></button><br><br><br><br>"+
+                "<button class='btn btn-primary' data-target='#confirm-sell-confirm' data-toggle='modal' id = 'confirmSelling"+i+"'>Complete<span class='glyphicon'></span></button>"+
                 "</div>"
             }
 
@@ -265,7 +326,7 @@
 
         profile = "<div class='row text-left'>"+
                 "<div class='col-lg-12'>"+
-                    "<h3>Ticket Buy Requests</h3>"+
+                    "<h2><strong>Ticket Buy Requests</strong></h2>"+
                 "</div>"+
             "</div>"+
             "<hr>"+
@@ -274,7 +335,7 @@
             "</span>" +
             "<div class='row text-left'>"+
                 "<div class='col-lg-12'>"+
-                    "<h3>Ticket Sell Requests</h3>"+
+                    "<h2><strong>Ticket Sell Requests</strong></h2>"+
                 "</div>"+
             "</div>"+
             "<hr>"+
@@ -287,6 +348,7 @@
         $(document).ready(function(){
             $("#profile-page").html(profile)
 
+            // Delete a selling request
             for (i = 0; i < allData["sellrequests"].length; i++) {
                 (function(index) {$("#deleteSelling" + i).click(function(){
                     deleteSellId = "selling" + index
@@ -301,15 +363,38 @@
                     var ampm = Math.floor(date.getHours() / 12) == 0 ? 'AM' : 'PM'
                     var min = addZero(date.getMinutes());
                     var time = hour+":"+min+" "+ampm;
-                    var btime = hour+":"+min+" "+ampm+" "+weekDay+"<br>"+month+" "+dayOfMonth+", "+year
+                    var btime = hour+":"+min+" "+ampm+" "+weekDay+"<br />"+month+" "+dayOfMonth+", "+year
                     message = "<p><strong>" + show["name"] + "<br />" + btime + "<br />" + show["location"] + "</strong>.</p>";
                     $("#deletionSellBody").html(message);
-                    console.log(show["id"])
                     $("#deleteSellButton").attr("show-id", allData["sellrequests"][index]["id"]);
                     });
                 })(i);
             }
 
+            // Confirm a selling request
+            for (i = 0; i < allData["sellrequests"].length; i++) {
+                (function(index) {$("#confirmSelling" + i).click(function(){
+                    confirmSellId = "selling" + index
+                    show = allData["sellrequests"][index]["show"]
+                    var date = new Date(0)
+                    date.setUTCSeconds(show['time'])
+                    var weekDay = weekday[date.getDay()]
+                    var month = monthNames[date.getMonth()]
+                    var dayOfMonth = date.getDate()
+                    var year = date.getFullYear()
+                    var hour = date.getHours() % 12 // Convert from the 24h format.
+                    var ampm = Math.floor(date.getHours() / 12) == 0 ? 'AM' : 'PM'
+                    var min = addZero(date.getMinutes());
+                    var time = hour+":"+min+" "+ampm;
+                    var btime = hour+":"+min+" "+ampm+" "+weekDay+"<br />"+month+" "+dayOfMonth+", "+year
+                    message = "<p><strong>" + show["name"] + "<br />" + btime + "<br />" + show["location"] + "</strong>.</p>";
+                    $("#confirmSellBody").html(message);
+                    $("#confirmSellButton").attr("show-id", allData["sellrequests"][index]["id"]);
+                    });
+                })(i);
+            }
+
+            // Delete a buying request
             for (i = 0; i < allData["buyrequests"].length; i++) {
                 (function(index) {$("#deleteBuying" + i).click(function(){
                     deleteBuyId = "buying" + index
@@ -324,11 +409,36 @@
                     var ampm = Math.floor(date.getHours() / 12) == 0 ? 'AM' : 'PM'
                     var min = addZero(date.getMinutes());
                     var time = hour+":"+min+" "+ampm;
-                    var btime = hour+":"+min+" "+ampm+" "+weekDay+"<br>"+month+" "+dayOfMonth+", "+year
+                    var btime = hour+":"+min+" "+ampm+" "+weekDay+"<br />"+month+" "+dayOfMonth+", "+year
                     message = "<p><strong>" + show["name"] + "<br />" + btime + "<br />" + show["location"] + "</strong>.</p>";
-                    $("#deletionBuyBody").html(message)    
+                    $("#deletionBuyBody").html(message)
                     $("#deleteBuyButton").attr("show-id", allData["buyrequests"][index]["id"]);
                     });
+
+                })(i);
+            }
+
+            // Confirm a buying request
+            for (i = 0; i < allData["buyrequests"].length; i++) {
+                (function(index) {$("#confirmBuying" + i).click(function(){
+                    confirmBuyId = "buying" + index
+                    show = allData["buyrequests"][index]["show"]
+                    var date = new Date(0)
+                    date.setUTCSeconds(show['time'])
+                    var weekDay = weekday[date.getDay()]
+                    var month = monthNames[date.getMonth()]
+                    var dayOfMonth = date.getDate()
+                    var year = date.getFullYear()
+                    var hour = date.getHours() % 12 // Convert from the 24h format.
+                    var ampm = Math.floor(date.getHours() / 12) == 0 ? 'AM' : 'PM'
+                    var min = addZero(date.getMinutes());
+                    var time = hour+":"+min+" "+ampm;
+                    var btime = hour+":"+min+" "+ampm+" "+weekDay+"<br />"+month+" "+dayOfMonth+", "+year
+                    message = "<p><strong>" + show["name"] + "<br />" + btime + "<br />" + show["location"] + "</strong>.</p>";
+                    $("#confirmBuyBody").html(message) 
+                    $("#confirmBuyButton").attr("show-id", allData["buyrequests"][index]["id"]);
+                    });
+
                 })(i);
             }
         });
@@ -374,9 +484,68 @@
         $("#" + deleteBuyId).replaceWith("<p>Request deleted.</p>")
     }
 
+    function confirmSellRequest(element) {
+        console.log("you are completing a sell transaction")
+        $.ajax({
+            url : "/complete-sell",
+            type: "POST",
+            data: JSON.stringify({sell_request_id: element.getAttribute('show-id')}),
+            contentType: "application/json; charset=utf-8",
+            dataType   : "json",
+            success    : function(data){
+                if (data['status']=="ok") {
+                    window.location = '/my-tix'
+                }
+                else {
+                    window.alert("There was an error completing your sell transaction: " + data['reason'])
+                }
+            }
+        })
+        $("#" + confirmSellId).replaceWith("<p>Request confirmed.</p>")
+    }
+
+    function confirmBuyRequest(element) {
+        console.log("you are completing a buy transaction")
+        $.ajax({
+            url : "/complete-buy",
+            type: "POST",
+            data: JSON.stringify({buy_request_id: element.getAttribute('show-id')}),
+            contentType: "application/json; charset=utf-8",
+            dataType   : "json",
+            success    : function(data){
+                if (data['status']=="ok") {
+                    window.location = '/my-tix'
+                }
+                else {
+                    window.alert("There was an error completing your buy transaction: " + data['reason'])
+                }
+            }
+        })
+        $("#" + confirmBuyId).replaceWith("<p>Request confirmed.</p>")
+    }
 
     $(document).ready(function(){
     });
     
     
 </script>
+
+<style>
+
+body {
+  background-color: white;  
+}
+
+.row {
+  display: block;
+  padding: 4px;
+  margin-bottom: 20px;
+  font-family: "Times New Roman", Times, serif;
+}
+
+h2 {
+  color: black;
+  font-family: "Courier New", Times, serif;
+}
+
+</style>
