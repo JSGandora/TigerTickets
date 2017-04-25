@@ -16,6 +16,18 @@ body: json object containing a buy_request_id for the request to be canceled.
 response: json object containing a status field that is set to the string "ok".
 description: Cancels a buy request.
 
+POST /complete-buy
+authentication: required 
+body: json object containing a buy_request_id for the request to be canceled.
+response: json object containing a status field that is set to the string "ok".
+description: Completes a buy request.
+
+POST /complete-buy-token
+authentication: required 
+body: Form submission content containing a buy request token.
+response: A redirect to the my-tix page.
+description: Completes a buy request with the given token and does not require login access.
+
 POST /sell
 authentication: required
 body: json object containing a show_id field whos value is the show_id that this sell request is for.
@@ -27,6 +39,18 @@ authentication: required
 body: json object containing a sell_request_id for the request to be canceled.
 response: json object containing a status field that is set to the string "ok".
 description: Cancels a sell request.
+
+POST /complete-sell
+authentication: required 
+body: json object containing a sell_request_id for the request to be canceled.
+response: json object containing a status field that is set to the string "ok".
+description: Completes a sell request.
+
+POST /complete-sell-token
+authentication: required 
+body: Form submission content containing a sell request token.
+response: A redirect to the my-tix page.
+description: Completes a sell request with the given token and does not require login access.
 
 GET /my-tix
 authentication: required
