@@ -374,7 +374,7 @@
             // Confirm a selling request
             for (i = 0; i < allData["sellrequests"].length; i++) {
                 (function(index) {$("#confirmSelling" + i).click(function(){
-                    deleteSellId = "selling" + index
+                    confirmSellId = "selling" + index
                     show = allData["sellrequests"][index]["show"]
                     var date = new Date(0)
                     date.setUTCSeconds(show['time'])
@@ -421,7 +421,7 @@
             // Confirm a buying request
             for (i = 0; i < allData["buyrequests"].length; i++) {
                 (function(index) {$("#confirmBuying" + i).click(function(){
-                    deleteBuyId = "buying" + index
+                    confirmBuyId = "buying" + index
                     show = allData["buyrequests"][index]["show"]
                     var date = new Date(0)
                     date.setUTCSeconds(show['time'])
@@ -484,6 +484,45 @@
         $("#" + deleteBuyId).replaceWith("<p>Request deleted.</p>")
     }
 
+    function confirmSellRequest(element) {
+        console.log("you are completing a sell transaction")
+        $.ajax({
+            url : "/complete-sell",
+            type: "POST",
+            data: JSON.stringify({sell_request_id: element.getAttribute('show-id')}),
+            contentType: "application/json; charset=utf-8",
+            dataType   : "json",
+            success    : function(data){
+                if (data['status']=="ok") {
+                    window.location = '/my-tix'
+                }
+                else {
+                    window.alert("There was an error completing your sell transaction: " + data['reason'])
+                }
+            }
+        })
+        $("#" + confirmSellId).replaceWith("<p>Request confirmed.</p>")
+    }
+
+    function confirmBuyRequest(element) {
+        console.log("you are completing a buy transaction")
+        $.ajax({
+            url : "/complete-buy",
+            type: "POST",
+            data: JSON.stringify({buy_request_id: element.getAttribute('show-id')}),
+            contentType: "application/json; charset=utf-8",
+            dataType   : "json",
+            success    : function(data){
+                if (data['status']=="ok") {
+                    window.location = '/my-tix'
+                }
+                else {
+                    window.alert("There was an error completing your buy transaction: " + data['reason'])
+                }
+            }
+        })
+        $("#" + confirmBuyId).replaceWith("<p>Request confirmed.</p>")
+    }
 
     $(document).ready(function(){
     });
