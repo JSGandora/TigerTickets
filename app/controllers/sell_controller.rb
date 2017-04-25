@@ -63,8 +63,9 @@ class SellController < ApplicationController
       render json: response
       return
     end
-    redirect_to "/my-tix"
-    return
+    # Old redirect version. We now load a view instead.
+    #redirect_to "/my-tix"
+    #return
   end
   
   # Marks sell request as completed

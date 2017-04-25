@@ -64,8 +64,9 @@ class BuyController < ApplicationController
       render json: response
       return
     end
-    redirect_to "/my-tix"
-    return
+    # Old redirect version. We now give them an info page instead.
+    #redirect_to "/my-tix"
+    #return
   end
   
   # Marks buy request as completed
