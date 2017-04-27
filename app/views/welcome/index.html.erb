@@ -1,7 +1,7 @@
   <!-- Navigation -->
   <body>
 
-<center><img src="http://i.imgur.com/FrVDACi.png" style="height:200px;"></center>
+<center><img class="fit" src="http://i.imgur.com/FrVDACi.png" style="height:200px;"></center>
 
   <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
@@ -304,10 +304,10 @@
 
     // Add the header only if there are some popular shows.
     if (hot_html != "") {
-      hot_html = "<center><img src='http://i.imgur.com/1fGzTGO.png' style='width:500px;''></center><br>" + hot_html
+      hot_html = "<center><img class='fit' src='http://i.imgur.com/1fGzTGO.png' style='width:500px;''></center><br>" + hot_html
     }
 
-    show_html = "<center><img src='http://i.imgur.com/BDeLYNh.png' style='width:500px;''></center><br>" + show_html
+    show_html = "<center><img class='fit' src='http://i.imgur.com/BDeLYNh.png' style='width:500px;''></center><br>" + show_html
 
     $("#ticket-listing").html(show_html)
     $("#hot-tickets").html(hot_html)
@@ -397,6 +397,11 @@ body {
        box-shadow: none; 
        border-radius: 50px;
        color: black;
+}
+
+.fit {
+  max-width:80%;
+  max-height:100%;
 }
 
 .search-input ::-webkit-input-placeholder, .search-input :-moz-placeholder, .search-input ::-moz-placeholder, .search-input :-ms-input-placeholder { {
