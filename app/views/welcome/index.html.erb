@@ -252,10 +252,10 @@
       if(show["buyreq"] > 1)
         sell_text += " <b>("+show["buyreq"]+" Buyers!)</b>"
 
-      var buysellbuttons = "<button class='btn btn-primary' data-target='#confirmBuyModal' id='showBuy"+i+"' data-toggle='modal'>"+buy_text+"</button> <button class='btn btn-default' data-target='#confirmSellModal' id='showSell"+i+"' data-toggle='modal'>"+sell_text+"</button>"
+      var buysellbuttons = "<button class='btn btn-primary showBuy"+i+"' data-target='#confirmBuyModal' data-toggle='modal'>"+buy_text+"</button> <button class='btn btn-default showSell"+i+"' data-target='#confirmSellModal' data-toggle='modal'>"+sell_text+"</button>"
       if(netid === "")
       {
-        buysellbuttons = "<a href='login'><button class='btn btn-primary' data-target='#confirmBuyModal' id='showBuy"+i+"'>"+buy_text+"</button></a> <a href='login'><button class='btn btn-default' data-target='#confirmSellModal' id='showSell"+i+"'>"+sell_text+"</button></a>";
+        buysellbuttons = "<a href='login'><button class='btn btn-primary showBuy"+i+"' data-target='#confirmBuyModal'>"+buy_text+"</button></a> <a href='login'><button class='btn btn-default showSell"+i+"' data-target='#confirmSellModal'>"+sell_text+"</button></a>";
       }
 
       var grayurl = "https://cdn.evbuc.com/eventlogos/298207/1478813947tickets.png"
@@ -296,10 +296,10 @@
       show_html += html
       // If a show has sell or buy requests and there is no search currently, add them to popular shows.
       // To add a cap to popular shows append this to the if statement: && popularShowCount < 4
-      //if((show["buyreq"] > 0 || show["sellreq"] > 0) && $('#show-search-bar').val() == "") {
-      //  popularShowCount += 1
-      //  hot_html += html
-      //}
+      if((show["buyreq"] > 0 || show["sellreq"] > 0) && $('#show-search-bar').val() == "") {
+        popularShowCount += 1
+        hot_html += html
+      }
     }
 
     // Add the header only if there are some popular shows.
@@ -315,7 +315,7 @@
 
 
     for (i = 0; i < data["shows"].length; i++) {
-        (function(index) {$("#showBuy" + i).click(function(){
+        (function(index) {$(".showBuy" + i).click(function(){
           console.log("lol");
           var btime = data["shows"][index]['weekDay']+" · "+data["shows"][index]['month']+" "+data["shows"][index]['dayOfMonth']+" "+data["shows"][index]['year']+" · "+data["shows"][index]['time']
           message = "<h5><strong>" + data["shows"][index]["name"] + "<br />" + btime + "<br />" + data["shows"][index]["location"] + "</strong>.</h5>";
@@ -325,7 +325,7 @@
         })(i);
     }
     for (i = 0; i < data["shows"].length; i++) {
-        (function(index) {$("#showSell" + i).click(function(){
+        (function(index) {$(".showSell" + i).click(function(){
           var btime = data["shows"][index]['weekDay']+" · "+data["shows"][index]['month']+" "+data["shows"][index]['dayOfMonth']+" "+data["shows"][index]['year']+" · "+data["shows"][index]['time']
           message = "<h5><strong>" + data["shows"][index]["name"] + "<br />" + btime + "<br />" + data["shows"][index]["location"] + "</strong>.</h5>";
           $("#confirmSellBody").html(message)
