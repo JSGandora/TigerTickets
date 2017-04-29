@@ -93,7 +93,7 @@ class MailMatchesJob < ApplicationJob
         body += "<p>Here are the show details:</p>"
         body += "<p>#{showTitle} at #{timeString}</p>"
         body += "<p>If you would like to buy this ticket, please send them an email as soon as you can. Other buyers have been notified as well.</p>"
-        body += sellingFooter
+        body += buyingFooter
       else
         recipient = email.sell_request.netid + "@princeton.edu"
         subject += "There is a new buyer for #{showTitle}!"
@@ -103,7 +103,7 @@ class MailMatchesJob < ApplicationJob
         body += "<p>Here are the show details:</p>"
         body += "<p>#{showTitle} at #{timeString}</p>"
         body += "<p>We have notified this buyer that you are selling, and we encouraged them to contact you. That said, feel free to reach out to them as well.</p>"
-        body += buyingFooter
+        body += sellingFooter
       end
       # Shared part for both buying and selling.
       sendEmail([recipient], subject, body, email)
