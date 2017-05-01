@@ -323,15 +323,13 @@
           $("#deleteButtonBuyModal").attr("show-id", data["shows"][index]['id'])
           });
         })(i);
-    }
-    for (i = 0; i < data["shows"].length; i++) {
         (function(index) {$(".showSell" + i).click(function(){
           var btime = data["shows"][index]['weekDay']+" · "+data["shows"][index]['month']+" "+data["shows"][index]['dayOfMonth']+" "+data["shows"][index]['year']+" · "+data["shows"][index]['time']
           message = "<h5><strong>" + data["shows"][index]["name"] + "<br />" + btime + "<br />" + data["shows"][index]["location"] + "</strong>.</h5>";
           $("#confirmSellBody").html(message)
           $("#deleteButtonSellModal").attr("show-id", data["shows"][index]['id'])
           });
-        })(i);   
+        })(i); 
     }
   }
 

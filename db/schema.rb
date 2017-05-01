@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170424000512) do
+ActiveRecord::Schema.define(version: 20170501174438) do
 
   create_table "buy_requests", force: :cascade do |t|
     t.string   "netid"
@@ -52,9 +52,11 @@ ActiveRecord::Schema.define(version: 20170424000512) do
     t.datetime "time"
     t.string   "location"
     t.string   "group"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
     t.string   "img"
+    t.boolean  "soldout",    default: false
+    t.string   "buy_link",   default: ""
     t.index ["title", "time", "location", "group"], name: "index_shows_on_title_and_time_and_location_and_group", unique: true
   end
 
