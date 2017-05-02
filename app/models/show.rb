@@ -60,9 +60,10 @@ class Show < ApplicationRecord
 
                 info = showTable.all("tr")
                 info.each do |d|
+                    buy_link = d.find(".performance_onsale")["href"]
                     zone = "Eastern Time (US & Canada)"
                   t = ActiveSupport::TimeZone[zone].parse(d.text)
-                  Show.create(title: showTitle[i], time: t, location: "McCarter Theatre Center", group: groupName[i], img: pictureURLs[i])
+                  Show.create(title: showTitle[i], time: t, location: "McCarter Theatre Center", group: groupName[i], img: pictureURLs[i], buy_link: buy_link)
                end
           end
      end
@@ -105,7 +106,12 @@ class Show < ApplicationRecord
                     else
                          event_data[img_css] = ""
                     end
-                    
+                    if event.has_css?('.soldout') === false and event.has_css?('.limited') === false
+                         event_data['soldout'] = false
+                         event_data['buy_link'] = "https://tickets.princeton.edu/Online/"
+                    else
+                         event_data['soldout'] = true
+                    end
                     events.append(event_data)
                end
                
@@ -122,7 +128,9 @@ class Show < ApplicationRecord
                zone = "Eastern Time (US & Canada)"
                t = ActiveSupport::TimeZone[zone].parse(e['.start-date'])
                image_url = e[img_css]
-               Show.create(title: name, time: t, location: venue, group: description, img: image_url)
+               soldout = e['soldout']
+               buy_link = e['buy_link']
+               Show.create(title: name, time: t, location: venue, group: description, img: image_url, soldout: soldout, buy_link: buy_link)
           end
      end
 end
