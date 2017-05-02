@@ -21,7 +21,10 @@ class ShowsViewController < ApplicationController
         :image => show['img'],
         :buyreq => shows2[i]['buy_request_count'],
         :sellreq => show['sell_request_count'],
-        :price => 0}
+        :price => 0,
+        :soldout => show['soldout'],
+        :buy_link => show['buy_link']
+      }
     end
     response = { :status => "ok", :shows => showsResponse, :netid => netid = session[:cas_user] }
     render json: response
