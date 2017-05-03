@@ -189,10 +189,10 @@ function updateShows() {
 
 	// Add the header only if there are some popular shows.
 	if (hot_html != "") {
-	  hot_html = "<center><img class='fit' src='http://i.imgur.com/1fGzTGO.png' style='width:500px;''></center><br>" + hot_html
+	  hot_html = "<center><img class='title' src='http://i.imgur.com/1fGzTGO.png'></center><br>" + hot_html
 	}
 
-	show_html = "<center><img class='fit' src='http://i.imgur.com/BDeLYNh.png' style='width:500px;''></center><br>" + show_html
+	show_html = "<center><img class='title' src='http://i.imgur.com/BDeLYNh.png'></center><br>" + show_html
 
 	$("#ticket-listing").html(show_html)
 	$("#hot-tickets").html(hot_html)

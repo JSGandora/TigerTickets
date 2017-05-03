@@ -2,6 +2,23 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+.fit {
+  height: 200px;
+}
+
+.title {
+  width: 500px;
+}
+
+.navbar-brand {
+  color: white;
+}
+
+.navbar-header {
+  border-bottom: 5px solid rgb(231,133,62);
+  bottom: 0;
+  width: 100px;
+}
 .btn-primary {
   background-color: rgb(231,133,62);
   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
