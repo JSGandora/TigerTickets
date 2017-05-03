@@ -160,16 +160,17 @@
 </body>
 
     <script>
+
+    
+
 <!-- Generate Buy Data -->
     var allData = {"requests" : [] }
+    var data = {"requests" : [] }
     var netid = ""
     $.get('my-tix-data', function(response) { 
         allData = response
-
         netid = response["netid"]
-
         formatLogoutButton()
-
         if ($.isReady) {
           updateRequests()
         } else {
@@ -194,6 +195,55 @@
       var monthNames = ["January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"
       ];
+
+      function addDateDataToShows(originalShows) {
+    // This code makes the function slower but keeps it pure so it doesn't tamper with originalData.
+    // Because of how it will be called, purity doesn't matter.
+    //var result = originalData.slice(0)
+    return originalShows.map(function(request) {
+        console.log(request)
+        show = request.show;
+      console.log("this is the show")
+      console.log(show)
+      var date = new Date(0)
+      date.setUTCSeconds(show['time'])
+      var weekDay = weekday[date.getDay()]
+      var month = monthNames[date.getMonth()]
+      var dayOfMonth = date.getDate()
+      var year = date.getFullYear()
+      var hour = date.getHours() % 12 // Convert from the 24h format.
+      var ampm = Math.floor(date.getHours() / 12) == 0 ? 'AM' : 'PM'
+      var min = addZero(date.getMinutes());
+      var time = hour+":"+min+" "+ampm;
+      show['weekDay'] = weekDay
+      show['month'] = month
+      show['year'] = year
+      show['dayOfMonth'] = dayOfMonth
+      show['hour'] = hour
+      show['ampm'] = ampm
+      show['min'] = min
+      show['time'] = time
+      show['btime'] = time + " " + weekDay
+      show['date'] = month + " " + dayOfMonth + ", " + year
+      request.show = show
+      return request
+    })
+  }
+  
+  function callbackRequests(response, textStatus, xhr) {
+    allData['buyrequests'] = addDateDataToShows(response['buyrequests'])
+    data['buyrequests'] = allData['buyrequests'].slice(0)
+    allData['sellrequests'] = addDateDataToShows(response['sellrequests'])
+    data['sellrequests'] = allData['sellrequests'].slice(0)
+    if ($.isReady) {
+      updateRequests()
+    } else {
+      $(function() { updateRequests() })
+      }
+  }
+
+  $.get('my-tix-data', callbackRequests)
+
     var buyRequests_html = ""
     var sellRequests_html = ""
 
@@ -208,20 +258,9 @@
     function updateRequests() {
         buyRequests_html = ""
         sellRequests_html = ""
-        for (i = allData["buyrequests"].length-1; i >= 0; i--) {
-            var buyRequestStatus = allData["buyrequests"][i]["status"]
-            var show = allData["buyrequests"][i]["show"]
-            var date = new Date(0)
-            date.setUTCSeconds(show['time'])
-            var weekDay = weekday[date.getDay()]
-            var month = monthNames[date.getMonth()]
-            var dayOfMonth = date.getDate()
-            var year = date.getFullYear()
-            var hour = date.getHours() % 12 // Convert from the 24h format.
-            var ampm = Math.floor(date.getHours() / 12) == 0 ? 'AM' : 'PM'
-            var min = addZero(date.getMinutes());
-            var time = hour+":"+min+" "+ampm;
-            var btime = hour+":"+min+" "+ampm+" "+weekDay+"<br>"+month+" "+dayOfMonth+", "+year
+        for (i = data["buyrequests"].length-1; i >= 0; i--) {
+            var buyRequestStatus = data["buyrequests"][i]["status"]
+            var show = data["buyrequests"][i]["show"]
             var bloc = show["location"]
             var bgroup = show["group"]
             if(bgroup.search("SOLD OUT") >= 0){
@@ -253,7 +292,7 @@
                         "<h3>"+show["name"]+"</h3>"+
                     "</div>"+
                     "<div class='col-md-5'>"+
-                        "<h4>"+btime+"</h4>"+
+                        "<h4>"+show["btime"]+"<br>"+show["date"]+"</h4>"+
                         "<h4>"+bloc+"</h4>"+
                         "<h4>"+bgroup+"</h4>"+
                     "</div>"+
@@ -262,25 +301,14 @@
             "<hr>"
             
         }
-        if (allData["buyrequests"].length == 0) {
+        if (data["buyrequests"].length == 0) {
             buyRequests_html = "<p>No current buy requests.</p>"
         }
         $("#buy-requests-html-span").html(buyRequests_html)
 
-        for (i = allData["sellrequests"].length-1; i >= 0; i--) {
-            var sellRequestStatus = allData["sellrequests"][i]["status"]
-            show = allData["sellrequests"][i]["show"]
-            var date = new Date(0)
-            date.setUTCSeconds(show['time'])
-            var weekDay = weekday[date.getDay()]
-            var month = monthNames[date.getMonth()]
-            var dayOfMonth = date.getDate()
-            var year = date.getFullYear()
-            var hour = date.getHours() % 12 // Convert from the 24h format.
-            var ampm = Math.floor(date.getHours() / 12) == 0 ? 'AM' : 'PM'
-            var min = addZero(date.getMinutes());
-            var time = hour+":"+min+" "+ampm;
-            var btime = hour+":"+min+" "+ampm+" "+weekDay+"<br>"+month+" "+dayOfMonth+", "+year
+        for (i = data["sellrequests"].length-1; i >= 0; i--) {
+            var sellRequestStatus = data["sellrequests"][i]["status"]
+            show = data["sellrequests"][i]["show"]
             var sbloc = show["location"]
             var sgroup = show["group"]
             if(sgroup.search("SOLD OUT") >= 0){
@@ -311,7 +339,7 @@
                         "<h3>"+show["name"]+"</h3>"+
                     "</div>"+
                     "<div class='col-md-5'>"+
-                        "<h4>"+btime+"</h4>"+
+                        "<h4>"+show["btime"]+"<br>"+show["date"]+"</h4>"+
                         "<h4>"+sbloc+"</h4>"+
                         "<h4>"+sgroup+"</h4>"+
                     "</div>"+
@@ -319,7 +347,7 @@
                 "</div>"+
             "<hr>"
         }
-        if (allData["sellrequests"].length == 0) {
+        if (data["sellrequests"].length == 0) {
             sellRequests_html = "<p>No current sell requests.</p>"
         }
         $("#sell-requests-html-span").html(sellRequests_html)
@@ -348,97 +376,47 @@
         $(document).ready(function(){
             $("#profile-page").html(profile)
 
-            // Delete a selling request
-            for (i = 0; i < allData["sellrequests"].length; i++) {
+            
+            for (i = 0; i < data["sellrequests"].length; i++) {
+                // Delete a selling request
                 (function(index) {$("#deleteSelling" + i).click(function(){
                     deleteSellId = "selling" + index
-                    show = allData["sellrequests"][index]["show"]
-                    var date = new Date(0)
-                    date.setUTCSeconds(show['time'])
-                    var weekDay = weekday[date.getDay()]
-                    var month = monthNames[date.getMonth()]
-                    var dayOfMonth = date.getDate()
-                    var year = date.getFullYear()
-                    var hour = date.getHours() % 12 // Convert from the 24h format.
-                    var ampm = Math.floor(date.getHours() / 12) == 0 ? 'AM' : 'PM'
-                    var min = addZero(date.getMinutes());
-                    var time = hour+":"+min+" "+ampm;
-                    var btime = hour+":"+min+" "+ampm+" "+weekDay+"<br />"+month+" "+dayOfMonth+", "+year
-                    message = "<p><strong>" + show["name"] + "<br />" + btime + "<br />" + show["location"] + "</strong>.</p>";
+                    show = data["sellrequests"][index]["show"]
+                    message = "<p><strong>" + show["name"] + "<br />" + show["btime"]+"<br>"+show["date"] + "<br />" + show["location"] + "</strong>.</p>";
                     $("#deletionSellBody").html(message);
-                    $("#deleteSellButton").attr("show-id", allData["sellrequests"][index]["id"]);
+                    $("#deleteSellButton").attr("show-id", data["sellrequests"][index]["id"]);
                     });
                 })(i);
-            }
-
-            // Confirm a selling request
-            for (i = 0; i < allData["sellrequests"].length; i++) {
+                // Confirm a selling request
                 (function(index) {$("#confirmSelling" + i).click(function(){
                     confirmSellId = "selling" + index
-                    show = allData["sellrequests"][index]["show"]
-                    var date = new Date(0)
-                    date.setUTCSeconds(show['time'])
-                    var weekDay = weekday[date.getDay()]
-                    var month = monthNames[date.getMonth()]
-                    var dayOfMonth = date.getDate()
-                    var year = date.getFullYear()
-                    var hour = date.getHours() % 12 // Convert from the 24h format.
-                    var ampm = Math.floor(date.getHours() / 12) == 0 ? 'AM' : 'PM'
-                    var min = addZero(date.getMinutes());
-                    var time = hour+":"+min+" "+ampm;
-                    var btime = hour+":"+min+" "+ampm+" "+weekDay+"<br />"+month+" "+dayOfMonth+", "+year
-                    message = "<p><strong>" + show["name"] + "<br />" + btime + "<br />" + show["location"] + "</strong>.</p>";
+                    show = data["sellrequests"][index]["show"]
+                    message = "<p><strong>" + show["name"] + "<br />" + show["btime"]+"<br>"+show["date"] + "<br />" + show["location"] + "</strong>.</p>";
                     $("#confirmSellBody").html(message);
-                    $("#confirmSellButton").attr("show-id", allData["sellrequests"][index]["id"]);
+                    $("#confirmSellButton").attr("show-id", data["sellrequests"][index]["id"]);
                     });
                 })(i);
             }
 
-            // Delete a buying request
-            for (i = 0; i < allData["buyrequests"].length; i++) {
+            
+            for (i = 0; i < data["buyrequests"].length; i++) {
+                // Delete a buying request
                 (function(index) {$("#deleteBuying" + i).click(function(){
                     deleteBuyId = "buying" + index
-                    show = allData["buyrequests"][index]["show"]
-                    var date = new Date(0)
-                    date.setUTCSeconds(show['time'])
-                    var weekDay = weekday[date.getDay()]
-                    var month = monthNames[date.getMonth()]
-                    var dayOfMonth = date.getDate()
-                    var year = date.getFullYear()
-                    var hour = date.getHours() % 12 // Convert from the 24h format.
-                    var ampm = Math.floor(date.getHours() / 12) == 0 ? 'AM' : 'PM'
-                    var min = addZero(date.getMinutes());
-                    var time = hour+":"+min+" "+ampm;
-                    var btime = hour+":"+min+" "+ampm+" "+weekDay+"<br />"+month+" "+dayOfMonth+", "+year
-                    message = "<p><strong>" + show["name"] + "<br />" + btime + "<br />" + show["location"] + "</strong>.</p>";
+                    show = data["buyrequests"][index]["show"]
+                    message = "<p><strong>" + show["name"] + "<br />" + show["btime"]+"<br>"+show["date"] + "<br />" + show["location"] + "</strong>.</p>";
                     $("#deletionBuyBody").html(message)
-                    $("#deleteBuyButton").attr("show-id", allData["buyrequests"][index]["id"]);
+                    $("#deleteBuyButton").attr("show-id", data["buyrequests"][index]["id"]);
                     });
-
                 })(i);
-            }
-
-            // Confirm a buying request
-            for (i = 0; i < allData["buyrequests"].length; i++) {
+                // Confirm a buying request
                 (function(index) {$("#confirmBuying" + i).click(function(){
                     confirmBuyId = "buying" + index
-                    show = allData["buyrequests"][index]["show"]
-                    var date = new Date(0)
-                    date.setUTCSeconds(show['time'])
-                    var weekDay = weekday[date.getDay()]
-                    var month = monthNames[date.getMonth()]
-                    var dayOfMonth = date.getDate()
-                    var year = date.getFullYear()
-                    var hour = date.getHours() % 12 // Convert from the 24h format.
-                    var ampm = Math.floor(date.getHours() / 12) == 0 ? 'AM' : 'PM'
-                    var min = addZero(date.getMinutes());
-                    var time = hour+":"+min+" "+ampm;
-                    var btime = hour+":"+min+" "+ampm+" "+weekDay+"<br />"+month+" "+dayOfMonth+", "+year
-                    message = "<p><strong>" + show["name"] + "<br />" + btime + "<br />" + show["location"] + "</strong>.</p>";
+                    show = data["buyrequests"][index]["show"]
+                    message = "<p><strong>" + show["name"] + "<br />" + show["btime"]+"<br>"+show["date"] + "<br />" + show["location"] + "</strong>.</p>";
                     $("#confirmBuyBody").html(message) 
-                    $("#confirmBuyButton").attr("show-id", allData["buyrequests"][index]["id"]);
+                    $("#confirmBuyButton").attr("show-id", data["buyrequests"][index]["id"]);
                     });
-
                 })(i);
             }
         });
