@@ -1,0 +1,39 @@
+// Place all the styles related to the Welcome controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+
+body {
+  background-color: white;  
+}
+
+#faq {
+  color:black;
+}
+.fit {
+  max-width:80%;
+  max-height:100%;
+}
+
+
+hr {
+    display: block;
+    height: 2px;
+    border: 0;
+    border-top: 5px solid rgb(245,128,37);
+    margin: 1em 0;
+    padding: 0; 
+}
+
+h1 {
+  font-family: "Courier New", Times, serif;
+}
+h4 {
+  font-family: "Times New Roman", Times, serif;
+}
+h2 {
+  font-family: "Times New Roman", Times, serif;
+}
+h3 {
+  font-family: "Times New Roman", Times, serif;
+}

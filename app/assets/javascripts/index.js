@@ -87,7 +87,7 @@ function callbackShows(response, textStatus, xhr) {
 	netid = response['netid']
 
 	var text = "<a id='logout' href='javascript:void(0)'> Logout ("+netid+") </a>"
-	if(netid === ""){
+	if(netid == null){
 	text = "<a href='login'> Login </a>"
 	}
 
