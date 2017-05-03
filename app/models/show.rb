@@ -63,7 +63,15 @@ class Show < ApplicationRecord
                     buy_link = d.find(".performance_onsale")["href"]
                     zone = "Eastern Time (US & Canada)"
                   t = ActiveSupport::TimeZone[zone].parse(d.text)
-                  Show.create(title: showTitle[i], time: t, location: "McCarter Theatre Center", group: groupName[i], img: pictureURLs[i], buy_link: buy_link)
+                  #Show.create(title: showTitle[i], time: t, location: "McCarter Theatre Center", group: groupName[i], img: pictureURLs[i], buy_link: buy_link)
+                  show = Show.where(title: showTitle[i]).where(time: t).where(group: groupName[i]).where(location: "McCarter Theatre Center").first_or_initialize
+                    show.title = showTitle[i]
+                    show.time = t
+                    show.group = groupName[i]
+                    show.location = "McCarter Theatre Center"
+                    show.img = pictureURLs[i]
+                    show.buy_link = buy_link
+                  show.save
                end
           end
      end
@@ -130,7 +138,16 @@ class Show < ApplicationRecord
                image_url = e[img_css]
                soldout = e['soldout']
                buy_link = e['buy_link']
-               Show.create(title: name, time: t, location: venue, group: description, img: image_url, soldout: soldout, buy_link: buy_link)
+               #Show.create(title: name, time: t, location: venue, group: description, img: image_url, soldout: soldout, buy_link: buy_link)
+               show = Show.where(title: name).where(time: t).where(group: description).where(location: venue).first_or_initialize
+                    show.title = name
+                    show.time = t
+                    show.group = description
+                    show.location = venue
+                    show.img = image_url
+                    show.buy_link = buy_link
+                    show.soldout = soldout
+                  show.save
           end
      end
 end
