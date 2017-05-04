@@ -72,7 +72,7 @@ class Show < ApplicationRecord
                     show.img = pictureURLs[i]
                     show.buy_link = buy_link
                     show.website = "McCarter"
-                    show.website_id = showTitle[i] + t.to_s + groupName[i] + "McCarter Theatre Center"
+                    show.website_id = SecureRandom.uuid
                   show.save
                end
           end
@@ -105,7 +105,7 @@ class Show < ApplicationRecord
                     event_data = Hash.new
                     
                     # Get event ID
-                    id = articleContext[index][0]
+                    id = articleContext["searchResults"][index][0]
                     event_data['id'] = id
                     
                     # For each attribute, check if it exists
