@@ -82,8 +82,12 @@ function addDateDataToShows(originalShows) {
 
 
 function callbackShows(response, textStatus, xhr) {
-	fullData['shows'] = addDateDataToShows(response['shows'])
-	data['shows'] = fullData['shows'].slice(0)
+	showResponseData = response['shows']
+	if (showResponseData !== null) {
+		fullData['shows'] = addDateDataToShows(showResponseData)
+		data['shows'] = fullData['shows'].slice(0)
+	}
+	
 	netid = response['netid']
 
 	var text = "<a id='logout' href='javascript:void(0)'> Logout ("+netid+") </a>"
@@ -115,8 +119,13 @@ function updateShows() {
 	show_html = ""
 	hot_html = ""
 	popularShowCount = 0
+	length = 0
+	
+	if (data["shows"] !== null) {
+		length = data["shows"].length
+	}
 
-	for (i = 0; i < data["shows"].length; i++) {
+	for (i = 0; i < length; i++) {
 	  var show = data["shows"][i]
 	  
 	  var group = show["group"];
@@ -202,8 +211,16 @@ function updateShows() {
 	for (i = 0; i < data["shows"].length; i++) {
 	    (function(index) {$(".showBuy" + i).click(function(){
 	      console.log("lol");
+	      message = "";
+	      if (data["shows"][index]['soldout'] == true){
+	      	message = "<h2>Confirm Ticket Buy Request?</h2><h5> You are about to confirm your buy request for:</h5>";
+	      }
+	      else{
+	      	message = "<h2> Attention! </h2><h4> Tickets are still available to purchase at the <a href='" + data["shows"][index]["buy_link"] + "'target='_blank'> Ticket Office</a></h4>"
+	      	message += "<h3> Or you can continue with your buy request for: </h3>"
+	      }
 	      var btime = data["shows"][index]['weekDay']+" · "+data["shows"][index]['month']+" "+data["shows"][index]['dayOfMonth']+" "+data["shows"][index]['year']+" · "+data["shows"][index]['time']
-	      message = "<h5><strong>" + data["shows"][index]["name"] + "<br />" + btime + "<br />" + data["shows"][index]["location"] + "</strong>.</h5>";
+	      message += "<h5><strong>" + data["shows"][index]["name"] + "<br />" + btime + "<br />" + data["shows"][index]["location"] + "</strong>.</h5>";
 	      $("#confirmBuyBody").html(message)
 	      $("#deleteButtonBuyModal").attr("show-id", data["shows"][index]['id'])
 	      });

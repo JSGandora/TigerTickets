@@ -140,7 +140,7 @@
             
         }
         if (data["buyrequests"].length == 0) {
-            buyRequests_html = "<p>No current buy requests.</p>"
+            buyRequests_html = "<p>No current buy requests.</p></br>"
         }
         $("#buy-requests-html-span").html(buyRequests_html)
 
