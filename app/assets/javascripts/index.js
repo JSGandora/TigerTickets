@@ -212,7 +212,7 @@ function updateShows() {
 	    (function(index) {$(".showBuy" + i).click(function(){
 	      console.log("lol");
 	      message = "";
-	      if (data["shows"][index]['soldout'] == true){
+	      if (data["shows"][index]['soldout'] === true || data["shows"][index]['sellreq'] !== 0){
 	      	message = "<h2>Confirm Ticket Buy Request?</h2><h5> You are about to confirm your buy request for:</h5>";
 	      }
 	      else{
