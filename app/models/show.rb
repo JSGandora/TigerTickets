@@ -71,6 +71,8 @@ class Show < ApplicationRecord
                     show.location = "McCarter Theatre Center"
                     show.img = pictureURLs[i]
                     show.buy_link = buy_link
+                    show.website = "McCarter"
+                    show.website_id = showTitle[i] + t.to_s + groupName[i] + "McCarter Theatre Center"
                   show.save
                end
           end
@@ -93,11 +95,18 @@ class Show < ApplicationRecord
           
           # Navigate tickets
           for i in 1..num_pages
+               # Parse show information
+               articleContext = session.evaluate_script("articleContext")
+          
                # Parse event info
                event_nodes = session.all(".result-box-item")[0...-1]
                
-               for event in event_nodes
+               event_nodes.each_with_index do |event, index|
                     event_data = Hash.new
+                    
+                    # Get event ID
+                    id = articleContext[index][0]
+                    event_data['id'] = id
                     
                     # For each attribute, check if it exists
                     css_strings.each do |child_css|
@@ -138,6 +147,7 @@ class Show < ApplicationRecord
                image_url = e[img_css]
                soldout = e['soldout']
                buy_link = e['buy_link']
+               id = e['id']
                #Show.create(title: name, time: t, location: venue, group: description, img: image_url, soldout: soldout, buy_link: buy_link)
                show = Show.where(title: name).where(time: t).where(group: description).where(location: venue).first_or_initialize
                     show.title = name
@@ -147,6 +157,8 @@ class Show < ApplicationRecord
                     show.img = image_url
                     show.buy_link = buy_link
                     show.soldout = soldout
+                    show.website = "Frist"
+                    show.website_id = id
                   show.save
           end
      end
