@@ -273,5 +273,40 @@ function putInSellRequest(element) {
 	}})
 }
 
+var count = 0;
+function toggle_visibility() {
+   var e = document.getElementById('feedback-main');
+   if(e.style.display == 'block')
+   {
+      e.style.display = 'none';
+      count = 0;
+   }
+   else
+   {
+      e.style.display = 'block';
+      count = 1;
+   }
+}
+
+// $(function() {
+//     var f = document.getElementById('feedback-main');
+//     $("body").click(function(e) {
+//     	console.log(count)
+//     	console.log(f.style.display)
+//         if (e.target.id  == "feedback-div" || $(e.target).parents("#feedback-div").size()) { 
+//         } else { 
+//         	if(count == 1){
+//         		count = 2;
+//         		f.style.display = 'block'
+//         	}
+//         	else if(count == 2){
+//         		count = 0;
+//         		f.style.display = 'none'
+//         	}
+//         }
+//     });
+// })
+
+
 $(document).ready(function(){
 });
