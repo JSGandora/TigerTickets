@@ -23,7 +23,8 @@ class ShowsViewController < ApplicationController
         :sellreq => show['sell_request_count'],
         :price => 0,
         :soldout => show['soldout'],
-        :buy_link => show['buy_link']
+        :buy_link => show['buy_link'],
+        :office_from => show['website']
       }
     end
     response = { :status => "ok", :shows => showsResponse, :netid => netid = session[:cas_user] }
