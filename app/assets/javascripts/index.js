@@ -190,7 +190,7 @@ function updateShows() {
 	  show_html += html
 	  // If a show has sell or buy requests and there is no search currently, add them to popular shows.
 	  // To add a cap to popular shows append this to the if statement: && popularShowCount < 4
-	  if((show["buyreq"] > 0 || show["sellreq"] > 0) && $('#show-search-bar').val() == "") {
+	  if((show["soldout"] || show["buyreq"] > 0 || show["sellreq"] > 0) && $('#show-search-bar').val() == "") {
 	    popularShowCount += 1
 	    hot_html += html
 	  }
@@ -289,24 +289,26 @@ function toggle_visibility() {
    }
 }
 
-// $(function() {
-//     var f = document.getElementById('feedback-main');
-//     $("body").click(function(e) {
-//     	console.log(count)
-//     	console.log(f.style.display)
-//         if (e.target.id  == "feedback-div" || $(e.target).parents("#feedback-div").size()) { 
-//         } else { 
-//         	if(count == 1){
-//         		count = 2;
-//         		f.style.display = 'block'
-//         	}
-//         	else if(count == 2){
-//         		count = 0;
-//         		f.style.display = 'none'
-//         	}
-//         }
-//     });
-// })
+$(function() {
+    var f = document.getElementById('feedback-main');
+    $("body").click(function(e) {
+    	console.log(count)
+    	console.log(f.style.display)
+        if (e.target.id  == "feedback-div" || $(e.target).parents("#feedback-div").size()) { 
+        } else { 
+        	if(count == 1){
+        		count = 2;
+        		f.style.display = 'block'
+        		console.log("Now we are displaying the modal")
+        	}
+        	else if(count == 2){
+        		count = 0;
+        		f.style.display = 'none'
+        		console.log("Now we are closing the modal")
+        	}
+        }
+    });
+})
 
 
 $(document).ready(function(){
