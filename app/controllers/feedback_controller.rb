@@ -8,6 +8,14 @@ class FeedbackController < ApplicationController
     email = params[:email]
     message = params[:comment]
     @emailStatus = sendEmail(["birgelee@princeton.edu"], "#{feedbackName} gave feedback to Tiger Tickets", "#{feedbackName} gave feedback to Tiger Tickets <br /> Their email is: #{email}. Their comment is: <br /> #{message}")
+    response = {}
+    if @emailStatus
+      response = { :status => "ok", :reason => "feedback sent: #{@emailStatus}"}
+    else
+      response = { :status => "error", :reason => "feedback sent: #{@emailStatus}"}
+    end
+    
+    render json: response
   end
 
   def sendEmail(recipients, subject, body)

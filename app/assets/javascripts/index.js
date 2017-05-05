@@ -274,6 +274,27 @@ function putInSellRequest(element) {
 	}})
 }
 
+function feedbackSubmitted() {
+	// Put the code for sucessful feedback submission here.
+	console.log("feedback function called.")
+}
+
+function submitFeedback(element) {
+	$.ajax({
+	url : "/feedback",
+	type: "POST",
+	data: JSON.stringify({"name": $("#feedback-name").val(), "email": $("#feedback-email").val(), "comment": $("#feedback-comment").val()}),
+	contentType: "application/json; charset=utf-8",
+	dataType   : "json",
+	success    : function(data){
+	  if (data['status'] == "ok") {
+	    feedbackSubmitted()
+	  } else {
+	    window.alert("There was an error submitting your feedback: " + data['reason'])
+	  }
+	}})
+}
+
 var count = 0;
 function toggle_visibility() {
    var e = document.getElementById('feedback-main');
