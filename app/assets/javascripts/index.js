@@ -216,7 +216,8 @@ function updateShows() {
 	      	message = "<h2>Confirm Ticket Buy Request?</h2><h5> You are about to confirm your buy request for:</h5>";
 	      }
 	      else{
-	      	message = "<h2> Attention! </h2><h4> Tickets are still available to purchase at the <a href='" + data["shows"][index]["buy_link"] + "'target='_blank'> Ticket Office</a></h4>"
+	      	message = "<h2> Attention! </h2><h4> Tickets are still available to purchase at the <a href='" + data["shows"][index]["buy_link"] 
+	      	message += "'target='_blank'>" + data["shows"][index]["office_from"] + " Ticket Office</a></h4>"
 	      	message += "<h3> Or you can continue with your buy request for: </h3>"
 	      }
 	      var btime = data["shows"][index]['weekDay']+" · "+data["shows"][index]['month']+" "+data["shows"][index]['dayOfMonth']+" "+data["shows"][index]['year']+" · "+data["shows"][index]['time']
