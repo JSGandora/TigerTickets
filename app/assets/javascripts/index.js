@@ -289,26 +289,26 @@ function toggle_visibility() {
    }
 }
 
-$(function() {
-    var f = document.getElementById('feedback-main');
-    $("body").click(function(e) {
-    	console.log(count)
-    	console.log(f.style.display)
-        if (e.target.id  == "feedback-div" || $(e.target).parents("#feedback-div").size()) { 
-        } else { 
-        	if(count == 1){
-        		count = 2;
-        		f.style.display = 'block'
-        		console.log("Now we are displaying the modal")
-        	}
-        	else if(count == 2){
-        		count = 0;
-        		f.style.display = 'none'
-        		console.log("Now we are closing the modal")
-        	}
-        }
-    });
-})
+// $(function() {
+//     var f = document.getElementById('feedback-main');
+//     $("body").click(function(e) {
+//     	console.log(count)
+//     	console.log(f.style.display)
+//         if (e.target.id  == "feedback-div" || $(e.target).parents("#feedback-div").size()) { 
+//         } else { 
+//         	if(count == 1){
+//         		count = 2;
+//         		f.style.display = 'block'
+//         		console.log("Now we are displaying the modal")
+//         	}
+//         	else if(count == 2){
+//         		count = 0;
+//         		f.style.display = 'none'
+//         		console.log("Now we are closing the modal")
+//         	}
+//         }
+//     });
+// })
 
 
 $(document).ready(function(){
