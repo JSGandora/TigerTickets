@@ -20,7 +20,7 @@ Rails.application.routes.draw do
   # FAQ Page
   get 'faq', to: 'welcome#faq'
 
-  get 'feedback', to: 'feedback#feedback_email'
+  post 'feedback', to: 'feedback#feedback_email'
 
   post 'logout', to: 'welcome#logout'
   get 'login', to: 'welcome#login'

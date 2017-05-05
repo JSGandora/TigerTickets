@@ -2,9 +2,12 @@ require 'sendgrid-ruby'
 include SendGrid
 
 class FeedbackController < ApplicationController
+  skip_before_action :verify_authenticity_token
   def feedback_email
-    #params[:foo]
-    @emailStatus = sendEmail(["birgelee@princeton.edu"], "test", "yo")
+    feedbackName = params[:name]
+    email = params[:email]
+    message = params[:comment]
+    @emailStatus = sendEmail(["birgelee@princeton.edu"], "#{feedbackName} gave feedback to Tiger Tickets", "#{feedbackName} gave feedback to Tiger Tickets <br /> Their email is: #{email}. Their comment is: <br /> #{message}")
   end
 
   def sendEmail(recipients, subject, body)
