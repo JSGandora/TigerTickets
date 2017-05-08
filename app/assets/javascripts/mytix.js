@@ -166,6 +166,7 @@ function updateRequests() {
             sgroup = "";
         }
 
+        // Default image for the tickets
         var grayurl = "https://cdn.evbuc.com/eventlogos/298207/1478813947tickets.png"
         var imghtml = "<img class = 'center-block' src="+grayurl+" alt='' style='height:150px'>"
         if(!(show["image"] === ""))
@@ -173,6 +174,7 @@ function updateRequests() {
 
         var deletehtml = "<div class='col-md-2' style = 'color:green;'>Completed</div>"
 
+        // Add a completed label to the ticket if the transaction has been completed
         if(!(sellRequestStatus === "completed")){
             deletehtml = "<div class='col-md-2'>"+
             "<button class='btn btn-primary btn-danger' data-target='#confirm-sell-delete' data-toggle='modal' id = 'deleteSelling"+i+"'>Delete <span class='glyphicon'></span></button><br><br><br><br>"+
@@ -180,6 +182,7 @@ function updateRequests() {
             "</div>"
         }
 
+        // Update the sell request html
         sellRequests_html += "<div class='row' id='selling"+i+"'>"+
                 "<div class='col-md-2'>"+
                     "<a href='#'>" +
@@ -201,8 +204,11 @@ function updateRequests() {
     if (data["sellrequests"].length == 0) {
         sellRequests_html = "<p>No current sell requests.</p>"
     }
+
+    // Render the sell requests
     $("#sell-requests-html-span").html(sellRequests_html)
 
+    // Update the entire profile html
     profile = "<div class='row text-left'>"+
             "<div class='col-lg-12'>"+
                 "<img class='fit' src='http://i.imgur.com/d8b5JRU.png' style='height:30px;''>"+
@@ -223,7 +229,7 @@ function updateRequests() {
         "</span>"
     deletionId = 0
 
-        
+    // Render the entire profile html
     $(document).ready(function(){
         $("#profile-page").html(profile)
 
@@ -273,6 +279,7 @@ function updateRequests() {
     });
 }
 
+// Functionality for the delete sell request button
 function deleteSellRequest(element) {
     console.log("you are cancelling a sell request")
     $.ajax({
@@ -293,6 +300,7 @@ function deleteSellRequest(element) {
     $("#" + deleteSellId).replaceWith("<p>Request deleted.</p>")
 }
 
+// Functionality for the delete buy request button
 function deleteBuyRequest(element) {
     console.log("you are cancelling a buy request")
     $.ajax({
@@ -313,6 +321,7 @@ function deleteBuyRequest(element) {
     $("#" + deleteBuyId).replaceWith("<p>Request deleted.</p>")
 }
 
+// Functionality for the confirm sell request button
 function confirmSellRequest(element) {
     console.log("you are completing a sell transaction")
     $.ajax({
@@ -333,6 +342,7 @@ function confirmSellRequest(element) {
     $("#" + confirmSellId).replaceWith("<p>Request confirmed.</p>")
 }
 
+// Functionality for the confirm buy request button
 function confirmBuyRequest(element) {
     console.log("you are completing a buy transaction")
     $.ajax({
