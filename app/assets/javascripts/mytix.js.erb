@@ -20,13 +20,13 @@ var weekday = new Array(7);
   var monthNames = ["January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"];
 
-// Add date fields to the shows data structure
+// Add the date fields to shows in the requests data structure
 function addDateDataToShows(originalShows) {
     // This code makes the function slower but keeps it pure so it doesn't tamper with originalData.
     // Because of how it will be called, purity doesn't matter.
-    // var result = originalData.slice(0)
-    return originalShows.map(function(show) {
-        
+    //var result = originalData.slice(0)
+    return originalShows.map(function(request) {
+        show = request.show;
       var date = new Date(0)
       date.setUTCSeconds(show['time'])
       var weekDay = weekday[date.getDay()]
@@ -45,9 +45,13 @@ function addDateDataToShows(originalShows) {
       show['ampm'] = ampm
       show['min'] = min
       show['time'] = time
-      return show
+      show['btime'] = time + " " + weekDay
+      show['date'] = month + " " + dayOfMonth + ", " + year
+      request.show = show
+      return request
     })
 }
+
 // Generate Buy Data
 var allData = {"buyrequests": [], "sellrequests": [] }
 var data = {"buyrequests": [], "sellrequests": [] }
