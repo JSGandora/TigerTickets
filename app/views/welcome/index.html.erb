@@ -1,8 +1,10 @@
-  <!-- Navigation -->
+
   <body>
 
+<!-- Tiger Tickets Logo -->
 <center><img class="fit" src="http://i.imgur.com/EAUZARe.jpg"></center>
 
+  <!-- Navigation -->
   <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
       <!-- Brand and toggle get grouped for better mobile display -->
@@ -20,8 +22,7 @@
         <ul class="nav navbar-nav navbar-right">
         <li>
           <a href="my-tix">My Tickets</a>
-        </li>
-         <li>
+        </li><li>
           <a href="faq">FAQ</a>
         </li>
         <li id="logoutLink">
@@ -29,32 +30,24 @@
         </li>
         </ul>
       </div>
-      <!-- /.navbar-collapse -->
     </div>
-    <!-- /.container -->
   </nav>
 
   <!-- Page Content -->
   <div class="container">
 
-    <!--<div align = "center">
-        <img src="https://i.imgur.com/RrB21R4.jpg" height="350">
-      </div>-->
-
     <br />
 
+    <!-- Search bar -->
     <form onsubmit="return false" autocomplete="Off">
             <input type="text" class="form-control search-input" placeholder="Search for a show..." name="srch-term" id="show-search-bar" />
-            <br />
-             
+            <br />    
     </form>
 
-    <div class="row text-center", id="hot-tickets">
-    </div>
+    <!-- Tickets that are sold out or have buy/sell requests -->
+    <div class="row text-center", id="hot-tickets"></div>
 
-    <!-- /.row -->
-
-    <!-- Page Features -->
+    <!-- All current show listings -->
     <div class="row text-center", id="ticket-listing">
       <!-- /.row -->
       <hr>
@@ -69,7 +62,6 @@
       </footer>
 
     </div>
-    <!-- /.container -->
 
     <!-- Buy Modal -->
     <div id="confirmBuyModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="buyConfirm" aria-hidden="true">
@@ -117,23 +109,27 @@
       </div>
     </div>
           
+  <!-- Feedback Modal -->
   <div id="feedback-main" class="modal">
     <div id="feedback-div">
+      <!-- Close X  -->
       <span class="close closefeedback" onclick="toggle_visibility()">&times;</span>
-      <form method="post" class="form" id="feedback-form1" name="form1" enctype="multipart/form-data" action="javascript:void(0);">
 
+      <!-- Form  -->
+      <form method="post" class="form" id="feedback-form1" name="form1" enctype="multipart/form-data" action="javascript:void(0);">
+        <!-- Name Field -->
         <p class="name">
           <input name="name" type="name" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input" required placeholder="Name" id="feedback-name" />
         </p>
-
+        <!-- Email Field -->
         <p class="email">
           <input name="email" type="email"       class="validate[required,custom[email]] feedback-input" id="feedback-email" placeholder="Email" required />
         </p>
-
+        <!-- Text/Feedback Field -->
         <p class="text">
           <textarea name="comment" type="comment" class="validate[required,length[6,300]] feedback-input" id="feedback-comment" required placeholder="How can we do better?"></textarea>
         </p>
-
+        <!-- Submit Method -->
         <div class="feedback-submit">
           <input type="submit" value="SEND" id="feedback-button-blue" onclick="submitFeedback(this)"/>
           <div class="feedback-ease"></div>
@@ -141,8 +137,30 @@
       </form>
     </div>
   </div>
-      
+    
+  <!-- Feedback Button -->
   <button id="popup" class="feedback-button" onclick="toggle_visibility()">Feedback</button>
+
+  <!-- Thank You for Feedback Modal -->
+  <div id="thankYouModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="thanks" aria-hidden="true">
+      <!-- Modal content -->
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <span class="close" data-dismiss="modal">&times;</span>
+            <h2></h2>
+          </div>
+          <div class="modal-body">
+            <h2>Thank you for submitting feedback!</h2>
+            <h4>We appreciate hearing your thoughts on how we can improve the site.</h4>
+            <h5>-The Tiger Tickets Team</h5>
+          </div>
+          <div class="modal-footer">
+            <h2></h2>
+          </div>
+        </div>
+      </div>
+    </div>
 </body>
 
 
