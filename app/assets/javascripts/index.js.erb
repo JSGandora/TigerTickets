@@ -178,7 +178,7 @@ function updateShows() {
 		if(!(show["image"] === ""))
 			imghtml = "<img src="+show["image"]+" alt='' style = 'height:100px'>"
 
-		// Generate ticket html depending on whether there is a gropu name or not
+		// Generate ticket html depending on whether there is a group name or not
 		if (group == "") {
 			html = "<div class='col-md-3 col-sm-6 hero-feature' id = 'ticketPanel'>"+
 			"<div class='panel' style='height:400px'>"+
@@ -228,14 +228,14 @@ function updateShows() {
 
 	show_html = "<center><img class='title' src='<%= asset_path('current-shows-text.png') %>'></center><br>" + show_html
 
+	// Render the html for the shows and popular shows
 	$("#ticket-listing").html(show_html)
 	$("#hot-tickets").html(hot_html)
 
 
-
+	// Add modal for confirming a buy/sell request
 	for (i = 0; i < data["shows"].length; i++) {
 	    (function(index) {$(".showBuy" + i).click(function(){
-	      console.log("lol");
 	      message = "";
 	      if (data["shows"][index]['soldout'] === true || data["shows"][index]['sellreq'] !== 0){
 	      	message = "<h2>Confirm Ticket Buy Request?</h2><h5> You are about to confirm your buy request for:</h5>";
@@ -263,9 +263,8 @@ function updateShows() {
 	}
 }
 
-
+// Functionality for submitting a buy request
 function putInBuyRequest(element) {
-	console.log("you are selling")
 	$.ajax({
 	url : "/buy",
 	type: "POST",
@@ -281,9 +280,8 @@ function putInBuyRequest(element) {
 	}})
 }
 
+// Functionality for submitting a sell request
 function putInSellRequest(element) {
-
-	console.log("you are buying")
 	$.ajax({
 	url : "/sell",
 	type: "POST",
@@ -299,11 +297,12 @@ function putInSellRequest(element) {
 	}})
 }
 
+// Functionality for the thank you modal after submitting feedback
 function feedbackSubmitted() {
 	// Put the code for sucessful feedback submission here.
-	console.log("feedback function called.")
 }
 
+// Functionality for submitting feedback
 function submitFeedback(element) {
 	$.ajax({
 	url : "/feedback",
@@ -320,6 +319,7 @@ function submitFeedback(element) {
 	}})
 }
 
+// Functionality for toggling the feedback modal.
 var count = 0;
 function toggle_visibility() {
    var e = document.getElementById('feedback-main');

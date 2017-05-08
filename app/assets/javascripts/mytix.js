@@ -39,10 +39,7 @@ function addDateDataToShows(originalShows) {
     // Because of how it will be called, purity doesn't matter.
     //var result = originalData.slice(0)
     return originalShows.map(function(request) {
-        console.log(request)
         show = request.show;
-      console.log("this is the show")
-      console.log(show)
       var date = new Date(0)
       date.setUTCSeconds(show['time'])
       var weekDay = weekday[date.getDay()]
@@ -281,7 +278,6 @@ function updateRequests() {
 
 // Functionality for the delete sell request button
 function deleteSellRequest(element) {
-    console.log("you are cancelling a sell request")
     $.ajax({
         url : "/cancel-sell",
         type: "POST",
@@ -302,7 +298,6 @@ function deleteSellRequest(element) {
 
 // Functionality for the delete buy request button
 function deleteBuyRequest(element) {
-    console.log("you are cancelling a buy request")
     $.ajax({
         url : "/cancel-buy",
         type: "POST",
@@ -323,7 +318,6 @@ function deleteBuyRequest(element) {
 
 // Functionality for the confirm sell request button
 function confirmSellRequest(element) {
-    console.log("you are completing a sell transaction")
     $.ajax({
         url : "/complete-sell",
         type: "POST",
@@ -344,7 +338,6 @@ function confirmSellRequest(element) {
 
 // Functionality for the confirm buy request button
 function confirmBuyRequest(element) {
-    console.log("you are completing a buy transaction")
     $.ajax({
         url : "/complete-buy",
         type: "POST",
