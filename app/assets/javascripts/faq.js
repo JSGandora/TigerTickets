@@ -1,3 +1,4 @@
+//Get the netid of the user and renders the Login/Logout butto accordingly.
 $.get("/shows", function(response){
 	netid = response["netid"];
 		console.log(netid)

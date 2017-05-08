@@ -1,29 +1,34 @@
-var netid = ""
-var data = { "shows" : [] }
-var fullData = { "shows" : [] }
+// Initialize netid and ticketing data structures
+var netid = "" // netid of the current user
+var data = { "shows" : [] } // shows data structure retrieved from the GET api call
+var fullData = { "shows" : [] } // full data structure of shows after processing from the GET api call
 
+// Function to filter the shows according to a search term
 function genFilteringPredicate(searchTerm) {
-search = searchTerm.toLowerCase()
-keywords = search.split(' ')
-  return function(show) {
-    return keywords.every(function(keyword) {
-      return show['group'].toLowerCase().includes(keyword)
-       || show['location'].toLowerCase().includes(keyword)
-       || show['name'].toLowerCase().includes(keyword)
-       || show['weekDay'].toLowerCase().includes(keyword)
-       || show['month'].toLowerCase().includes(keyword)
-       || show['dayOfMonth'].toString().toLowerCase().includes(keyword)
-       || show['hour'].toString().toLowerCase().includes(keyword)
-       || show['ampm'].toLowerCase().includes(keyword)
-       || show['min'].toString().toLowerCase().includes(keyword)
-       || show['time'].toLowerCase().includes(keyword)
+	search = searchTerm.toLowerCase()
+	keywords = search.split(' ')
+	  return function(show) {
+	    return keywords.every(function(keyword) {
+	      return show['group'].toLowerCase().includes(keyword)
+	       || show['location'].toLowerCase().includes(keyword)
+	       || show['name'].toLowerCase().includes(keyword)
+	       || show['weekDay'].toLowerCase().includes(keyword)
+	       || show['month'].toLowerCase().includes(keyword)
+	       || show['dayOfMonth'].toString().toLowerCase().includes(keyword)
+	       || show['hour'].toString().toLowerCase().includes(keyword)
+	       || show['ampm'].toLowerCase().includes(keyword)
+	       || show['min'].toString().toLowerCase().includes(keyword)
+	       || show['time'].toLowerCase().includes(keyword)
 
-    })
-}
+	    })
+	}
 }
 
+// Render search bar appearance and functionality
 $('#show-search-bar').on('input', function(event) {
 	var searchTerm = $('#show-search-bar').val()
+
+	// Show all the shows if there is no text in search bar
 	if (searchTerm === "") {
 	  data['shows'] = fullData['shows']
 	  updateShows()
@@ -33,6 +38,7 @@ $('#show-search-bar').on('input', function(event) {
 	updateShows()
 })
 
+// List of days of the week abbreviations
 var weekday = new Array(7);
 weekday[0] =  "SUN";
 weekday[1] = "MON";
@@ -42,10 +48,12 @@ weekday[4] = "THU";
 weekday[5] = "FRI";
 weekday[6] = "SAT";
 
+// List of abbreviations for month names
 var monthNames = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN",
 "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"
 ];
 
+// Append a zero character before i
 function addZero(i) {
 	if (i < 10) {
 	    i = "0" + i;
@@ -53,10 +61,11 @@ function addZero(i) {
 	return i;
 }
 
+// Add date fields to the shows data structure
 function addDateDataToShows(originalShows) {
 	// This code makes the function slower but keeps it pure so it doesn't tamper with originalData.
 	// Because of how it will be called, purity doesn't matter.
-	//var result = originalData.slice(0)
+	// var result = originalData.slice(0)
 	return originalShows.map(function(show) {
 	  var date = new Date(0)
 	  date.setUTCSeconds(show['time'])
@@ -80,8 +89,9 @@ function addDateDataToShows(originalShows) {
 	})
 }
 
-
+// Function to process the shows data structure returned from the GET call
 function callbackShows(response, textStatus, xhr) {
+	// Update the data variable
 	showResponseData = response['shows']
 	if (showResponseData !== null) {
 		fullData['shows'] = addDateDataToShows(showResponseData)
@@ -90,6 +100,7 @@ function callbackShows(response, textStatus, xhr) {
 	
 	netid = response['netid']
 
+	// Render the Logout/Login button according to the presence of a netid
 	var text = "<a id='logout' href='javascript:void(0)'> Logout ("+netid+") </a>"
 	if(netid == null){
 	text = "<a href='login'> Login </a>"
@@ -101,6 +112,7 @@ function callbackShows(response, textStatus, xhr) {
 	$.post('logout');
 	});
 
+	// Update the shows on the page
 	if ($.isReady) {
 	  updateShows()
 	} else {
@@ -112,88 +124,101 @@ function callbackShows(response, textStatus, xhr) {
 $.get('shows', callbackShows)
 
 
+var show_html = "" // The html for rendering all the shows
+var hot_html = "" // The html for rendering all the popular shows
 
-var show_html = ""
-var hot_html = ""
+// Update the shows on the page
 function updateShows() {
 	show_html = ""
 	hot_html = ""
 	popularShowCount = 0
 	length = 0
 	
+	// Get total number of shows
 	if (data["shows"] !== null) {
 		length = data["shows"].length
 	}
 
+	// Generate the html for all shows and popular shows
 	for (i = 0; i < length; i++) {
-	  var show = data["shows"][i]
-	  
-	  var group = show["group"];
-	  if(group.search("SOLD OUT") >= 0 || group.search("ticket") >= 0){
-	    group = "";
-	  }
-	  var timing = show.weekDay+" · "+show.month+" "+show.dayOfMonth+" "+show.year+" · "+show.hour+":"+show.min+" "+show.ampm
+		var show = data["shows"][i]
 
-	  var buy_text = "Buy"
-	  if (show["sellreq"] == 1)
-	    buy_text += " <b>("+show["sellreq"]+" Seller!)</b>"
-	  else if(show["sellreq"] > 1)
-	    buy_text += " <b>("+show["sellreq"]+" Sellers!)</b>"
+		// Remove descriptions of group names that contain the string "SOLD OUT" or "ticket"
+		// because the group names are not present in those strings 
+		var group = show["group"];
+		if(group.search("SOLD OUT") >= 0 || group.search("ticket") >= 0){
+			group = "";
+		}
+		var timing = show.weekDay+" · "+show.month+" "+show.dayOfMonth+" "+show.year+" · "+show.hour+":"+show.min+" "+show.ampm
 
-	  var sell_text = "Sell"
-	  if(show["buyreq"] == 1)
-	    sell_text += " <b>("+show["buyreq"]+" Buyer!)</b>"
-	  if(show["buyreq"] > 1)
-	    sell_text += " <b>("+show["buyreq"]+" Buyers!)</b>"
+		// Generate buy button html
+		var buy_text = "Buy"
+		if (show["sellreq"] == 1)
+			buy_text += " <b>("+show["sellreq"]+" Seller!)</b>"
+		else if(show["sellreq"] > 1)
+			buy_text += " <b>("+show["sellreq"]+" Sellers!)</b>"
 
-	  var buysellbuttons = "<button class='btn btn-primary showBuy"+i+"' data-target='#confirmBuyModal' data-toggle='modal'>"+buy_text+"</button> <button class='btn btn-default showSell"+i+"' data-target='#confirmSellModal' data-toggle='modal'>"+sell_text+"</button>"
-	  if(netid === "")
-	  {
-	    buysellbuttons = "<a href='login'><button class='btn btn-primary showBuy"+i+"' data-target='#confirmBuyModal'>"+buy_text+"</button></a> <a href='login'><button class='btn btn-default showSell"+i+"' data-target='#confirmSellModal'>"+sell_text+"</button></a>";
-	  }
+		// Generate sell button html
+		var sell_text = "Sell"
+		if(show["buyreq"] == 1)
+			sell_text += " <b>("+show["buyreq"]+" Buyer!)</b>"
+		if(show["buyreq"] > 1)
+			sell_text += " <b>("+show["buyreq"]+" Buyers!)</b>"
 
-	  var grayurl = "https://cdn.evbuc.com/eventlogos/298207/1478813947tickets.png"
-	  var imghtml = "<img src="+grayurl+" alt='' style = 'height:100px'>"
-	  if(!(show["image"] === ""))
-	  	imghtml = "<img src="+show["image"]+" alt='' style = 'height:100px'>"
+		// Generate buy and sell buttons
+		var buysellbuttons = "<button class='btn btn-primary showBuy"+i+"' data-target='#confirmBuyModal' data-toggle='modal'>"+buy_text+"</button> <button class='btn btn-default showSell"+i+"' data-target='#confirmSellModal' data-toggle='modal'>"+sell_text+"</button>"
+		if(netid === "")
+		{
+			buysellbuttons = "<a href='login'><button class='btn btn-primary showBuy"+i+"' data-target='#confirmBuyModal'>"+buy_text+"</button></a> <a href='login'><button class='btn btn-default showSell"+i+"' data-target='#confirmSellModal'>"+sell_text+"</button></a>";
+		}
 
-	  if (group == "") {
-	    html = "<div class='col-md-3 col-sm-6 hero-feature' id = 'ticketPanel'>"+
-	    "<div class='panel' style='height:400px'>"+
-	    "<br><br>"+
-	    "<h3><strong>"+show["name"]+"</strong></h3>"+
-	    imghtml+
-	    "<div class='caption'>"+
-	    "<h5>"+timing+"</h5>"+
-	    "<h5><strong>"+show["location"]+"</strong></h5>"+
-	    "<p>"+buysellbuttons+"</p>"+
-	    "</div>"+
-	    "</div>"+
-	    "</div>"
-	  }
-	  else {
-	    html = "<div class='col-md-3 col-sm-6 hero-feature' id = 'ticketPanel'>"+
-	  "<div class='panel' style='height:400px'>"+
-	   "<h4><i>"+group+"</i></h4>"+
-	   "<p><i>presents</i></p>"+
-	   "<h3><strong>"+show["name"]+"</strong></h3>"+
-	  imghtml+
-	  "<div class='caption'>"+
-	  "<h5>"+timing+"</h5>"+
-	  "<h5><strong>"+show["location"]+"</strong></h5>"+
-	  "<p>"+buysellbuttons+
-	  "</p>"+
-	  "</div>"+
-	  "</div>"+
-	  "</div>"
-	  }
-	  show_html += html
-	  // If a show has sell or buy requests and there is no search currently, add them to popular shows.
-	  // To add a cap to popular shows append this to the if statement: && popularShowCount < 4
-	  if((show["soldout"] || show["buyreq"] > 0 || show["sellreq"] > 0) && $('#show-search-bar').val() == "") {
-	    popularShowCount += 1
-	    hot_html += html
-	  }
+		// Generate the entire ticket html
+		var grayurl = "https://cdn.evbuc.com/eventlogos/298207/1478813947tickets.png" // Default ticket image
+		var imghtml = "<img src="+grayurl+" alt='' style = 'height:100px'>"
+		if(!(show["image"] === ""))
+			imghtml = "<img src="+show["image"]+" alt='' style = 'height:100px'>"
+
+		// Generate ticket html depending on whether there is a gropu name or not
+		if (group == "") {
+			html = "<div class='col-md-3 col-sm-6 hero-feature' id = 'ticketPanel'>"+
+			"<div class='panel' style='height:400px'>"+
+			"<br><br>"+
+			"<h3><strong>"+show["name"]+"</strong></h3>"+
+			imghtml+
+			"<div class='caption'>"+
+			"<h5>"+timing+"</h5>"+
+			"<h5><strong>"+show["location"]+"</strong></h5>"+
+			"<p>"+buysellbuttons+"</p>"+
+			"</div>"+
+			"</div>"+
+			"</div>"
+		}
+		else {
+			html = "<div class='col-md-3 col-sm-6 hero-feature' id = 'ticketPanel'>"+
+			"<div class='panel' style='height:400px'>"+
+			"<h4><i>"+group+"</i></h4>"+
+			"<p><i>presents</i></p>"+
+			"<h3><strong>"+show["name"]+"</strong></h3>"+
+			imghtml+
+			"<div class='caption'>"+
+			"<h5>"+timing+"</h5>"+
+			"<h5><strong>"+show["location"]+"</strong></h5>"+
+			"<p>"+buysellbuttons+
+			"</p>"+
+			"</div>"+
+			"</div>"+
+			"</div>"
+		}
+
+		// Update show_html
+		show_html += html
+
+		// If a show has sell or buy requests and there is no search currently, add them to popular shows.
+		// To add a cap to popular shows append this to the if statement: && popularShowCount < 4
+		if((show["soldout"] || show["buyreq"] > 0 || show["sellreq"] > 0) && $('#show-search-bar').val() == "") {
+			popularShowCount += 1
+		hot_html += html
+		}
 	}
 
 	// Add the header only if there are some popular shows.
