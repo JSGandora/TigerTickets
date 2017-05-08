@@ -105,7 +105,7 @@
   <div id="feedback-main" class="modal">
     <div id="feedback-div">
       <!-- Close X  -->
-      <span class="close closefeedback" onclick="toggle_visibility()">&times;</span>
+      <span class="close closefeedback" onclick="toggle_feedback_visibility()">&times;</span>
 
       <!-- Form  -->
       <form method="post" class="form" id="feedback-form1" name="form1" enctype="multipart/form-data" action="javascript:void(0);">
@@ -131,7 +131,7 @@
   </div>
     
   <!-- Feedback Button -->
-  <button id="popup" class="feedback-button" onclick="toggle_visibility()"  >Feedback</button>
+  <button id="popup" class="feedback-button" onclick="toggle_feedback_visibility()"  >Feedback</button>
 
   <!-- Thank You for Feedback Modal -->
   <div id="thankYouModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="thanks" aria-hidden="true">
@@ -139,13 +139,12 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <span class="close" data-dismiss="modal">&times;</span>
             <h2></h2>
           </div>
           <div class="modal-body">
             <h2>Thank you for submitting feedback!</h2>
             <h4>We appreciate hearing your thoughts on how we can improve the site.</h4>
-            <h5>-The Tiger Tickets Team</h5>
+            <h4>-The Tiger Tickets Team</h4>
           </div>
           <div class="modal-footer">
             <h2></h2>

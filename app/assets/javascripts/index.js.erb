@@ -300,7 +300,8 @@ function putInSellRequest(element) {
 
 // Functionality for the thank you modal after submitting feedback
 function feedbackSubmitted() {
-	// Put the code for sucessful feedback submission here.
+	toggle_thankyou_visibility();
+	toggle_feedback_visibility();
 }
 
 // Functionality for submitting feedback
@@ -322,42 +323,56 @@ function submitFeedback(element) {
 	}
 }
 
-// Functionality for toggling the feedback modal.
-var count = 0;
-function toggle_visibility() {
-   var e = document.getElementById('feedback-main');
+// Functionality for toggling the thank you modal.
+function toggle_thankyou_visibility() {
+   var e = document.getElementById('thankYouModal');
    if(e.style.display == 'block')
    {
       e.style.display = 'none';
-      count = 0;
    }
    else
    {
       e.style.display = 'block';
-      count = 1;
    }
 }
 
-// $(function() {
-//     var f = document.getElementById('feedback-main');
-//     $("body").click(function(e) {
-//     	console.log(count)
-//     	console.log(f.style.display)
-//         if (e.target.id  == "feedback-div" || $(e.target).parents("#feedback-div").size()) { 
-//         } else { 
-//         	if(count == 1){
-//         		count = 2;
-//         		f.style.display = 'block'
-//         		console.log("Now we are displaying the modal")
-//         	}
-//         	else if(count == 2){
-//         		count = 0;
-//         		f.style.display = 'none'
-//         		console.log("Now we are closing the modal")
-//         	}
-//         }
-//     });
-// })
+// Functionality for toggling the feedback modal.
+var fcount = 0;
+function toggle_feedback_visibility() {
+   var e = document.getElementById('feedback-main');
+   if(e.style.display == 'block')
+   {
+      e.style.display = 'none';
+      fcount = 0;
+   }
+   else
+   {
+      e.style.display = 'block';
+      fcount = 1;
+   }
+}
+
+$(function() {
+    var f = document.getElementById('feedback-main');
+    var t = document.getElementById('thankYouModal');
+    $("body").click(function(e) {
+        if (e.target.id  == "feedback-div" || $(e.target).parents("#feedback-div").size()) { 
+        } else { 
+        	if(fcount == 1){
+        		fcount = 2;
+        		f.style.display = 'block'
+        	}
+        	else if(fcount == 2){
+        		fcount = 0;
+        		f.style.display = 'none'
+        	}
+        }
+        if (e.target.id  == "modal-dialog" || $(e.target).parents("#modal-dialog").size()) { 
+        } else { 
+        	t.style.display = 'none'
+        }
+    });
+})
 
 
 $(document).ready(function(){
