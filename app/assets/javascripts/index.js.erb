@@ -67,6 +67,7 @@ function addDateDataToShows(originalShows) {
 	// Because of how it will be called, purity doesn't matter.
 	// var result = originalData.slice(0)
 	return originalShows.map(function(show) {
+		
 	  var date = new Date(0)
 	  date.setUTCSeconds(show['time'])
 	  var weekDay = weekday[date.getDay()]

@@ -1,17 +1,4 @@
-// Generate Buy Data
-var allData = {"requests" : [] }
-var data = {"requests" : [] }
-var netid = ""
-$.get('my-tix-data', function(response) { 
-    allData = response
-    netid = response["netid"]
-    formatLogoutButton()
-    if ($.isReady) {
-      updateRequests()
-    } else {
-      $(function() { updateRequests() })
-    }
-})
+
 
 // Append a zero to the front of a number in the form of a string
 function addZero(i) {
@@ -33,13 +20,13 @@ var weekday = new Array(7);
   var monthNames = ["January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"];
 
-// Add the date fields to the shows data structure
+// Add date fields to the shows data structure
 function addDateDataToShows(originalShows) {
     // This code makes the function slower but keeps it pure so it doesn't tamper with originalData.
     // Because of how it will be called, purity doesn't matter.
-    //var result = originalData.slice(0)
-    return originalShows.map(function(request) {
-        show = request.show;
+    // var result = originalData.slice(0)
+    return originalShows.map(function(show) {
+        
       var date = new Date(0)
       date.setUTCSeconds(show['time'])
       var weekDay = weekday[date.getDay()]
@@ -58,19 +45,21 @@ function addDateDataToShows(originalShows) {
       show['ampm'] = ampm
       show['min'] = min
       show['time'] = time
-      show['btime'] = time + " " + weekDay
-      show['date'] = month + " " + dayOfMonth + ", " + year
-      request.show = show
-      return request
+      return show
     })
 }
-
+// Generate Buy Data
+var allData = {"buyrequests": [], "sellrequests": [] }
+var data = {"buyrequests": [], "sellrequests": [] }
+var netid = ""
 // Function to process all the data from the GET api call
 function callbackRequests(response, textStatus, xhr) {
+    netid = response["netid"]
     allData['buyrequests'] = addDateDataToShows(response['buyrequests'])
     data['buyrequests'] = allData['buyrequests'].slice(0)
     allData['sellrequests'] = addDateDataToShows(response['sellrequests'])
     data['sellrequests'] = allData['sellrequests'].slice(0)
+    formatLogoutButton()
     if ($.isReady) {
       updateRequests()
     } else {
@@ -208,7 +197,7 @@ function updateRequests() {
     // Update the entire profile html
     profile = "<div class='row text-left'>"+
             "<div class='col-lg-12'>"+
-                "<img class='fit' src='http://i.imgur.com/d8b5JRU.png' style='height:30px;''>"+
+                "<img class='fit' src='<%= asset_path('ticket-buy-requests-text.png') %>' style='height:30px;''>"+
             "</div>"+
         "</div>"+
         "<hr>"+
@@ -217,7 +206,7 @@ function updateRequests() {
         "</span>" +
         "<div class='row text-left'>"+
             "<div class='col-lg-12'>"+
-                "<img class='fit' src='http://i.imgur.com/XhUTIFs.png' style='height:32px;''>"+
+                "<img class='fit' src='<%= asset_path('ticket-sell-requests-text.png') %>' style='height:32px;''>"+
             "</div>"+
         "</div>"+
         "<hr>"+
