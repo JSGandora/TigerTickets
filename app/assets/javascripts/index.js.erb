@@ -304,19 +304,21 @@ function feedbackSubmitted() {
 
 // Functionality for submitting feedback
 function submitFeedback(element) {
-	$.ajax({
-	url : "/feedback",
-	type: "POST",
-	data: JSON.stringify({"name": $("#feedback-name").val(), "email": $("#feedback-email").val(), "comment": $("#feedback-comment").val()}),
-	contentType: "application/json; charset=utf-8",
-	dataType   : "json",
-	success    : function(data){
-	  if (data['status'] == "ok") {
-	    feedbackSubmitted()
-	  } else {
-	    window.alert("There was an error submitting your feedback: " + data['reason'])
-	  }
-	}})
+	if (document.getElementById("feedback-email").checkValidity() && document.getElementById("feedback-name").checkValidity() && document.getElementById("feedback-comment").checkValidity()) {
+		$.ajax({
+			url : "/feedback",
+			type: "POST",
+			data: JSON.stringify({"name": $("#feedback-name").val(), "email": $("#feedback-email").val(), "comment": $("#feedback-comment").val()}),
+			contentType: "application/json; charset=utf-8",
+			dataType   : "json",
+			success    : function(data){
+				if (data['status'] == "ok") {
+					feedbackSubmitted()
+				} else {
+					window.alert("There was an error submitting your feedback: " + data['reason'])
+				}
+			}})
+	}
 }
 
 // Functionality for toggling the feedback modal.
