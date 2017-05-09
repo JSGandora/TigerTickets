@@ -278,7 +278,13 @@ function putInBuyRequest(element) {
 	  } else {
 	    window.alert("There was an error submitting your buy request: " + data['reason'])
 	  }
-	}})
+	},
+	statusCode : {
+		401: function() {
+			window.location = "/login"
+		}
+	}
+	})
 }
 
 // Functionality for submitting a sell request
@@ -295,7 +301,14 @@ function putInSellRequest(element) {
 	  } else {
 	    window.alert("There was an error submitting your sell request: " + data['reason'])
 	  }
-	}})
+	},
+	statusCode : {
+		401: function() {
+			window.location = "/login"
+		}
+	}
+
+	})
 }
 
 // Functionality for the thank you modal after submitting feedback
