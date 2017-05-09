@@ -224,10 +224,10 @@ function updateShows() {
 
 	// Add the header only if there are some popular shows.
 	if (hot_html != "") {
-	  hot_html = "<center><img class='title' src='<%= asset_path('popular-shows-text.png') %>'></center><br>" + hot_html
+	  hot_html = "<center><img class='fit' src='<%= asset_path('popular-shows-text.png') %>' style='height:50px;''></center><br>" + hot_html
 	}
 
-	show_html = "<center><img class='title' src='<%= asset_path('current-shows-text.png') %>'></center><br>" + show_html
+	show_html = "<center><img class='title' src='<%= asset_path('current-shows-text.png') %>' style='height:50px;''></center><br>" + show_html
 
 	// Render the html for the shows and popular shows
 	$("#ticket-listing").html(show_html)
