@@ -1,20 +1,24 @@
-// Place all the styles related to the Welcome controller here.
+// Place all the styles related to the FAQ controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-
+// Making the background of the page white
 body {
   background-color: white;  
 }
 
+// Making all the text black
 #faq {
   color:black;
 }
+
+// Making the image with text scaleable on smaller screens
 .fit {
   max-width:80%;
   max-height:100%;
 }
 
+// Making the breaks into thick orange bars
 hr {
     display: block;
     height: 2px;
@@ -24,14 +28,13 @@ hr {
     padding: 0; 
 }
 
+// Making the orange strip beneath the FAQ tab for navigation
 .navbar-FAQ {
   border-bottom: 5px solid rgb(231,133,62);
   bottom: 0;
 }
 
-h1 {
-  font-family: "Courier New", Times, serif;
-}
+// Changing the font to Times New Roman for the whole page
 h4 {
   font-family: "Times New Roman", Times, serif;
 }
