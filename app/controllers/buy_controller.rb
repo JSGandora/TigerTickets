@@ -48,7 +48,7 @@ class BuyController < ApplicationController
     if token
       buyRequests = BuyRequest.where(email_token: token).where(:status => ["waiting-for-match"])
       if buyRequests.length > 0
-        buyRequests.update_all(status: "completed")
+        buyRequests.update_all(status: "completed", updated_at: DateTime.now)
         status = "ok"
       else
         status = "Bad request"
@@ -85,7 +85,7 @@ class BuyController < ApplicationController
         buyRequests = BuyRequest.where(netid: netid).where(id: buy_request_id).where(:status => ["waiting-for-match"])
         # Checks if the buy request is valid
         if buyRequests.length > 0
-          buyRequests.update_all(status: "completed")
+          buyRequests.update_all(status: "completed", updated_at: DateTime.now)
           status = "ok"
         else
           status = "Bad request"
@@ -123,7 +123,7 @@ class BuyController < ApplicationController
       response = {:status => "bad request", :netid => netid, :reason => 'no buy requests found'}
       render json: response
     else
-      buyRequests.update_all(status: "deleted")
+      buyRequests.update_all(status: "deleted", updated_at: DateTime.now)
       response = {:status => "ok", :netid => netid, :buy_request_id => buy_request_id}
       render json: response
     end

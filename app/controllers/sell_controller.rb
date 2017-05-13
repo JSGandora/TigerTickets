@@ -47,7 +47,7 @@ class SellController < ApplicationController
     if token
       sellRequests = SellRequest.where(email_token: token).where(:status => ["waiting-for-match"])
       if sellRequests.length > 0
-        sellRequests.update_all(status: "completed")
+        sellRequests.update_all(status: "completed", updated_at: DateTime.now)
         status = "ok"
       else
         status = "Bad request"
@@ -84,7 +84,7 @@ class SellController < ApplicationController
         sellRequests = SellRequest.where(netid: netid).where(id: sell_request_id).where(:status => ["waiting-for-match"])
         # Checks if the sell request is valid
         if sellRequests.length > 0
-          sellRequests.update_all(status: "completed")
+          sellRequests.update_all(status: "completed", updated_at: DateTime.now)
           status = "ok"
         else
           status = "Bad request"
@@ -122,7 +122,7 @@ class SellController < ApplicationController
       response = {:status => "bad request", :netid => netid, :reason => 'no sell requests found'}
       render json: response
     else
-      sellRequests.update_all(status: "deleted")
+      sellRequests.update_all(status: "deleted", updated_at: DateTime.now)
       response = {:status => "ok", :netid => netid, :sell_request_id => sell_request_id}
       render json: response
     end
