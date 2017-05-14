@@ -46,7 +46,7 @@ class BuyController < ApplicationController
     reason = ""
     token = params[:email_token]
     if token
-      buyRequests = BuyRequest.where(email_token: token).where(:status => ["waiting-for-match"])
+      buyRequests = BuyRequest.where(email_token: token).where(:status => ["waiting-for-match", "completed"])
       if buyRequests.length > 0
         buyRequests.update_all(status: "completed", updated_at: DateTime.now)
         status = "ok"

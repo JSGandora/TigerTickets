@@ -45,7 +45,7 @@ class SellController < ApplicationController
     reason = ""
     token = params[:email_token]
     if token
-      sellRequests = SellRequest.where(email_token: token).where(:status => ["waiting-for-match"])
+      sellRequests = SellRequest.where(email_token: token).where(:status => ["waiting-for-match", "completed"])
       if sellRequests.length > 0
         sellRequests.update_all(status: "completed", updated_at: DateTime.now)
         status = "ok"
