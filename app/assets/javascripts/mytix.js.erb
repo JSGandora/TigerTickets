@@ -255,7 +255,7 @@ function updateRequests() {
                 else{
                     buyer_list = buyer_list.join(", ")
                 }
-                buyer_list = "<b>Active Buyers: </b><br><div id='info_text'>" + buyer_list + "</div>"
+                buyer_list = "<b>Netids of Active Buyers: </b><br><div id='info_text'>" + buyer_list + "</div>"
                 confirmBuyId = "buying" + index
                 show = data["sellrequests"][index]["show"]
                 message = "<p><b>Show:</b></p><br><div id='info_text'><p>" + show["name"] + "<br />" + show["btime"]+"<br>"+show["date"] + "<br />" + show["location"] + ".</p></div>";
@@ -296,7 +296,7 @@ function updateRequests() {
                 else{
                     seller_list = seller_list.join(", ")
                 }
-                seller_list = "<b>Active Sellers: </b><br><div id='info_text'>" + seller_list + "</div>"
+                seller_list = "<b>Netids of Active Sellers: </b><br><div id='info_text'>" + seller_list + "</div>"
                 confirmBuyId = "buying" + index
                 show = data["buyrequests"][index]["show"]
                 message = "<p><b>Show:</b></p><br><div id='info_text'><p>" + show["name"] + "<br />" + show["btime"]+"<br>"+show["date"] + "<br />" + show["location"] + ".</p></div>";
