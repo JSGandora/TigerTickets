@@ -108,6 +108,28 @@
 
     </div>
 
+    <!-- VIEW SELLERS Modal -->
+    <div id="view-sellers" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <!-- Modal content -->
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="close" data-dismiss="modal">&times;</span>
+                    <h2></h2>
+                </div>
+                <div class="modal-body">
+                    <h1 class="tiger-tix-modal-header" >Active Sellers</h1>
+                    <!-- Individual Show Information -->
+                    <p id="view-sellers-body">An error ocurred in displaying the show name.</p>
+                    <br>
+                    <p id="view-sellers-list">An error ocurred in displaying the sellers list.</p>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- CONFIRM COMPLETED SELL Request Modal -->
     <div id="confirm-sell-confirm" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <!-- Modal content -->
@@ -167,8 +189,30 @@
                 </div>
             </div>
         </div>
-
     </div>
+
+    <!-- VIEW BUYERS Modal -->
+    <div id="view-buyers" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <!-- Modal content -->
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="close" data-dismiss="modal">&times;</span>
+                    <h2></h2>
+                </div>
+                <div class="modal-body">
+                    <h1 class="tiger-tix-modal-header" >Active Buyers</h1>
+                    <!-- Individual Show Information -->
+                    <p id="view-buyers-body">An error ocurred in displaying the show name.</p>
+                    <br>
+                    <p id="view-buyers-list">An error ocurred in displaying the buyers list.</p>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
 
 <%= javascript_include_tag "mytix" %>

@@ -114,8 +114,9 @@ function updateRequests() {
         var deletehtml = "<div class='col-md-2' style='color:green'>Completed</div>"
         if(!(buyRequestStatus === "completed")){
             deletehtml = "<div class='col-md-2'>"+
-                    "<button class='btn btn-danger' data-target='#confirm-buy-delete' data-toggle='modal' id = 'deleteBuying"+i+"'>Delete<span class='glyphicon'></span></button><br><br><br><br>"+
-                    "<button class='btn btn-primary' data-target='#confirm-buy-confirm' data-toggle='modal' id = 'confirmBuying"+i+"'>Complete<span class='glyphicon'></span></button>"+
+                    "<button class='btn btn-danger' data-target='#confirm-buy-delete' data-toggle='modal' id = 'deleteBuying"+i+"'>Delete<span class='glyphicon'></span></button><br><br>"+
+                    "<button class='btn btn-primary' data-target='#confirm-buy-confirm' data-toggle='modal' id = 'confirmBuying"+i+"'>Complete<span class='glyphicon'></span></button><br><br>"+
+                    "<button class='btn btn-success' data-target='#view-sellers' data-toggle='modal' id = 'viewSellers"+i+"'>View Sellers<span class='glyphicon'></span></button>"+
                 "</div>"
         }
 
@@ -167,8 +168,9 @@ function updateRequests() {
         // Add a completed label to the ticket if the transaction has been completed
         if(!(sellRequestStatus === "completed")){
             deletehtml = "<div class='col-md-2'>"+
-            "<button class='btn btn-primary btn-danger' data-target='#confirm-sell-delete' data-toggle='modal' id = 'deleteSelling"+i+"'>Delete <span class='glyphicon'></span></button><br><br><br><br>"+
-            "<button class='btn btn-primary' data-target='#confirm-sell-confirm' data-toggle='modal' id = 'confirmSelling"+i+"'>Complete<span class='glyphicon'></span></button>"+
+            "<button class='btn btn-primary btn-danger' data-target='#confirm-sell-delete' data-toggle='modal' id = 'deleteSelling"+i+"'>Delete <span class='glyphicon'></span></button><br><br>"+
+            "<button class='btn btn-primary' data-target='#confirm-sell-confirm' data-toggle='modal' id = 'confirmSelling"+i+"'>Complete<span class='glyphicon'></span></button><br><br>"+
+            "<button class='btn btn-success' data-target='#view-buyers' data-toggle='modal' id = 'viewBuyers"+i+"'>View Buyers<span class='glyphicon'></span></button>"+
             "</div>"
         }
 
@@ -243,6 +245,25 @@ function updateRequests() {
                 $("#confirmSellButton").attr("show-id", data["sellrequests"][index]["id"]);
                 });
             })(i);
+            // View the active buyers
+            (function(index) {$("#viewBuyers" + i).click(function(){
+                var buyer_list = data["sellrequests"][index]["buyer_list"]
+                console.log(buyer_list.length)
+                if(buyer_list.length === 0){
+                    buyer_list = "There are no active buyers."
+                }
+                else{
+                    buyer_list = buyer_list.join(", ")
+                }
+                buyer_list = "<b>Active Buyers: </b><br><div id='info_text'>" + buyer_list + "</div>"
+                confirmBuyId = "buying" + index
+                show = data["sellrequests"][index]["show"]
+                message = "<p><b>Show:</b></p><br><div id='info_text'><p>" + show["name"] + "<br />" + show["btime"]+"<br>"+show["date"] + "<br />" + show["location"] + ".</p></div>";
+                $("#view-buyers-body").html(message)
+                $("#view-buyers-list").html(buyer_list)
+                $("#confirmBuyButton").attr("show-id", data["sellrequests"][index]["id"]);
+                });
+            })(i);
         }
 
         
@@ -262,6 +283,25 @@ function updateRequests() {
                 show = data["buyrequests"][index]["show"]
                 message = "<p><strong>" + show["name"] + "<br />" + show["btime"]+"<br>"+show["date"] + "<br />" + show["location"] + "</strong>.</p>";
                 $("#confirmBuyBody").html(message) 
+                $("#confirmBuyButton").attr("show-id", data["buyrequests"][index]["id"]);
+                });
+            })(i);
+            // View the active sellers
+            (function(index) {$("#viewSellers" + i).click(function(){
+                var seller_list = data["buyrequests"][index]["seller_list"]
+                console.log(seller_list.length)
+                if(seller_list.length === 0){
+                    seller_list = "There are no active sellers."
+                }
+                else{
+                    seller_list = seller_list.join(", ")
+                }
+                seller_list = "<b>Active Sellers: </b><br><div id='info_text'>" + seller_list + "</div>"
+                confirmBuyId = "buying" + index
+                show = data["buyrequests"][index]["show"]
+                message = "<p><b>Show:</b></p><br><div id='info_text'><p>" + show["name"] + "<br />" + show["btime"]+"<br>"+show["date"] + "<br />" + show["location"] + ".</p></div>";
+                $("#view-sellers-body").html(message)
+                $("#view-sellers-list").html(seller_list)
                 $("#confirmBuyButton").attr("show-id", data["buyrequests"][index]["id"]);
                 });
             })(i);
