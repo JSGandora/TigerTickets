@@ -4,6 +4,8 @@ require_relative 'application'
 require 'casclient'
 require 'casclient/frameworks/rails/filter'
 
+require 'capybara/poltergeist'
+
   CASClient::Frameworks::Rails::Filter.configure(
     :cas_base_url  => "https://fed.princeton.edu/cas/",
     :login_url     => "https://fed.princeton.edu/cas/login",
@@ -20,6 +22,15 @@ ActionMailer::Base.smtp_settings = {
   :authentication => :plain,
   :enable_starttls_auto => true
 }
+
+Capybara.javascript_driver = :poltergeist
+
+options = {js_errors: false}
+Capybara.register_driver :poltergeist do |app|
+  Capybara::Poltergeist::Driver.new(app, options)
+end
+
+
 
 # Initialize the Rails application.
 Rails.application.initialize!
