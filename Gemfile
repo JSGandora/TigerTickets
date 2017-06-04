@@ -48,7 +48,6 @@ gem 'jbuilder', '~> 2.5'
 
 gem 'poltergeist'
 gem 'capybara'
-gem 'phantomjs', :require => 'phantomjs/poltergeist'
 gem 'sendgrid-ruby'
 
 group :development, :test do
