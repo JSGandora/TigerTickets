@@ -154,7 +154,9 @@ class Show < ApplicationRecord
                buy_link = e['buy_link']
                id = e['id']
                #Show.create(title: name, time: t, location: venue, group: description, img: image_url, soldout: soldout, buy_link: buy_link)
-               show = Show.where(title: name).where(time: t).where(group: description).where(location: venue).first_or_initialize
+               #Don't look for same show by same title and group. Use website ID.
+               show = Show.where(website_id: id).first_or_initialize
+               #show = Show.where(title: name).where(time: t).where(group: description).where(location: venue).first_or_initialize
                show.title = name
                show.time = t
                show.group = description
