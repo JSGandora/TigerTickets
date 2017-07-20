@@ -4,7 +4,10 @@ require_relative 'application'
 require 'casclient'
 require 'casclient/frameworks/rails/filter'
 
+require 'capybara'
 require 'capybara/poltergeist'
+require 'capybara/dsl'
+require 'phantomjs'
 
   CASClient::Frameworks::Rails::Filter.configure(
     :cas_base_url  => "https://fed.princeton.edu/cas/",
