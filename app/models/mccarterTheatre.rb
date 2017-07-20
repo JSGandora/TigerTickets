@@ -5,11 +5,11 @@ require 'phantomjs'
 require 'time'
 
 #rails r app/models/mccarterTheatre.rb
-
+begin
 # Visit website
 session = Capybara::Session.new(:poltergeist)
 session.visit("http://www.mccarter.org/TicketOffice/seasonoverview.aspx?page_id=97")
-
+# Link no longer exists!!!
 session.find("a", :text => "University Season").click
 
 #access the table that holds all of the events
@@ -62,3 +62,7 @@ showTitle = []
         Show.create(title: showTitle[i], time: t, location: "McCarter Theatre Center", group: groupName[i], img: pictureURLs[i])
 	end
 end
+rescue
+    puts "The University Season at McCarter Theatre has not begun."
+end
+
